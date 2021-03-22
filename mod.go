@@ -3,8 +3,6 @@ package policy_sdk_go
 import (
 	"fmt"
 	"strings"
-
-	"github.com/buger/jsonparser"
 )
 
 type Message string
@@ -22,15 +20,6 @@ type keyValue struct {
 
 func (kv keyValue) String() string {
 	return fmt.Sprintf(`"%s":%s`, kv.key, kv.value)
-}
-
-func ApiVersion(payload []byte) string {
-	res, _, _, _ := jsonparser.Get(payload, "apiVersion")
-	return string(res)
-}
-
-func IsApiVersion(payload []byte, apiVersion string) bool {
-	return ApiVersion(payload) == apiVersion
 }
 
 func AcceptRequest() ([]byte, error) {
