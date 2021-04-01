@@ -1,3 +1,3 @@
-module github.com/chimera-kube/policy-sdk-go
+module github.com/kubewarden/policy-sdk-go
 
 go 1.15

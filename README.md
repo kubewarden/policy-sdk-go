@@ -1,7 +1,7 @@
-# Chimera Go Policy SDK
+# Kubewarden Go Policy SDK
 
-This module provides a SDK that can be used to write [Chimera
-Policies](https://github.com/chimera-kube/) using the Go programming
+This module provides a SDK that can be used to write [Kubewarden
+Policies](https://github.com/kubewarden/) using the Go programming
 language.
 
 Due to current Go compiler limitations, Go policies must be built
