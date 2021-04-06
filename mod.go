@@ -40,3 +40,19 @@ func RejectRequest(message Message, code Code) ([]byte, error) {
 	}
 	return []byte(fmt.Sprintf("{%s}", strings.Join(stringResult, ","))), nil
 }
+
+func AcceptSettings() ([]byte, error) {
+	return []byte(`{"valid":true}`), nil
+}
+
+func RejectSettings(message Message) ([]byte, error) {
+	result := []keyValue{{key: "valid", value: "false"}}
+	if message != NoMessage {
+		result = append(result, keyValue{key: "message", value: fmt.Sprintf(`"%s"`, string(message))})
+	}
+	stringResult := []string{}
+	for _, keyValue := range result {
+		stringResult = append(stringResult, keyValue.String())
+	}
+	return []byte(fmt.Sprintf("{%s}", strings.Join(stringResult, ","))), nil
+}
