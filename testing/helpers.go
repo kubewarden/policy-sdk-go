@@ -38,7 +38,8 @@ func BuildValidationRequest(req_fixture string, settings interface{}) ([]byte, e
 	return json.Marshal(validation_request)
 }
 
-// ValidationRequest describes the response returned by the `validate` function
+// SettingsValidationResponse describes the response returned by the
+// `validate_settings` function
 type SettingsValidationResponse struct {
 	Valid   bool   `json:"valid"`
 	Message string `json:"message,omitempty"`
