@@ -3,9 +3,9 @@ package sdk
 import (
 	"fmt"
 	"strings"
-)
 
-const PROTOCOL_VERSION = "v1"
+	_ "github.com/kubewarden/policy-sdk-go/protocol"
+)
 
 // Message is the optional string used to build validation responses
 type Message string
@@ -76,10 +76,4 @@ func RejectSettings(message Message) ([]byte, error) {
 		stringResult = append(stringResult, keyValue.String())
 	}
 	return []byte(fmt.Sprintf("{%s}", strings.Join(stringResult, ","))), nil
-}
-
-/// ProtocolVersionCallback is the implementation of the `protocol_version` waPC
-/// guest function. This returns the protocol version the policy supports.
-func ProtocolVersionCallback(_ []byte) ([]byte, error) {
-	return []byte(fmt.Sprintf(`"%s"`, PROTOCOL_VERSION)), nil
 }
