@@ -6,7 +6,7 @@ on:
     - main
     tags:
     - 'v*'
-  pull: {}
+  pull_request: {}
 
 jobs:
   verify:
