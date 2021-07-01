@@ -13,7 +13,7 @@ using [TinyGo](https://github.com/tinygo-org/tinygo).
 
 This SDK provides helper methods to accept and reject validation requests.
 
-Mutation policies cannot be written using this policy yet.
+Mutation policies cannot be written using this SDK yet.
 
 ## Logging
 
