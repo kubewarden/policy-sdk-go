@@ -21,7 +21,7 @@ func NewWASIHostCaller() HostCaller {
 type wasiHostCaller struct{}
 
 func (wasiHostCaller) GetOCIManifest(image string) (digest string, err error) {
-	// build request, e.g: `{"ghcr.io/kubewarden/policies/pod-privileged:v0.1.10"}`
+	// build request payload, e.g: `"ghcr.io/kubewarden/policies/pod-privileged:v0.1.10"`
 	request := make([]byte, 0)
 	if request, err = sjson.SetBytes(request, "", []byte(image)); err != nil {
 		return "", err
