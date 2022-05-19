@@ -1,3 +1,4 @@
+//go:build !wasi
 // +build !wasi
 
 // note well: we have to use the tinygo wasi target, because the wasm one is
@@ -7,76 +8,53 @@ package host_capabilities
 
 import (
 	"encoding/json"
+	"errors"
 )
 
-// NewNativeHostCaller creates a HostCaller in the native target, instead
-// of the wasi one. Useful for tests.
-func NewNativeHostCaller(mockVR VerificationResponse, mockDigest string, mockListIPs []string) HostCaller {
-	return nativeHostCaller{
-		mockVerificationResponse: mockVR,
-		mockDigest:               mockDigest,
-		mockListIPs:              mockListIPs,
+type MockWapcClient struct {
+	err             error
+	payloadResponse []byte
+}
+
+// Create a new MockWapcClient that simulates a host failing
+// whenever one of its capabilities is invoked by the policy.
+// The error returned by the host is the one provided at construction time
+func NewFailingMockWapcClient(err error) *MockWapcClient {
+	return &MockWapcClient{
+		payloadResponse: []byte{},
+		err:             err,
 	}
 }
 
-// nativeHostCaller is a HostCaller on the native target. Used as reference
-// implementation, and for type checking
-type nativeHostCaller struct {
-	mockVerificationResponse VerificationResponse
-	mockDigest               string
-	mockListIPs              []string
+// Create a new MockWapcClient that simulates a host successfully
+// completing a request made by the policy.
+// The response is going to be the `responseObj` serialized to JSON.
+// Use the right response type object that is defined inside of the `types.go`
+// file of this package.
+//
+// This function can fail if the `responseObj` provided by the user cannot be
+// encoded to JSON.
+func NewSuccessfulMockWapcClient(responseObj interface{}) (*MockWapcClient, error) {
+	payload, err := json.Marshal(responseObj)
+	if err != nil {
+		return nil, err
+	}
+
+	return &MockWapcClient{
+		payloadResponse: payload,
+		err:             nil,
+	}, nil
 }
 
-func (n nativeHostCaller) GetOCIManifest(image string) (response string, err error) {
-	return n.mockDigest, nil
+func (m *MockWapcClient) HostCall(binding, namespace, operation string, payload []byte) (response []byte, err error) {
+	return m.payloadResponse, m.err
 }
 
-func (n nativeHostCaller) LookupHost(string) ([]string, error) {
-	return n.mockListIPs, nil
-}
+// NewHost creates a Host that has a mock waPC client.
+func NewHost() Host {
+	err := errors.New("Native code should overwrite the default `Host.Client` with one created via `NewSuccessfulMockWapcClient` or `NewFailingMockWapcClient`")
 
-func (n nativeHostCaller) VerifyPubKeys(image string, pubKeys []string, annotations map[string]string) (vr VerificationResponse, err error) {
-	// failsafe return response
-	vr = VerificationResponse{
-		IsTrusted: false,
-		Digest:    "",
+	return Host{
+		Client: NewFailingMockWapcClient(err),
 	}
-
-	// build request
-	request := sigstorePubKeysVerify{
-		Image:       image,
-		PubKeys:     pubKeys,
-		Annotations: annotations,
-	}
-	var serializedRequest []byte
-	if serializedRequest, err = json.Marshal(request); err != nil {
-		return vr, err
-	}
-
-	// here we would do host callback with serializedRequest
-	_ = serializedRequest // we don't use the serialized request
-	return n.mockVerificationResponse, nil
-}
-
-func (n nativeHostCaller) VerifyKeyless(image string, keyless []KeylessInfo, annotations map[string]string) (vr VerificationResponse, err error) {
-	// failsafe return response
-	vr = VerificationResponse{
-		IsTrusted: false,
-		Digest:    "",
-	}
-
-	// build request
-	request := sigstoreKeylessVerify{
-		Image:       image,
-		Keyless:     keyless,
-		Annotations: annotations,
-	}
-	var serializedRequest []byte
-	if serializedRequest, err = json.Marshal(request); err != nil {
-		return vr, err
-	}
-
-	// here we would do host callback with serializedRequest
-	_ = serializedRequest // we don't use the serialized request
-	return n.mockVerificationResponse, nil
 }
