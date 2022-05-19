@@ -20,7 +20,7 @@ type HostCaller interface {
 
 	// VerifyKeyless verifies sigstore signatures of an image using keyless signing
 	// Arguments
-	// * image: image to be verified
+	// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	// * keyless: list of KeylessInfo pairs, containing Issuer and Subject info from OIDC providers
 	// * annotations: annotations that must have been provided by all signers when they signed the OCI artifact
 	VerifyKeyless(image string, keyless []KeylessInfo, annotations map[string]string) (VerificationResponse, error)
