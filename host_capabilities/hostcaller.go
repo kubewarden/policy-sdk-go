@@ -1,6 +1,6 @@
-// This package provides functions and structs for making host calls against the
-// waPC host. These functions are normally used when deciding if to validate a
-// request on a policy or not.
+// This package provides access to the structs and functions offered by the Kubewarden host.
+// This allows policies to perform operations that are not doable inside of the WebAssembly
+// runtime. Such as, policy verification, reverse DNS lookups, interacting with OCI registries,...
 package host_capabilities
 
 type HostCaller interface {
