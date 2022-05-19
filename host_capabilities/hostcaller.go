@@ -6,6 +6,8 @@ package host_capabilities
 type HostCaller interface {
 
 	// GetOCIManifest computes the digest of the OCI object referenced by image
+	// Arguments:
+	// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	GetOCIManifest(image string) (digest string, err error)
 
 	// LookupHost looks up the addresses for a given hostname via DNS
