@@ -53,8 +53,16 @@ func RejectRequest(message Message, code Code) ([]byte, error) {
 
 	return easyjson.Marshal(response)
 }
+
+// Accept the request and mutate the final object to match the
+// one provided via the `newObject` param
+func MutateRequest(newObject easyjson.Marshaler) ([]byte, error) {
+	response := protocol.ValidationResponse{
+		Accepted:      true,
+		MutatedObject: newObject,
 	}
-	return []byte(fmt.Sprintf("{%s}", strings.Join(stringResult, ","))), nil
+
+	return easyjson.Marshal(response)
 }
 
 // AcceptSettings can be used inside of the `validate_settings` function to
