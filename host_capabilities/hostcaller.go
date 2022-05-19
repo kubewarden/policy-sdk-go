@@ -13,7 +13,7 @@ type HostCaller interface {
 
 	// VerifyPubKeys verifies sigstore signatures of an image using public keys
 	// Arguments
-	// * image: image to be verified
+	// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	// * pubKeys: list of PEM encoded keys that must have been used to sign the OCI object
 	// * annotations: annotations that must have been provided by all signers when they signed the OCI artifact
 	VerifyPubKeys(image string, pubKeys []string, annotations map[string]string) (VerificationResponse, error)
