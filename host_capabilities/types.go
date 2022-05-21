@@ -34,7 +34,6 @@ type sigstorePubKeysVerify struct {
 // sigstoreKeylessVerify represents the WaPC JSON contract, used for marshalling
 // and unmarshalling payloads to wapc host calls
 //
-// Note: this is not in use for wasi
 type sigstoreKeylessVerify struct {
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`
