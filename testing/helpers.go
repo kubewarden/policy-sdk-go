@@ -1,46 +1,36 @@
 package testing
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"os"
+
+	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
+	"github.com/mailru/easyjson"
 )
-
-// ValidationRequest describes the payload given to the `validate` function
-type ValidationRequest struct {
-	Request  *json.RawMessage `json:"request"`
-	Settings interface{}      `json:"settings"`
-}
-
-// ValidationRequest describes the response returned by the `validate` function
-type ValidationResponse struct {
-	Accepted bool   `json:"accepted"`
-	Message  string `json:"message,omitempty"`
-	Code     uint64 `json:"code,omitempty"`
-}
 
 // BuildValidationRequest creates the payload for the invocation of the `validate`
 // function.
 // * `req_fixture`: path to the json file with a recorded requst to evaluate
 // * `settings`: instance of policy settings. Must be serializable to JSON
-func BuildValidationRequest(req_fixture string, settings interface{}) ([]byte, error) {
-	requestRaw, err := ioutil.ReadFile(req_fixture)
+func BuildValidationRequest(req_fixture string, settings easyjson.MarshalerUnmarshaler) ([]byte, error) {
+	kubeAdmissionReqRaw, err := os.ReadFile(req_fixture)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 
-	request := json.RawMessage(requestRaw)
-
-	validation_request := ValidationRequest{
-		Request:  &request,
-		Settings: settings,
+	kubeAdmissionReq := kubewarden_protocol.KubernetesAdmissionRequest{}
+	if err := easyjson.Unmarshal(kubeAdmissionReqRaw, &kubeAdmissionReq); err != nil {
+		return nil, err
 	}
 
-	return json.Marshal(validation_request)
-}
+	settingsRaw, err := easyjson.Marshal(settings)
+	if err != nil {
+		return nil, err
+	}
 
-// SettingsValidationResponse describes the response returned by the
-// `validate_settings` function
-type SettingsValidationResponse struct {
-	Valid   bool   `json:"valid"`
-	Message string `json:"message,omitempty"`
+	validationRequest := kubewarden_protocol.ValidationRequest{
+		Request:  kubeAdmissionReq,
+		Settings: settingsRaw,
+	}
+
+	return easyjson.Marshal(validationRequest)
 }
