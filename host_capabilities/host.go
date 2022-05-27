@@ -22,10 +22,10 @@ type WapcClient interface {
 	HostCall(binding, namespace, operation string, payload []byte) (response []byte, err error)
 }
 
-// GetOCIManifest computes the digest of the OCI object referenced by image
+// GetOCIManifestDigest computes the digest of the OCI object referenced by image
 // Arguments:
 // * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
-func (h *Host) GetOCIManifest(image string) (string, error) {
+func (h *Host) GetOCIManifestDigest(image string) (string, error) {
 	// build request payload, e.g: `"ghcr.io/kubewarden/policies/pod-privileged:v0.1.10"`
 	payload, err := json.Marshal(image)
 	if err != nil {
