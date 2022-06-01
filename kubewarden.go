@@ -79,7 +79,7 @@ func AcceptSettings() ([]byte, error) {
 // * `message`: optional message to show to the user
 func RejectSettings(message Message) ([]byte, error) {
 	response := protocol.SettingsValidationResponse{
-		Valid: true,
+		Valid: false,
 	}
 
 	if message != NoMessage {
