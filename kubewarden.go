@@ -70,7 +70,7 @@ func MutateRequest(newObject easyjson.Marshaler) ([]byte, error) {
 	return easyjson.Marshal(response)
 }
 
-// Update the pod sec from the resource defined in the original object and
+// Update the pod spec from the resource defined in the original object and
 // create an acceptance response.
 // * `validation_request` - the original admission request
 // * `pod_spec` - new PodSpec to be set in the response
