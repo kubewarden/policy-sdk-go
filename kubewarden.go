@@ -167,7 +167,7 @@ func RejectSettings(message Message) ([]byte, error) {
 // created by them. Objects supported are: Deployment, ReplicaSet, StatefulSet,
 // DaemonSet, ReplicationController, Job, CronJob, Pod It returns an error if
 // the object is not one of those. If it is a supported object it returns the
-// PodSpec if present, otherwise returns None.
+// PodSpec if present, otherwise returns an empty PodSpec.
 // * `object`: the request to validate
 func ExtractPodSpecFromObject(object protocol.ValidationRequest) (corev1.PodSpec, error) {
 	switch object.Request.Kind.Kind {
