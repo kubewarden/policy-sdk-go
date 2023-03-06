@@ -4,6 +4,8 @@ github.com/kubewarden/k8s-objects v1.24.0-kw3 h1:cRi2A5iESlZHqokXY0QXW6LdQaDXyLz
 github.com/kubewarden/k8s-objects v1.24.0-kw3/go.mod h1:IuIHLG1JtxjC1JnY7SyEEA9MukCh/FACcwpzaBjgdLQ=
 github.com/kubewarden/strfmt v0.1.0 h1:rMYG+48QSckzdVhFMikgGDUJODvvMHpudraWfw0jgvc=
 github.com/kubewarden/strfmt v0.1.0/go.mod h1:G83H1PTqI8ewtrTonL/uMbx1pJooaKSbAoIpoKqT5KA=
+github.com/kubewarden/strfmt v0.1.2 h1:S0YUVkPeyUMikz8QssbMzfd1MC5K8ZqxLI2zfF8euMs=
+github.com/kubewarden/strfmt v0.1.2/go.mod h1:sqLlis8qlm4A4pnZsRyRjNxyH86fiM+7Ee7bO+uJk94=
 github.com/mailru/easyjson v0.7.7 h1:UGYAvKxe3sBsEDzO8ZeWOSlIQfWFlxbzLZe7hwFURr0=
 github.com/mailru/easyjson v0.7.7/go.mod h1:xzfreul335JAWq5oZzymOObrkdz5UnU4kGfJJLY9Nlc=
 github.com/wapc/wapc-guest-tinygo v0.3.3 h1:jLebiwjVSHLGnS+BRabQ6+XOV7oihVWAc05Hf1SbeR0=
