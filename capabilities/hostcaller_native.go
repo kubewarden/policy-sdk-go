@@ -4,7 +4,7 @@
 // note well: we have to use the tinygo wasi target, because the wasm one is
 // meant to be used inside of the browser
 
-package host_capabilities
+package capabilities
 
 import (
 	"encoding/json"
