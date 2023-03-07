@@ -1,7 +1,7 @@
 // This package provides access to the structs and functions offered by the Kubewarden host.
 // This allows policies to perform operations that are not doable inside of the WebAssembly
 // runtime. Such as, policy verification, reverse DNS lookups, interacting with OCI registries,...
-package host_capabilities
+package capabilities
 
 import (
 	"encoding/json"
