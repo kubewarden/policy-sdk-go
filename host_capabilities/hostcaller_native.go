@@ -11,23 +11,31 @@ import (
 	"errors"
 )
 
+// MockWapcClient is implements the `host.WapcClient` interface.
+// It's purpose is to be used by the unit tests of policies that leverage
+// host capabilities
 type MockWapcClient struct {
-	err             error
-	payloadResponse []byte
+	Err             error
+	PayloadResponse []byte
 }
 
-// Create a new MockWapcClient that simulates a host failing
-// whenever one of its capabilities is invoked by the policy.
+// HostCall implements the `host.WapcClient` interface
+func (m *MockWapcClient) HostCall(binding, namespace, operation string, payload []byte) (response []byte, err error) {
+	return m.PayloadResponse, m.Err
+}
+
+// NewFailingMockWapcClient creates a new MockWapcClient that simulates a host
+// failing whenever one of its capabilities is invoked by the policy.
 // The error returned by the host is the one provided at construction time
 func NewFailingMockWapcClient(err error) *MockWapcClient {
 	return &MockWapcClient{
-		payloadResponse: []byte{},
-		err:             err,
+		PayloadResponse: []byte{},
+		Err:             err,
 	}
 }
 
-// Create a new MockWapcClient that simulates a host successfully
-// completing a request made by the policy.
+// NewSuccessfulMockWapcClient creates  a new MockWapcClient that simulates a
+// host successfully completing a request made by the policy.
 // The response is going to be the `responseObj` serialized to JSON.
 // Use the right response type object that is defined inside of the `types.go`
 // file of this package.
@@ -41,13 +49,9 @@ func NewSuccessfulMockWapcClient(responseObj interface{}) (*MockWapcClient, erro
 	}
 
 	return &MockWapcClient{
-		payloadResponse: payload,
-		err:             nil,
+		PayloadResponse: payload,
+		Err:             nil,
 	}, nil
-}
-
-func (m *MockWapcClient) HostCall(binding, namespace, operation string, payload []byte) (response []byte, err error) {
-	return m.payloadResponse, m.err
 }
 
 // NewHost creates a Host that has a mock waPC client.
