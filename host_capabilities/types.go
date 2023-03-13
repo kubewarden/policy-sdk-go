@@ -20,7 +20,6 @@ type VerificationResponse struct {
 
 // sigstorePubKeysVerify represents the WaPC JSON contract, used for marshalling
 // and unmarshalling payloads to wapc host calls
-//
 type sigstorePubKeysVerify struct {
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`
@@ -33,7 +32,6 @@ type sigstorePubKeysVerify struct {
 
 // sigstoreKeylessVerify represents the WaPC JSON contract, used for marshalling
 // and unmarshalling payloads to wapc host calls
-//
 type sigstoreKeylessVerify struct {
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`
