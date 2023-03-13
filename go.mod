@@ -7,7 +7,7 @@ require (
 	github.com/wapc/wapc-guest-tinygo v0.3.3
 )
 
-require github.com/go-openapi/strfmt v0.0.0-00010101000000-000000000000 // indirect
+require github.com/go-openapi/strfmt v0.21.3 // indirect
 
 require (
 	github.com/josharian/intern v1.0.0 // indirect
