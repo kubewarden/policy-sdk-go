@@ -1,7 +1,7 @@
 // This package provides access to the structs and functions offered by the Kubewarden host.
 // This allows policies to perform operations that are not doable inside of the WebAssembly
 // runtime. Such as, policy verification, reverse DNS lookups, interacting with OCI registries,...
-package host_capabilities
+package capabilities
 
 import (
 	"encoding/json"
@@ -138,4 +138,55 @@ func (h *Host) VerifyKeyless(image string, keyless []KeylessInfo, annotations ma
 	}
 
 	return responseObj, nil
+}
+
+// ListResourcesByNamespace gets all the Kubernetes resources defined inside of
+// the given namespace
+// Note: cannot be used for cluster-wide resources
+func (h *Host) ListResourcesByNamespace(req ListResourcesByNamespaceRequest) ([]byte, error) {
+	payload, err := req.MarshalJSON()
+	if err != nil {
+		return []byte{}, fmt.Errorf("cannot serialize request object: %w", err)
+	}
+
+	// perform callback
+	responsePayload, err := h.Client.HostCall("kubewarden", "kubernetes", "list_resources_by_namespace", payload)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return responsePayload, nil
+}
+
+// ListResources gets all the Kubernetes resources defined inside of the cluster.
+// Note: this has be used for cluster-wide resources
+func (h *Host) ListResources(req ListAllResourcesRequest) ([]byte, error) {
+	payload, err := req.MarshalJSON()
+	if err != nil {
+		return []byte{}, fmt.Errorf("cannot serialize request object: %w", err)
+	}
+
+	// perform callback
+	responsePayload, err := h.Client.HostCall("kubewarden", "kubernetes", "list_all_resources", payload)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return responsePayload, nil
+}
+
+// GetResource gets a specific Kubernetes resource.
+func (h *Host) GetResource(req GetResourceRequest) ([]byte, error) {
+	payload, err := req.MarshalJSON()
+	if err != nil {
+		return []byte{}, fmt.Errorf("cannot serialize request object: %w", err)
+	}
+
+	// perform callback
+	responsePayload, err := h.Client.HostCall("kubewarden", "kubernetes", "get_resource", payload)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return responsePayload, nil
 }
