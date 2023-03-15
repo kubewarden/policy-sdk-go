@@ -11,7 +11,7 @@ require github.com/go-openapi/strfmt v0.21.3 // indirect
 
 require (
 	github.com/josharian/intern v1.0.0 // indirect
-	github.com/kubewarden/k8s-objects v1.24.0-kw3
+	github.com/kubewarden/k8s-objects v1.24.0-kw4
 )
 
 replace github.com/go-openapi/strfmt => github.com/kubewarden/strfmt v0.1.2
