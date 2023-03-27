@@ -15,10 +15,10 @@ type PodSecurityContext struct {
 	// 1. The owning GID will be the FSGroup 2. The setgid bit is set (new files created in the volume will be owned by FSGroup) 3. The permission bits are OR'd with rw-rw----
 	//
 	// If unset, the Kubelet will not modify the ownership and permissions of any volume. Note that this field cannot be set when spec.os.name is windows.
-	FsGroup int64 `json:"fsGroup,omitempty"`
+	FSGroup int64 `json:"fsGroup,omitempty"`
 
 	// fsGroupChangePolicy defines behavior of changing ownership and permission of the volume before being exposed inside Pod. This field will only apply to volume types which support fsGroup based ownership(and permissions). It will have no effect on ephemeral volume types such as: secret, configmaps and emptydir. Valid values are "OnRootMismatch" and "Always". If not specified, "Always" is used. Note that this field cannot be set when spec.os.name is windows.
-	FsGroupChangePolicy string `json:"fsGroupChangePolicy,omitempty"`
+	FSGroupChangePolicy string `json:"fsGroupChangePolicy,omitempty"`
 
 	// The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows.
 	RunAsGroup int64 `json:"runAsGroup,omitempty"`
@@ -30,7 +30,7 @@ type PodSecurityContext struct {
 	RunAsUser int64 `json:"runAsUser,omitempty"`
 
 	// The SELinux context to be applied to all containers. If unspecified, the container runtime will allocate a random SELinux context for each container.  May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows.
-	SeLinuxOptions *SELinuxOptions `json:"seLinuxOptions,omitempty"`
+	SELinuxOptions *SELinuxOptions `json:"seLinuxOptions,omitempty"`
 
 	// The seccomp options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows.
 	SeccompProfile *SeccompProfile `json:"seccompProfile,omitempty"`
