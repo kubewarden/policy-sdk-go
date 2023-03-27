@@ -823,12 +823,12 @@ func easyjson1dbef17bDecodeGithubComKubewardenK8sObjectsApiCoreV17(in *jlexer.Le
 		case "seLinuxOptions":
 			if in.IsNull() {
 				in.Skip()
-				out.SeLinuxOptions = nil
+				out.SELinuxOptions = nil
 			} else {
-				if out.SeLinuxOptions == nil {
-					out.SeLinuxOptions = new(SELinuxOptions)
+				if out.SELinuxOptions == nil {
+					out.SELinuxOptions = new(SELinuxOptions)
 				}
-				easyjson1dbef17bDecodeGithubComKubewardenK8sObjectsApiCoreV110(in, out.SeLinuxOptions)
+				easyjson1dbef17bDecodeGithubComKubewardenK8sObjectsApiCoreV110(in, out.SELinuxOptions)
 			}
 		case "seccompProfile":
 			if in.IsNull() {
@@ -940,7 +940,7 @@ func easyjson1dbef17bEncodeGithubComKubewardenK8sObjectsApiCoreV17(out *jwriter.
 		}
 		out.Int64(int64(in.RunAsUser))
 	}
-	if in.SeLinuxOptions != nil {
+	if in.SELinuxOptions != nil {
 		const prefix string = ",\"seLinuxOptions\":"
 		if first {
 			first = false
@@ -948,7 +948,7 @@ func easyjson1dbef17bEncodeGithubComKubewardenK8sObjectsApiCoreV17(out *jwriter.
 		} else {
 			out.RawString(prefix)
 		}
-		easyjson1dbef17bEncodeGithubComKubewardenK8sObjectsApiCoreV110(out, *in.SeLinuxOptions)
+		easyjson1dbef17bEncodeGithubComKubewardenK8sObjectsApiCoreV110(out, *in.SELinuxOptions)
 	}
 	if in.SeccompProfile != nil {
 		const prefix string = ",\"seccompProfile\":"
@@ -1456,12 +1456,12 @@ func easyjson1dbef17bDecodeGithubComKubewardenK8sObjectsApiCoreV14(in *jlexer.Le
 		case "grpc":
 			if in.IsNull() {
 				in.Skip()
-				out.Grpc = nil
+				out.GRPC = nil
 			} else {
-				if out.Grpc == nil {
-					out.Grpc = new(GRPCAction)
+				if out.GRPC == nil {
+					out.GRPC = new(GRPCAction)
 				}
-				easyjson1dbef17bDecodeGithubComKubewardenK8sObjectsApiCoreV114(in, out.Grpc)
+				easyjson1dbef17bDecodeGithubComKubewardenK8sObjectsApiCoreV114(in, out.GRPC)
 			}
 		case "httpGet":
 			if in.IsNull() {
@@ -1523,7 +1523,7 @@ func easyjson1dbef17bEncodeGithubComKubewardenK8sObjectsApiCoreV14(out *jwriter.
 		}
 		out.Int32(int32(in.FailureThreshold))
 	}
-	if in.Grpc != nil {
+	if in.GRPC != nil {
 		const prefix string = ",\"grpc\":"
 		if first {
 			first = false
@@ -1531,7 +1531,7 @@ func easyjson1dbef17bEncodeGithubComKubewardenK8sObjectsApiCoreV14(out *jwriter.
 		} else {
 			out.RawString(prefix)
 		}
-		easyjson1dbef17bEncodeGithubComKubewardenK8sObjectsApiCoreV114(out, *in.Grpc)
+		easyjson1dbef17bEncodeGithubComKubewardenK8sObjectsApiCoreV114(out, *in.GRPC)
 	}
 	if in.HTTPGet != nil {
 		const prefix string = ",\"httpGet\":"
