@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities(in *jlexer.Lexer, out *sigstorePubKeysVerify) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(in *jlexer.Lexer, out *sigstorePubKeysVerify) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -91,7 +91,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities(in *jl
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities(out *jwriter.Writer, in sigstorePubKeysVerify) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(out *jwriter.Writer, in sigstorePubKeysVerify) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -141,27 +141,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities(out *j
 // MarshalJSON supports json.Marshaler interface
 func (v sigstorePubKeysVerify) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v sigstorePubKeysVerify) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *sigstorePubKeysVerify) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *sigstorePubKeysVerify) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities1(in *jlexer.Lexer, out *sigstoreKeylessVerify) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(in *jlexer.Lexer, out *sigstoreKeylessVerify) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -235,7 +235,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities1(in *j
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities1(out *jwriter.Writer, in sigstoreKeylessVerify) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(out *jwriter.Writer, in sigstoreKeylessVerify) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -285,27 +285,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities1(out *
 // MarshalJSON supports json.Marshaler interface
 func (v sigstoreKeylessVerify) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities1(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v sigstoreKeylessVerify) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities1(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *sigstoreKeylessVerify) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities1(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *sigstoreKeylessVerify) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities1(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities2(in *jlexer.Lexer, out *VerificationResponse) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(in *jlexer.Lexer, out *VerificationResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -338,7 +338,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities2(in *j
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities2(out *jwriter.Writer, in VerificationResponse) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(out *jwriter.Writer, in VerificationResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -358,27 +358,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities2(out *
 // MarshalJSON supports json.Marshaler interface
 func (v VerificationResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities2(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v VerificationResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities2(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *VerificationResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities2(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *VerificationResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities2(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities3(in *jlexer.Lexer, out *OciManifestResponse) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(in *jlexer.Lexer, out *OciManifestResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -409,7 +409,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities3(in *j
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities3(out *jwriter.Writer, in OciManifestResponse) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(out *jwriter.Writer, in OciManifestResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -424,27 +424,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities3(out *
 // MarshalJSON supports json.Marshaler interface
 func (v OciManifestResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities3(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v OciManifestResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities3(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *OciManifestResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities3(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *OciManifestResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities3(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities4(in *jlexer.Lexer, out *LookupHostResponse) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(in *jlexer.Lexer, out *LookupHostResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -496,7 +496,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities4(in *j
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities4(out *jwriter.Writer, in LookupHostResponse) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(out *jwriter.Writer, in LookupHostResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -522,27 +522,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities4(out *
 // MarshalJSON supports json.Marshaler interface
 func (v LookupHostResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities4(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v LookupHostResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities4(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *LookupHostResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities4(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *LookupHostResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities4(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities5(in *jlexer.Lexer, out *ListResourcesByNamespaceRequest) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(in *jlexer.Lexer, out *ListResourcesByNamespaceRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -581,7 +581,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities5(in *j
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities5(out *jwriter.Writer, in ListResourcesByNamespaceRequest) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(out *jwriter.Writer, in ListResourcesByNamespaceRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -616,27 +616,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities5(out *
 // MarshalJSON supports json.Marshaler interface
 func (v ListResourcesByNamespaceRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities5(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ListResourcesByNamespaceRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities5(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *ListResourcesByNamespaceRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities5(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ListResourcesByNamespaceRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities5(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities6(in *jlexer.Lexer, out *ListAllResourcesRequest) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(in *jlexer.Lexer, out *ListAllResourcesRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -673,7 +673,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities6(in *j
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities6(out *jwriter.Writer, in ListAllResourcesRequest) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities6(out *jwriter.Writer, in ListAllResourcesRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -703,27 +703,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities6(out *
 // MarshalJSON supports json.Marshaler interface
 func (v ListAllResourcesRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities6(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities6(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ListAllResourcesRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities6(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities6(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *ListAllResourcesRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities6(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ListAllResourcesRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities6(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities7(in *jlexer.Lexer, out *KeylessInfo) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(in *jlexer.Lexer, out *KeylessInfo) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -756,7 +756,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities7(in *j
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities7(out *jwriter.Writer, in KeylessInfo) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(out *jwriter.Writer, in KeylessInfo) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -776,27 +776,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities7(out *
 // MarshalJSON supports json.Marshaler interface
 func (v KeylessInfo) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities7(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v KeylessInfo) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities7(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *KeylessInfo) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities7(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *KeylessInfo) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities7(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities8(in *jlexer.Lexer, out *GetResourceRequest) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(in *jlexer.Lexer, out *GetResourceRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -835,7 +835,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities8(in *j
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities8(out *jwriter.Writer, in GetResourceRequest) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(out *jwriter.Writer, in GetResourceRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -870,23 +870,23 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities8(out *
 // MarshalJSON supports json.Marshaler interface
 func (v GetResourceRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities8(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v GetResourceRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoHostCapabilities8(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *GetResourceRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities8(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *GetResourceRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoHostCapabilities8(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(l, v)
 }
