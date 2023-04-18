@@ -17,7 +17,257 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(in *jlexer.Lexer, out *sigstorePubKeysVerify) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(in *jlexer.Lexer, out *sigstorePubKeysVerifyV2) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "type":
+			easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(in, &out.Type)
+		case "image":
+			out.Image = string(in.String())
+		case "pub_keys":
+			if in.IsNull() {
+				in.Skip()
+				out.PubKeys = nil
+			} else {
+				in.Delim('[')
+				if out.PubKeys == nil {
+					if !in.IsDelim(']') {
+						out.PubKeys = make([]string, 0, 4)
+					} else {
+						out.PubKeys = []string{}
+					}
+				} else {
+					out.PubKeys = (out.PubKeys)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v1 string
+					v1 = string(in.String())
+					out.PubKeys = append(out.PubKeys, v1)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "annotations":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				out.Annotations = make(map[string]string)
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v2 string
+					v2 = string(in.String())
+					(out.Annotations)[key] = v2
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(out *jwriter.Writer, in sigstorePubKeysVerifyV2) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"type\":"
+		out.RawString(prefix[1:])
+		(in.Type).MarshalEasyJSON(out)
+	}
+	{
+		const prefix string = ",\"image\":"
+		out.RawString(prefix)
+		out.String(string(in.Image))
+	}
+	{
+		const prefix string = ",\"pub_keys\":"
+		out.RawString(prefix)
+		if in.PubKeys == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v3, v4 := range in.PubKeys {
+				if v3 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v4))
+			}
+			out.RawByte(']')
+		}
+	}
+	{
+		const prefix string = ",\"annotations\":"
+		out.RawString(prefix)
+		if in.Annotations == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+			out.RawString(`null`)
+		} else {
+			out.RawByte('{')
+			v5First := true
+			for v5Name, v5Value := range in.Annotations {
+				if v5First {
+					v5First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v5Name))
+				out.RawByte(':')
+				out.String(string(v5Value))
+			}
+			out.RawByte('}')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v sigstorePubKeysVerifyV2) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v sigstorePubKeysVerifyV2) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *sigstorePubKeysVerifyV2) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *sigstorePubKeysVerifyV2) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(l, v)
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(in *jlexer.Lexer, out *SigstorePubKeyVerifyType) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(out *jwriter.Writer, in SigstorePubKeyVerifyType) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	out.RawByte('}')
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(in *jlexer.Lexer, out *sigstorePubKeysVerifyRequest) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "SigstorePubKeyVerify":
+			(out.SigstorePubKeysVerify).UnmarshalEasyJSON(in)
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(out *jwriter.Writer, in sigstorePubKeysVerifyRequest) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"SigstorePubKeyVerify\":"
+		out.RawString(prefix[1:])
+		(in.SigstorePubKeysVerify).MarshalEasyJSON(out)
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v sigstorePubKeysVerifyRequest) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v sigstorePubKeysVerifyRequest) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *sigstorePubKeysVerifyRequest) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *sigstorePubKeysVerifyRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(l, v)
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(in *jlexer.Lexer, out *sigstorePubKeysVerify) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -54,9 +304,9 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(in *jlexer
 					out.PubKeys = (out.PubKeys)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v1 string
-					v1 = string(in.String())
-					out.PubKeys = append(out.PubKeys, v1)
+					var v6 string
+					v6 = string(in.String())
+					out.PubKeys = append(out.PubKeys, v6)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -66,17 +316,13 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(in *jlexer
 				in.Skip()
 			} else {
 				in.Delim('{')
-				if !in.IsDelim('}') {
-					out.Annotations = make(map[string]string)
-				} else {
-					out.Annotations = nil
-				}
+				out.Annotations = make(map[string]string)
 				for !in.IsDelim('}') {
 					key := string(in.String())
 					in.WantColon()
-					var v2 string
-					v2 = string(in.String())
-					(out.Annotations)[key] = v2
+					var v7 string
+					v7 = string(in.String())
+					(out.Annotations)[key] = v7
 					in.WantComma()
 				}
 				in.Delim('}')
@@ -91,7 +337,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(in *jlexer
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(out *jwriter.Writer, in sigstorePubKeysVerify) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(out *jwriter.Writer, in sigstorePubKeysVerify) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -107,30 +353,32 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(out *jwrit
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v3, v4 := range in.PubKeys {
-				if v3 > 0 {
+			for v8, v9 := range in.PubKeys {
+				if v8 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v4))
+				out.String(string(v9))
 			}
 			out.RawByte(']')
 		}
 	}
-	if len(in.Annotations) != 0 {
+	{
 		const prefix string = ",\"annotations\":"
 		out.RawString(prefix)
-		{
+		if in.Annotations == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+			out.RawString(`null`)
+		} else {
 			out.RawByte('{')
-			v5First := true
-			for v5Name, v5Value := range in.Annotations {
-				if v5First {
-					v5First = false
+			v10First := true
+			for v10Name, v10Value := range in.Annotations {
+				if v10First {
+					v10First = false
 				} else {
 					out.RawByte(',')
 				}
-				out.String(string(v5Name))
+				out.String(string(v10Name))
 				out.RawByte(':')
-				out.String(string(v5Value))
+				out.String(string(v10Value))
 			}
 			out.RawByte('}')
 		}
@@ -141,27 +389,277 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(out *jwrit
 // MarshalJSON supports json.Marshaler interface
 func (v sigstorePubKeysVerify) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v sigstorePubKeysVerify) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *sigstorePubKeysVerify) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *sigstorePubKeysVerify) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(in *jlexer.Lexer, out *sigstoreKeylessVerify) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(in *jlexer.Lexer, out *sigstoreKeylessVerifyRequest) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "SigstoreKeylessVerify":
+			(out.SigstoreKeylessVerify).UnmarshalEasyJSON(in)
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(out *jwriter.Writer, in sigstoreKeylessVerifyRequest) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"SigstoreKeylessVerify\":"
+		out.RawString(prefix[1:])
+		(in.SigstoreKeylessVerify).MarshalEasyJSON(out)
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v sigstoreKeylessVerifyRequest) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v sigstoreKeylessVerifyRequest) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *sigstoreKeylessVerifyRequest) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *sigstoreKeylessVerifyRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(l, v)
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(in *jlexer.Lexer, out *sigstoreKeylessVerifyExactV2) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "type":
+			easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(in, &out.Type)
+		case "image":
+			out.Image = string(in.String())
+		case "keyless":
+			if in.IsNull() {
+				in.Skip()
+				out.Keyless = nil
+			} else {
+				in.Delim('[')
+				if out.Keyless == nil {
+					if !in.IsDelim(']') {
+						out.Keyless = make([]KeylessInfo, 0, 2)
+					} else {
+						out.Keyless = []KeylessInfo{}
+					}
+				} else {
+					out.Keyless = (out.Keyless)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v11 KeylessInfo
+					(v11).UnmarshalEasyJSON(in)
+					out.Keyless = append(out.Keyless, v11)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "annotations":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				out.Annotations = make(map[string]string)
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v12 string
+					v12 = string(in.String())
+					(out.Annotations)[key] = v12
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(out *jwriter.Writer, in sigstoreKeylessVerifyExactV2) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"type\":"
+		out.RawString(prefix[1:])
+		(in.Type).MarshalEasyJSON(out)
+	}
+	{
+		const prefix string = ",\"image\":"
+		out.RawString(prefix)
+		out.String(string(in.Image))
+	}
+	{
+		const prefix string = ",\"keyless\":"
+		out.RawString(prefix)
+		if in.Keyless == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v13, v14 := range in.Keyless {
+				if v13 > 0 {
+					out.RawByte(',')
+				}
+				(v14).MarshalEasyJSON(out)
+			}
+			out.RawByte(']')
+		}
+	}
+	{
+		const prefix string = ",\"annotations\":"
+		out.RawString(prefix)
+		if in.Annotations == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+			out.RawString(`null`)
+		} else {
+			out.RawByte('{')
+			v15First := true
+			for v15Name, v15Value := range in.Annotations {
+				if v15First {
+					v15First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v15Name))
+				out.RawByte(':')
+				out.String(string(v15Value))
+			}
+			out.RawByte('}')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v sigstoreKeylessVerifyExactV2) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v sigstoreKeylessVerifyExactV2) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *sigstoreKeylessVerifyExactV2) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *sigstoreKeylessVerifyExactV2) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(l, v)
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(in *jlexer.Lexer, out *SigstoreKeylessVerifyType) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities6(out *jwriter.Writer, in SigstoreKeylessVerifyType) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	out.RawByte('}')
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(in *jlexer.Lexer, out *sigstoreKeylessVerify) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -198,9 +696,9 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(in *jlexe
 					out.Keyless = (out.Keyless)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v6 KeylessInfo
-					(v6).UnmarshalEasyJSON(in)
-					out.Keyless = append(out.Keyless, v6)
+					var v16 KeylessInfo
+					(v16).UnmarshalEasyJSON(in)
+					out.Keyless = append(out.Keyless, v16)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -210,17 +708,13 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(in *jlexe
 				in.Skip()
 			} else {
 				in.Delim('{')
-				if !in.IsDelim('}') {
-					out.Annotations = make(map[string]string)
-				} else {
-					out.Annotations = nil
-				}
+				out.Annotations = make(map[string]string)
 				for !in.IsDelim('}') {
 					key := string(in.String())
 					in.WantColon()
-					var v7 string
-					v7 = string(in.String())
-					(out.Annotations)[key] = v7
+					var v17 string
+					v17 = string(in.String())
+					(out.Annotations)[key] = v17
 					in.WantComma()
 				}
 				in.Delim('}')
@@ -235,7 +729,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(out *jwriter.Writer, in sigstoreKeylessVerify) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(out *jwriter.Writer, in sigstoreKeylessVerify) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -251,30 +745,32 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(out *jwri
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v8, v9 := range in.Keyless {
-				if v8 > 0 {
+			for v18, v19 := range in.Keyless {
+				if v18 > 0 {
 					out.RawByte(',')
 				}
-				(v9).MarshalEasyJSON(out)
+				(v19).MarshalEasyJSON(out)
 			}
 			out.RawByte(']')
 		}
 	}
-	if len(in.Annotations) != 0 {
+	{
 		const prefix string = ",\"annotations\":"
 		out.RawString(prefix)
-		{
+		if in.Annotations == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+			out.RawString(`null`)
+		} else {
 			out.RawByte('{')
-			v10First := true
-			for v10Name, v10Value := range in.Annotations {
-				if v10First {
-					v10First = false
+			v20First := true
+			for v20Name, v20Value := range in.Annotations {
+				if v20First {
+					v20First = false
 				} else {
 					out.RawByte(',')
 				}
-				out.String(string(v10Name))
+				out.String(string(v20Name))
 				out.RawByte(':')
-				out.String(string(v10Value))
+				out.String(string(v20Value))
 			}
 			out.RawByte('}')
 		}
@@ -285,27 +781,632 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v sigstoreKeylessVerify) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v sigstoreKeylessVerify) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities1(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *sigstoreKeylessVerify) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *sigstoreKeylessVerify) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities1(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(in *jlexer.Lexer, out *VerificationResponse) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(in *jlexer.Lexer, out *sigstoreKeylessPrefixVerifyV2) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "type":
+			easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities9(in, &out.Type)
+		case "image":
+			out.Image = string(in.String())
+		case "keyless_prefix":
+			if in.IsNull() {
+				in.Skip()
+				out.KeylessPrefix = nil
+			} else {
+				in.Delim('[')
+				if out.KeylessPrefix == nil {
+					if !in.IsDelim(']') {
+						out.KeylessPrefix = make([]KeylessPrefixInfo, 0, 2)
+					} else {
+						out.KeylessPrefix = []KeylessPrefixInfo{}
+					}
+				} else {
+					out.KeylessPrefix = (out.KeylessPrefix)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v21 KeylessPrefixInfo
+					(v21).UnmarshalEasyJSON(in)
+					out.KeylessPrefix = append(out.KeylessPrefix, v21)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "annotations":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				out.Annotations = make(map[string]string)
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v22 string
+					v22 = string(in.String())
+					(out.Annotations)[key] = v22
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(out *jwriter.Writer, in sigstoreKeylessPrefixVerifyV2) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"type\":"
+		out.RawString(prefix[1:])
+		(in.Type).MarshalEasyJSON(out)
+	}
+	{
+		const prefix string = ",\"image\":"
+		out.RawString(prefix)
+		out.String(string(in.Image))
+	}
+	{
+		const prefix string = ",\"keyless_prefix\":"
+		out.RawString(prefix)
+		if in.KeylessPrefix == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v23, v24 := range in.KeylessPrefix {
+				if v23 > 0 {
+					out.RawByte(',')
+				}
+				(v24).MarshalEasyJSON(out)
+			}
+			out.RawByte(']')
+		}
+	}
+	{
+		const prefix string = ",\"annotations\":"
+		out.RawString(prefix)
+		if in.Annotations == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+			out.RawString(`null`)
+		} else {
+			out.RawByte('{')
+			v25First := true
+			for v25Name, v25Value := range in.Annotations {
+				if v25First {
+					v25First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v25Name))
+				out.RawByte(':')
+				out.String(string(v25Value))
+			}
+			out.RawByte('}')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v sigstoreKeylessPrefixVerifyV2) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v sigstoreKeylessPrefixVerifyV2) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *sigstoreKeylessPrefixVerifyV2) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *sigstoreKeylessPrefixVerifyV2) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(l, v)
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities9(in *jlexer.Lexer, out *SigstoreKeylessPrefixVerifyType) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities9(out *jwriter.Writer, in SigstoreKeylessPrefixVerifyType) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	out.RawByte('}')
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities10(in *jlexer.Lexer, out *sigstoreGithubActionsVerifyV2) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "type":
+			easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities11(in, &out.Type)
+		case "image":
+			out.Image = string(in.String())
+		case "owner":
+			out.Owner = string(in.String())
+		case "repo":
+			out.Repo = string(in.String())
+		case "annotations":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				out.Annotations = make(map[string]string)
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v26 string
+					v26 = string(in.String())
+					(out.Annotations)[key] = v26
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities10(out *jwriter.Writer, in sigstoreGithubActionsVerifyV2) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"type\":"
+		out.RawString(prefix[1:])
+		(in.Type).MarshalEasyJSON(out)
+	}
+	{
+		const prefix string = ",\"image\":"
+		out.RawString(prefix)
+		out.String(string(in.Image))
+	}
+	{
+		const prefix string = ",\"owner\":"
+		out.RawString(prefix)
+		out.String(string(in.Owner))
+	}
+	{
+		const prefix string = ",\"repo\":"
+		out.RawString(prefix)
+		out.String(string(in.Repo))
+	}
+	{
+		const prefix string = ",\"annotations\":"
+		out.RawString(prefix)
+		if in.Annotations == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+			out.RawString(`null`)
+		} else {
+			out.RawByte('{')
+			v27First := true
+			for v27Name, v27Value := range in.Annotations {
+				if v27First {
+					v27First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v27Name))
+				out.RawByte(':')
+				out.String(string(v27Value))
+			}
+			out.RawByte('}')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v sigstoreGithubActionsVerifyV2) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities10(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v sigstoreGithubActionsVerifyV2) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities10(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *sigstoreGithubActionsVerifyV2) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities10(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *sigstoreGithubActionsVerifyV2) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities10(l, v)
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities11(in *jlexer.Lexer, out *SigstoreGithubActionsVerifyType) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities11(out *jwriter.Writer, in SigstoreGithubActionsVerifyType) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	out.RawByte('}')
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities12(in *jlexer.Lexer, out *sigstoreCertificateVerifyV2) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "type":
+			easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities13(in, &out.Type)
+		case "image":
+			out.Image = string(in.String())
+		case "certificate":
+			if in.IsNull() {
+				in.Skip()
+				out.Certificate = nil
+			} else {
+				in.Delim('[')
+				if out.Certificate == nil {
+					if !in.IsDelim(']') {
+						out.Certificate = make([]int32, 0, 16)
+					} else {
+						out.Certificate = []int32{}
+					}
+				} else {
+					out.Certificate = (out.Certificate)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v28 int32
+					v28 = int32(in.Int32())
+					out.Certificate = append(out.Certificate, v28)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "certificate_chain":
+			if in.IsNull() {
+				in.Skip()
+				out.CertificateChain = nil
+			} else {
+				in.Delim('[')
+				if out.CertificateChain == nil {
+					if !in.IsDelim(']') {
+						out.CertificateChain = make([][]int32, 0, 2)
+					} else {
+						out.CertificateChain = [][]int32{}
+					}
+				} else {
+					out.CertificateChain = (out.CertificateChain)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v29 []int32
+					if in.IsNull() {
+						in.Skip()
+						v29 = nil
+					} else {
+						in.Delim('[')
+						if v29 == nil {
+							if !in.IsDelim(']') {
+								v29 = make([]int32, 0, 16)
+							} else {
+								v29 = []int32{}
+							}
+						} else {
+							v29 = (v29)[:0]
+						}
+						for !in.IsDelim(']') {
+							var v30 int32
+							v30 = int32(in.Int32())
+							v29 = append(v29, v30)
+							in.WantComma()
+						}
+						in.Delim(']')
+					}
+					out.CertificateChain = append(out.CertificateChain, v29)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "require_rekor_bundle":
+			out.RequireRekorBundle = bool(in.Bool())
+		case "annotations":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				out.Annotations = make(map[string]string)
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v31 string
+					v31 = string(in.String())
+					(out.Annotations)[key] = v31
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities12(out *jwriter.Writer, in sigstoreCertificateVerifyV2) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"type\":"
+		out.RawString(prefix[1:])
+		(in.Type).MarshalEasyJSON(out)
+	}
+	{
+		const prefix string = ",\"image\":"
+		out.RawString(prefix)
+		out.String(string(in.Image))
+	}
+	{
+		const prefix string = ",\"certificate\":"
+		out.RawString(prefix)
+		if in.Certificate == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v32, v33 := range in.Certificate {
+				if v32 > 0 {
+					out.RawByte(',')
+				}
+				out.Int32(int32(v33))
+			}
+			out.RawByte(']')
+		}
+	}
+	{
+		const prefix string = ",\"certificate_chain\":"
+		out.RawString(prefix)
+		if in.CertificateChain == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v34, v35 := range in.CertificateChain {
+				if v34 > 0 {
+					out.RawByte(',')
+				}
+				if v35 == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+					out.RawString("null")
+				} else {
+					out.RawByte('[')
+					for v36, v37 := range v35 {
+						if v36 > 0 {
+							out.RawByte(',')
+						}
+						out.Int32(int32(v37))
+					}
+					out.RawByte(']')
+				}
+			}
+			out.RawByte(']')
+		}
+	}
+	{
+		const prefix string = ",\"require_rekor_bundle\":"
+		out.RawString(prefix)
+		out.Bool(bool(in.RequireRekorBundle))
+	}
+	{
+		const prefix string = ",\"annotations\":"
+		out.RawString(prefix)
+		if in.Annotations == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+			out.RawString(`null`)
+		} else {
+			out.RawByte('{')
+			v38First := true
+			for v38Name, v38Value := range in.Annotations {
+				if v38First {
+					v38First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v38Name))
+				out.RawByte(':')
+				out.String(string(v38Value))
+			}
+			out.RawByte('}')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v sigstoreCertificateVerifyV2) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities12(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v sigstoreCertificateVerifyV2) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities12(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *sigstoreCertificateVerifyV2) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities12(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *sigstoreCertificateVerifyV2) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities12(l, v)
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities13(in *jlexer.Lexer, out *SigstoreCertificateVerifyType) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities13(out *jwriter.Writer, in SigstoreCertificateVerifyType) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	out.RawByte('}')
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities14(in *jlexer.Lexer, out *VerificationResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -338,7 +1439,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(out *jwriter.Writer, in VerificationResponse) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities14(out *jwriter.Writer, in VerificationResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -358,27 +1459,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v VerificationResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities14(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v VerificationResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities2(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities14(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *VerificationResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities14(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *VerificationResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities2(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities14(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(in *jlexer.Lexer, out *OciManifestResponse) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities15(in *jlexer.Lexer, out *OciManifestResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -409,7 +1510,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(out *jwriter.Writer, in OciManifestResponse) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities15(out *jwriter.Writer, in OciManifestResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -424,27 +1525,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v OciManifestResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities15(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v OciManifestResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities3(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities15(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *OciManifestResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities15(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *OciManifestResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities3(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities15(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(in *jlexer.Lexer, out *LookupHostResponse) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities16(in *jlexer.Lexer, out *LookupHostResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -479,9 +1580,9 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(in *jlexe
 					out.Ips = (out.Ips)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v11 string
-					v11 = string(in.String())
-					out.Ips = append(out.Ips, v11)
+					var v39 string
+					v39 = string(in.String())
+					out.Ips = append(out.Ips, v39)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -496,7 +1597,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(out *jwriter.Writer, in LookupHostResponse) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities16(out *jwriter.Writer, in LookupHostResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -507,11 +1608,11 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(out *jwri
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v12, v13 := range in.Ips {
-				if v12 > 0 {
+			for v40, v41 := range in.Ips {
+				if v40 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v13))
+				out.String(string(v41))
 			}
 			out.RawByte(']')
 		}
@@ -522,27 +1623,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v LookupHostResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities16(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v LookupHostResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities4(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities16(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *LookupHostResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities16(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *LookupHostResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities4(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities16(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(in *jlexer.Lexer, out *ListResourcesByNamespaceRequest) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities17(in *jlexer.Lexer, out *ListResourcesByNamespaceRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -581,7 +1682,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(out *jwriter.Writer, in ListResourcesByNamespaceRequest) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities17(out *jwriter.Writer, in ListResourcesByNamespaceRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -616,27 +1717,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v ListResourcesByNamespaceRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities17(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ListResourcesByNamespaceRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities5(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities17(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *ListResourcesByNamespaceRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities17(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ListResourcesByNamespaceRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities5(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities17(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(in *jlexer.Lexer, out *ListAllResourcesRequest) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities18(in *jlexer.Lexer, out *ListAllResourcesRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -673,7 +1774,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities6(out *jwriter.Writer, in ListAllResourcesRequest) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities18(out *jwriter.Writer, in ListAllResourcesRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -703,27 +1804,100 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities6(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v ListAllResourcesRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities6(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities18(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ListAllResourcesRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities6(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities18(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *ListAllResourcesRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities18(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ListAllResourcesRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities6(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities18(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(in *jlexer.Lexer, out *KeylessInfo) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities19(in *jlexer.Lexer, out *KeylessPrefixInfo) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "issuer":
+			out.Issuer = string(in.String())
+		case "url_prefix":
+			out.UrlPrefix = string(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities19(out *jwriter.Writer, in KeylessPrefixInfo) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"issuer\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.Issuer))
+	}
+	{
+		const prefix string = ",\"url_prefix\":"
+		out.RawString(prefix)
+		out.String(string(in.UrlPrefix))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v KeylessPrefixInfo) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities19(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v KeylessPrefixInfo) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities19(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *KeylessPrefixInfo) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities19(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *KeylessPrefixInfo) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities19(l, v)
+}
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities20(in *jlexer.Lexer, out *KeylessInfo) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -756,7 +1930,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(out *jwriter.Writer, in KeylessInfo) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities20(out *jwriter.Writer, in KeylessInfo) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -776,27 +1950,27 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v KeylessInfo) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities20(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v KeylessInfo) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities7(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities20(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *KeylessInfo) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities20(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *KeylessInfo) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities7(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities20(l, v)
 }
-func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(in *jlexer.Lexer, out *GetResourceRequest) {
+func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities21(in *jlexer.Lexer, out *GetResourceRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -835,7 +2009,7 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(out *jwriter.Writer, in GetResourceRequest) {
+func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities21(out *jwriter.Writer, in GetResourceRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -870,23 +2044,23 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v GetResourceRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(&w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities21(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v GetResourceRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities8(w, v)
+	easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities21(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *GetResourceRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(&r, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities21(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *GetResourceRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities8(l, v)
+	easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities21(l, v)
 }

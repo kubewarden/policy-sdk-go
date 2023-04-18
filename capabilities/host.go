@@ -22,6 +22,23 @@ type WapcClient interface {
 	HostCall(binding, namespace, operation string, payload []byte) (response []byte, err error)
 }
 
+type HostOCIVerifyVersion int64
+
+const (
+	V1 HostOCIVerifyVersion = iota
+	V2
+)
+
+func (s HostOCIVerifyVersion) String() string {
+	switch s {
+	case V1:
+		return "v1/verify"
+	case V2:
+		return "v2/verify"
+	}
+	return "unknown"
+}
+
 // GetOCIManifestDigest computes the digest of the OCI object referenced by image
 // Arguments:
 // * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
@@ -74,34 +91,15 @@ func (h *Host) LookupHost(host string) ([]string, error) {
 // * pubKeys: list of PEM encoded keys that must have been used to sign the OCI object
 // * annotations: annotations that must have been provided by all signers when they signed the OCI artifact
 func (h *Host) VerifyPubKeys(image string, pubKeys []string, annotations map[string]string) (VerificationResponse, error) {
-	// failsafe return response
-	vr := VerificationResponse{
-		IsTrusted: false,
-		Digest:    "",
+	requestObj := sigstorePubKeysVerifyRequest{
+		SigstorePubKeysVerify: sigstorePubKeysVerify{
+			Image:       image,
+			PubKeys:     pubKeys,
+			Annotations: annotations,
+		},
 	}
 
-	requestObj := sigstorePubKeysVerify{
-		Image:       image,
-		PubKeys:     pubKeys,
-		Annotations: annotations,
-	}
-	payload, err := requestObj.MarshalJSON()
-	if err != nil {
-		return vr, fmt.Errorf("cannot serialize request object: %w", err)
-	}
-
-	// perform callback
-	responsePayload, err := h.Client.HostCall("kubewarden", "oci", "v1/verify", payload)
-	if err != nil {
-		return vr, err
-	}
-
-	responseObj := VerificationResponse{}
-	if err := easyjson.Unmarshal(responsePayload, &responseObj); err != nil {
-		return vr, fmt.Errorf("cannot unmarshall response object: %w", err)
-	}
-
-	return responseObj, nil
+	return h.verify(requestObj, V1)
 }
 
 // VerifyKeyless verifies sigstore signatures of an image using keyless signing
@@ -110,24 +108,127 @@ func (h *Host) VerifyPubKeys(image string, pubKeys []string, annotations map[str
 // * keyless: list of KeylessInfo pairs, containing Issuer and Subject info from OIDC providers
 // * annotations: annotations that must have been provided by all signers when they signed the OCI artifact
 func (h *Host) VerifyKeyless(image string, keyless []KeylessInfo, annotations map[string]string) (VerificationResponse, error) {
+	requestObj := sigstoreKeylessVerifyRequest{
+		SigstoreKeylessVerify: sigstoreKeylessVerify{
+			Image:       image,
+			Keyless:     keyless,
+			Annotations: annotations,
+		},
+	}
+
+	return h.verify(requestObj, V1)
+}
+
+// VerifyPubKeysImageV2 verifies sigstore signatures of an image using public keys
+// Arguments
+// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
+// * pubKeys: list of PEM encoded keys that must have been used to sign the OCI object
+// * annotations: annotations that must have been provided by all signers when they signed the OCI artifact
+func (h *Host) VerifyPubKeysImageV2(image string, pubKeys []string, annotations map[string]string) (VerificationResponse, error) {
+	requestObj := sigstorePubKeysVerifyV2{
+		Image:       image,
+		PubKeys:     pubKeys,
+		Annotations: annotations,
+	}
+
+	return h.verify(requestObj, V2)
+}
+
+// VerifyKeylessExactMatchV2 verifies sigstore signatures of an image using keyless signing
+// Arguments
+// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
+// * keyless: list of KeylessInfo pairs, containing Issuer and Subject info from OIDC providers
+// * annotations: annotations that must have been provided by all signers when they signed the OCI artifact
+func (h *Host) VerifyKeylessExactMatchV2(image string, keyless []KeylessInfo, annotations map[string]string) (VerificationResponse, error) {
+	requestObj := sigstoreKeylessVerifyExactV2{
+		Image:       image,
+		Keyless:     keyless,
+		Annotations: annotations,
+	}
+
+	return h.verify(requestObj, V2)
+}
+
+// verify sigstore signatures of an image using keyless. Here, the provided
+// subject string is treated as a URL prefix, and sanitized to a valid URL on
+// itself by appending `/` to prevent typosquatting. Then, the provided subject
+// will satisfy the signature only if it is a prefix of the signature subject.
+// # Arguments
+// * `image` -  image to be verified
+// * `keyless`  -  list of issuers and subjects
+// * `annotations` - annotations that must have been provided by all signers when they signed the OCI artifact
+func (h *Host) VerifyKeylessPrefixMatchV2(image string, keylessPrefix []KeylessPrefixInfo, annotations map[string]string) (VerificationResponse, error) {
+	requestObj := sigstoreKeylessPrefixVerifyV2{
+		Image:         image,
+		KeylessPrefix: keylessPrefix,
+		Annotations:   annotations,
+	}
+
+	return h.verify(requestObj, V2)
+}
+
+// verify sigstore signatures of an image using keyless signatures made via
+// Github Actions.
+// # Arguments
+// * `image` -  image to be verified
+// * `owner` - owner of the repository. E.g: octocat
+// * `repo` - Optional. repo of the GH Action workflow that signed the artifact. E.g: example-repo. Optional.
+// * `annotations` - annotations that must have been provided by all signers when they signed the OCI artifact
+func (h *Host) VerifyKeylessGithubActionsV2(image string, owner string, repo string, annotations map[string]string) (VerificationResponse, error) {
+	requestObj := sigstoreGithubActionsVerifyV2{
+		Image:       image,
+		Owner:       owner,
+		Repo:        repo,
+		Annotations: annotations,
+	}
+
+	return h.verify(requestObj, V2)
+}
+
+// verify sigstore signatures of an image using a user provided certificate
+// # Arguments
+//   - `image` -  image to be verified
+//   - `certificate` - PEM encoded certificate used to verify the signature
+//   - `certificate_chain` - Optional. PEM encoded certificates used to verify `certificate`.
+//     When not specified, the certificate is assumed to be trusted
+//   - `require_rekor_bundle` - require the  signature layer to have a Rekor bundle.
+//     Having a Rekor bundle allows further checks to be performed,
+//     like ensuring the signature has been produced during the validity
+//     time frame of the certificate.
+//     It is recommended to set this value to `true` to have a more secure
+//     verification process.
+//   - `annotations` - annotations that must have been provided by all signers when they signed the OCI artifact
+func (h *Host) VerifyCertificateV2(image string, certificate string, certificateChain []string, requireRekorBundle bool, annotations map[string]string) (VerificationResponse, error) {
+	chain := make([][]rune, len(certificateChain))
+	for i, c := range certificateChain {
+		chain[i] = []rune(c)
+	}
+
+	requestObj := sigstoreCertificateVerifyV2{
+		Image:              image,
+		Certificate:        []rune(certificate),
+		CertificateChain:   chain,
+		RequireRekorBundle: requireRekorBundle,
+		Annotations:        annotations,
+	}
+
+	return h.verify(requestObj, V2)
+}
+
+func (h *Host) verify(requestObj easyjson.Marshaler, operation HostOCIVerifyVersion) (VerificationResponse, error) {
 	// failsafe return response
 	vr := VerificationResponse{
 		IsTrusted: false,
 		Digest:    "",
 	}
 
-	requestObj := sigstoreKeylessVerify{
-		Image:       image,
-		Keyless:     keyless,
-		Annotations: annotations,
-	}
-	payload, err := requestObj.MarshalJSON()
+	payload, err := easyjson.Marshal(requestObj)
 	if err != nil {
 		return vr, fmt.Errorf("cannot serialize request object: %w", err)
 	}
 
 	// perform callback
-	responsePayload, err := h.Client.HostCall("kubewarden", "oci", "v1/verify", payload)
+	responsePayload, err := h.Client.HostCall("kubewarden", "oci", operation.String(), payload)
 	if err != nil {
 		return vr, err
 	}
