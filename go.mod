@@ -3,6 +3,7 @@ module github.com/kubewarden/policy-sdk-go
 go 1.20
 
 require (
+	github.com/golang/mock v1.6.0
 	github.com/mailru/easyjson v0.7.7
 	github.com/wapc/wapc-guest-tinygo v0.3.3
 )

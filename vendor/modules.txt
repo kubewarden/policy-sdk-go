@@ -1,6 +1,9 @@
 # github.com/go-openapi/strfmt v0.21.3 => github.com/kubewarden/strfmt v0.1.2
 ## explicit; go 1.17
 github.com/go-openapi/strfmt
+# github.com/golang/mock v1.6.0
+## explicit; go 1.11
+github.com/golang/mock/gomock
 # github.com/josharian/intern v1.0.0
 ## explicit; go 1.5
 github.com/josharian/intern
