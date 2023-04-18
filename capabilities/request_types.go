@@ -31,3 +31,19 @@ type SigstoreCertificateVerifyType struct{}
 func (e SigstoreCertificateVerifyType) MarshalEasyJSON(w *jwriter.Writer) {
 	w.String("SigstoreCertificateVerify")
 }
+
+// The encoding of the certificate
+type CertificateEncoding int
+
+const (
+	Der CertificateEncoding = iota + 1
+	Pem
+)
+
+func (e CertificateEncoding) MarshalEasyJSON(w *jwriter.Writer) {
+	if e == Der {
+		w.String("Der")
+	} else if e == Pem {
+		w.String("Pem")
+	}
+}
