@@ -161,10 +161,10 @@ type ListResourcesByNamespaceRequest struct {
 	Namespace string `json:"namespace"`
 	// A selector to restrict the list of returned objects by their labels.
 	// Defaults to everything if omitted
-	LabelSelector string `json:"label_selector,omitempty"`
+	LabelSelector string `json:"label_selector"`
 	// A selector to restrict the list of returned objects by their fields.
 	// Defaults to everything if omitted
-	FieldSelector string `json:"field_selector,omitempty"`
+	FieldSelector string `json:"field_selector"`
 }
 
 // Set of parameters used by the `list_all_resources` function
@@ -175,10 +175,10 @@ type ListAllResourcesRequest struct {
 	Kind string `json:"kind"`
 	// A selector to restrict the list of returned objects by their labels.
 	// Defaults to everything if omitted
-	LabelSelector string `json:"label_selector,omitempty"`
+	LabelSelector string `json:"label_selector"`
 	// A selector to restrict the list of returned objects by their fields.
 	// Defaults to everything if omitted
-	FieldSelector string `json:"field_selector,omitempty"`
+	FieldSelector string `json:"field_selector"`
 }
 
 // Set of parameters used by the `get_resource` function
@@ -186,10 +186,10 @@ type GetResourceRequest struct {
 	APIVersion string `json:"api_version"`
 	// Singular PascalCase name of the resource
 	Kind string `json:"kind"`
-	// Namespace scoping the search
-	Namespace string `json:"namespace"`
 	// The name of the resource
 	Name string `json:"name"`
+	// Namespace scoping the search
+	Namespace string `json:"namespace"`
 	// Disable caching of results obtained from Kubernetes API Server
 	// By default query results are cached for 5 seconds, that might cause
 	// stale data to be returned.

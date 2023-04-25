@@ -1701,12 +1701,12 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities17(out *jwr
 		out.RawString(prefix)
 		out.String(string(in.Namespace))
 	}
-	if in.LabelSelector != "" {
+	{
 		const prefix string = ",\"label_selector\":"
 		out.RawString(prefix)
 		out.String(string(in.LabelSelector))
 	}
-	if in.FieldSelector != "" {
+	{
 		const prefix string = ",\"field_selector\":"
 		out.RawString(prefix)
 		out.String(string(in.FieldSelector))
@@ -1788,12 +1788,12 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities18(out *jwr
 		out.RawString(prefix)
 		out.String(string(in.Kind))
 	}
-	if in.LabelSelector != "" {
+	{
 		const prefix string = ",\"label_selector\":"
 		out.RawString(prefix)
 		out.String(string(in.LabelSelector))
 	}
-	if in.FieldSelector != "" {
+	{
 		const prefix string = ",\"field_selector\":"
 		out.RawString(prefix)
 		out.String(string(in.FieldSelector))
@@ -1993,10 +1993,10 @@ func easyjson6601e8cdDecodeGithubComKubewardenPolicySdkGoCapabilities21(in *jlex
 			out.APIVersion = string(in.String())
 		case "kind":
 			out.Kind = string(in.String())
-		case "namespace":
-			out.Namespace = string(in.String())
 		case "name":
 			out.Name = string(in.String())
+		case "namespace":
+			out.Namespace = string(in.String())
 		case "disable_cache":
 			out.DisableCache = bool(in.Bool())
 		default:
@@ -2024,14 +2024,14 @@ func easyjson6601e8cdEncodeGithubComKubewardenPolicySdkGoCapabilities21(out *jwr
 		out.String(string(in.Kind))
 	}
 	{
-		const prefix string = ",\"namespace\":"
-		out.RawString(prefix)
-		out.String(string(in.Namespace))
-	}
-	{
 		const prefix string = ",\"name\":"
 		out.RawString(prefix)
 		out.String(string(in.Name))
+	}
+	{
+		const prefix string = ",\"namespace\":"
+		out.RawString(prefix)
+		out.String(string(in.Namespace))
 	}
 	{
 		const prefix string = ",\"disable_cache\":"
