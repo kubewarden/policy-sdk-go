@@ -13,8 +13,13 @@ rm -rf vendor
 
 echo Generate easyjson helper files
 easyjson -all \
-  capabilities/types.go \
-  protocol/types.go
+  pkg/capabilities/crypto/types.go \
+  pkg/capabilities/kubernetes/types.go \
+  pkg/capabilities/net/types.go \
+  pkg/capabilities/oci/types.go \
+  pkg/capabilities/oci/manifest_digest/types.go \
+  pkg/capabilities/oci/verify_v1/types.go \
+  pkg/capabilities/oci/verify_v2/types.go
 
 echo Update vendor directory
 go mod tidy
