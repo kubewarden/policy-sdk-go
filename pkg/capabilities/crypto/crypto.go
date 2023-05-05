@@ -32,8 +32,8 @@ func (e CertificateEncoding) MarshalEasyJSON(w *jwriter.Writer) {
 // Verify_cert verifies cert's trust against the passed cert_chain, and
 // expiration and validation time of the certificate.
 // Accepts 3 arguments:
-//   - cert: PEM-encoded certificate to verify.
-//   - cert_chain: list of PEM-encoded certs, ordered by trust usage
+//   - cert: PEM/DER-encoded certificate to verify.
+//   - cert_chain: list of PEM/DER-encoded certs, ordered by trust usage
 //     (intermediates first, root last). If empty, certificate is assumed trusted.
 //   - not_after: string in RFC 3339 time format, to check expiration against.
 //     If None, certificate is assumed never expired.
