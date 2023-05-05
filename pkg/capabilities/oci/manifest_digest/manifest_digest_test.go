@@ -21,11 +21,11 @@ func TestV1ManifestDigest(t *testing.T) {
 		t.Fatalf("cannot serialize response object: %v", err)
 	}
 
-	expectedPayload := []byte{34, 109, 121, 105, 109, 97, 103, 101, 58, 108, 97, 116, 101, 115, 116, 34}
+	expectedPayload := `"myimage:latest"`
 
 	m.
 		EXPECT().
-		HostCall("kubewarden", "oci", "v1/manifest_digest", expectedPayload).
+		HostCall("kubewarden", "oci", "v1/manifest_digest", []byte(expectedPayload)).
 		Return(digestPayload, nil).
 		Times(1)
 

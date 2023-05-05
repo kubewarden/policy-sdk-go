@@ -21,11 +21,11 @@ func TestV1DnsLookupHost(t *testing.T) {
 		t.Fatalf("cannot serialize response object: %v", err)
 	}
 
-	expectedPayload := []byte{34, 108, 111, 99, 97, 108, 104, 111, 115, 116, 34}
+	expectedPayload := `"localhost"`
 
 	m.
 		EXPECT().
-		HostCall("kubewarden", "net", "v1/dns_lookup_host", expectedPayload).
+		HostCall("kubewarden", "net", "v1/dns_lookup_host", []byte(expectedPayload)).
 		Return(lookupPayload, nil).
 		Times(1)
 
