@@ -19,7 +19,8 @@ easyjson -all \
   pkg/capabilities/oci/types.go \
   pkg/capabilities/oci/manifest_digest/types.go \
   pkg/capabilities/oci/verify_v1/types.go \
-  pkg/capabilities/oci/verify_v2/types.go
+  pkg/capabilities/oci/verify_v2/types.go \
+  protocol/types.go
 
 echo Update vendor directory
 go mod tidy
