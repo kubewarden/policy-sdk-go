@@ -1,11 +1,10 @@
 package oci
 
 import (
+	"encoding/json"
 	"fmt"
 
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
-
-	"github.com/mailru/easyjson"
 )
 
 type HostOCIVerifyVersion int64
@@ -25,14 +24,14 @@ func (s HostOCIVerifyVersion) String() string {
 	return "unknown"
 }
 
-func Verify(h *cap.Host, requestObj easyjson.Marshaler, operation HostOCIVerifyVersion) (VerificationResponse, error) {
+func Verify(h *cap.Host, requestObj interface{}, operation HostOCIVerifyVersion) (VerificationResponse, error) {
 	// failsafe return response
 	vr := VerificationResponse{
 		IsTrusted: false,
 		Digest:    "",
 	}
 
-	payload, err := easyjson.Marshal(requestObj)
+	payload, err := json.Marshal(requestObj)
 	if err != nil {
 		return vr, fmt.Errorf("cannot serialize request object: %w", err)
 	}
@@ -44,7 +43,7 @@ func Verify(h *cap.Host, requestObj easyjson.Marshaler, operation HostOCIVerifyV
 	}
 
 	responseObj := VerificationResponse{}
-	if err := easyjson.Unmarshal(responsePayload, &responseObj); err != nil {
+	if err := json.Unmarshal(responsePayload, &responseObj); err != nil {
 		return vr, fmt.Errorf("cannot unmarshall response object: %w", err)
 	}
 

@@ -3,16 +3,17 @@ package verify_v1
 import (
 	"testing"
 
+	"encoding/json"
+
 	"github.com/golang/mock/gomock"
 	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	oci "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci"
-	"github.com/mailru/easyjson"
 )
 
 type v1VerifyTestCase struct {
-	request            easyjson.Marshaler
-	checkIsTrustedFunc func(host *cap.Host, request easyjson.Marshaler) (bool, error)
+	request            interface{}
+	checkIsTrustedFunc func(host *cap.Host, request interface{}) (bool, error)
 }
 
 func TestV1Verify(t *testing.T) {
@@ -44,7 +45,7 @@ func TestV1Verify(t *testing.T) {
 		},
 	} {
 		t.Run(description, func(t *testing.T) {
-			requestPayload, err := easyjson.Marshal(testCase.request)
+			requestPayload, err := json.Marshal(testCase.request)
 			if err != nil {
 				t.Fatalf("cannot serialize request object: %v", err)
 			}
@@ -53,7 +54,7 @@ func TestV1Verify(t *testing.T) {
 				IsTrusted: true,
 				Digest:    "",
 			}
-			verificationPayload, err := easyjson.Marshal(verificationResponse)
+			verificationPayload, err := json.Marshal(verificationResponse)
 			if err != nil {
 				t.Fatalf("cannot serialize response object: %v", err)
 			}
@@ -79,7 +80,7 @@ func TestV1Verify(t *testing.T) {
 	}
 }
 
-func CheckPubKeysTrustedV1(host *cap.Host, request easyjson.Marshaler) (bool, error) {
+func CheckPubKeysTrustedV1(host *cap.Host, request interface{}) (bool, error) {
 	requestPubKeys := request.(sigstorePubKeysVerifyRequest)
 	res, err := VerifyPubKeys(host, requestPubKeys.SigstorePubKeysVerify.Image, requestPubKeys.SigstorePubKeysVerify.PubKeys, requestPubKeys.SigstorePubKeysVerify.Annotations)
 	if err != nil {
@@ -88,7 +89,7 @@ func CheckPubKeysTrustedV1(host *cap.Host, request easyjson.Marshaler) (bool, er
 	return res.IsTrusted, nil
 }
 
-func CheckKeylessTrustedV1(host *cap.Host, request easyjson.Marshaler) (bool, error) {
+func CheckKeylessTrustedV1(host *cap.Host, request interface{}) (bool, error) {
 	requestKeyless := request.(sigstoreKeylessVerifyRequest)
 	res, err := VerifyKeyless(host, requestKeyless.SigstoreKeylessVerify.Image, requestKeyless.SigstoreKeylessVerify.Keyless, requestKeyless.SigstoreKeylessVerify.Annotations)
 	if err != nil {

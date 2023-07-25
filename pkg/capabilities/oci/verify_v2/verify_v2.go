@@ -1,39 +1,40 @@
 package verify_v2
 
 import (
+	"encoding/json"
+
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	oci "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci"
-	"github.com/mailru/easyjson/jwriter"
 )
 
 type SigstorePubKeyVerifyType struct{}
 
-func (e SigstorePubKeyVerifyType) MarshalEasyJSON(w *jwriter.Writer) {
-	w.String("SigstorePubKeyVerify")
+func (e SigstorePubKeyVerifyType) MarshalJSON() ([]byte, error) {
+	return json.Marshal("SigstorePubKeyVerify")
 }
 
 type SigstoreKeylessVerifyType struct{}
 
-func (e SigstoreKeylessVerifyType) MarshalEasyJSON(w *jwriter.Writer) {
-	w.String("SigstoreKeylessVerify")
+func (e SigstoreKeylessVerifyType) MarshalJSON() ([]byte, error) {
+	return json.Marshal("SigstoreKeylessVerify")
 }
 
 type SigstoreKeylessPrefixVerifyType struct{}
 
-func (e SigstoreKeylessPrefixVerifyType) MarshalEasyJSON(w *jwriter.Writer) {
-	w.String("SigstoreKeylessPrefixVerify")
+func (e SigstoreKeylessPrefixVerifyType) MarshalJSON() ([]byte, error) {
+	return json.Marshal("SigstoreKeylessPrefixVerify")
 }
 
 type SigstoreGithubActionsVerifyType struct{}
 
-func (e SigstoreGithubActionsVerifyType) MarshalEasyJSON(w *jwriter.Writer) {
-	w.String("SigstoreGithubActionsVerify")
+func (e SigstoreGithubActionsVerifyType) MarshalJSON() ([]byte, error) {
+	return json.Marshal("SigstoreGithubActionsVerify")
 }
 
 type SigstoreCertificateVerifyType struct{}
 
-func (e SigstoreCertificateVerifyType) MarshalEasyJSON(w *jwriter.Writer) {
-	w.String("SigstoreCertificateVerify")
+func (e SigstoreCertificateVerifyType) MarshalJSON() ([]byte, error) {
+	return json.Marshal("SigstoreCertificateVerify")
 }
 
 // VerifyPubKeysImageV2 verifies sigstore signatures of an image using public keys

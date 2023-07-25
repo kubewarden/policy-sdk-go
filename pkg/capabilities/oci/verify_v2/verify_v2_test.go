@@ -3,17 +3,18 @@ package verify_v2
 import (
 	"testing"
 
+	"encoding/json"
+
 	"github.com/golang/mock/gomock"
 	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	oci "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci"
-	"github.com/mailru/easyjson"
 )
 
 type v2VerifyTestCase struct {
-	request            easyjson.Marshaler
+	request            interface{}
 	expectedPayload    string
-	checkIsTrustedFunc func(host *cap.Host, request easyjson.Marshaler) (bool, error)
+	checkIsTrustedFunc func(host *cap.Host, request interface{}) (bool, error)
 }
 
 func TestV2Verify(t *testing.T) {
@@ -79,7 +80,7 @@ func TestV2Verify(t *testing.T) {
 				IsTrusted: true,
 				Digest:    "",
 			}
-			verificationPayload, err := easyjson.Marshal(verificationResponse)
+			verificationPayload, err := json.Marshal(verificationResponse)
 			if err != nil {
 				t.Fatalf("cannot serialize response object: %v", err)
 			}
@@ -105,7 +106,7 @@ func TestV2Verify(t *testing.T) {
 	}
 }
 
-func CheckPubKeysImageTrusted(host *cap.Host, request easyjson.Marshaler) (bool, error) {
+func CheckPubKeysImageTrusted(host *cap.Host, request interface{}) (bool, error) {
 	requestPubKeys := request.(sigstorePubKeysVerify)
 	res, err := VerifyPubKeysImage(host, requestPubKeys.Image, requestPubKeys.PubKeys, requestPubKeys.Annotations)
 	if err != nil {
@@ -114,7 +115,7 @@ func CheckPubKeysImageTrusted(host *cap.Host, request easyjson.Marshaler) (bool,
 	return res.IsTrusted, nil
 }
 
-func CheckKeylessExactMatchTrusted(host *cap.Host, request easyjson.Marshaler) (bool, error) {
+func CheckKeylessExactMatchTrusted(host *cap.Host, request interface{}) (bool, error) {
 	requestKeylessExactMatch := request.(sigstoreKeylessVerifyExact)
 	res, err := VerifyKeylessExactMatch(host, requestKeylessExactMatch.Image, requestKeylessExactMatch.Keyless, requestKeylessExactMatch.Annotations)
 	if err != nil {
@@ -123,7 +124,7 @@ func CheckKeylessExactMatchTrusted(host *cap.Host, request easyjson.Marshaler) (
 	return res.IsTrusted, nil
 }
 
-func CheckKeylessPrefixMatchTrusted(host *cap.Host, request easyjson.Marshaler) (bool, error) {
+func CheckKeylessPrefixMatchTrusted(host *cap.Host, request interface{}) (bool, error) {
 	requestKeylessPrefixMatch := request.(sigstoreKeylessPrefixVerify)
 	res, err := VerifyKeylessPrefixMatch(host, requestKeylessPrefixMatch.Image, requestKeylessPrefixMatch.KeylessPrefix, requestKeylessPrefixMatch.Annotations)
 	if err != nil {
@@ -132,7 +133,7 @@ func CheckKeylessPrefixMatchTrusted(host *cap.Host, request easyjson.Marshaler) 
 	return res.IsTrusted, nil
 }
 
-func CheckKeylessGithubActionsTrusted(host *cap.Host, request easyjson.Marshaler) (bool, error) {
+func CheckKeylessGithubActionsTrusted(host *cap.Host, request interface{}) (bool, error) {
 	requestKeylessGithubActions := request.(sigstoreGithubActionsVerify)
 	res, err := VerifyKeylessGithubActions(host, requestKeylessGithubActions.Image, requestKeylessGithubActions.Owner, requestKeylessGithubActions.Repo, requestKeylessGithubActions.Annotations)
 	if err != nil {
@@ -141,7 +142,7 @@ func CheckKeylessGithubActionsTrusted(host *cap.Host, request easyjson.Marshaler
 	return res.IsTrusted, nil
 }
 
-func CheckCertificateTrusted(host *cap.Host, request easyjson.Marshaler) (bool, error) {
+func CheckCertificateTrusted(host *cap.Host, request interface{}) (bool, error) {
 	requestCertificate := request.(sigstoreCertificateVerify)
 
 	res, err := VerifyCertificate(host, requestCertificate.Image, requestCertificate.Certificate, requestCertificate.CertificateChain, requestCertificate.RequireRekorBundle, requestCertificate.Annotations)
