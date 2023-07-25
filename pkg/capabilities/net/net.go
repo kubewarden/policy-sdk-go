@@ -5,8 +5,6 @@ import (
 	"fmt"
 
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
-
-	"github.com/mailru/easyjson"
 )
 
 // LookupHost looks up the addresses for a given hostname via DNS
@@ -24,7 +22,7 @@ func LookupHost(h *cap.Host, host string) ([]string, error) {
 	}
 
 	response := LookupHostResponse{}
-	if err := easyjson.Unmarshal(responsePayload, &response); err != nil {
+	if err := json.Unmarshal(responsePayload, &response); err != nil {
 		return []string{}, fmt.Errorf("cannot unmarshall response: %w", err)
 	}
 
