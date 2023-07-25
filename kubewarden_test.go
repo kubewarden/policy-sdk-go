@@ -1,6 +1,7 @@
 package sdk
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 
@@ -8,27 +9,24 @@ import (
 	batchv1 "github.com/kubewarden/k8s-objects/api/batch/v1"
 	corev1 "github.com/kubewarden/k8s-objects/api/core/v1"
 	"github.com/kubewarden/policy-sdk-go/protocol"
-	"github.com/mailru/easyjson"
-	"github.com/mailru/easyjson/jwriter"
 )
 
 type mutatePodSpecFromRequestTestCase struct {
 	kind              string
-	object            easyjson.Marshaler
+	object            interface{}
 	mutatedObject     interface{}
 	mutationCheckFunc func(t interface{}) bool
 }
 
-func createValidationRequest(object easyjson.Marshaler, kind string) (protocol.ValidationRequest, error) {
-	w := jwriter.Writer{}
-	object.MarshalEasyJSON(&w)
-	value, err := w.BuildBytes()
+func createValidationRequest(object interface{}, kind string) (protocol.ValidationRequest, error) {
+	value, err := json.Marshal(&object)
+
 	if err != nil {
 		return protocol.ValidationRequest{}, err
 	}
 
 	validationRequest := protocol.ValidationRequest{
-		Settings: easyjson.RawMessage{},
+		Settings: json.RawMessage{},
 		Request: protocol.KubernetesAdmissionRequest{
 			Kind: protocol.GroupVersionKind{
 				Kind: kind,
@@ -46,7 +44,7 @@ func CheckIfAutomountServiceAccountTokenIsTrue(rawResponse []byte, mutatedObject
 	response := protocol.ValidationResponse{
 		MutatedObject: mutatedObject,
 	}
-	if err := easyjson.Unmarshal(rawResponse, &response); err != nil {
+	if err := json.Unmarshal(rawResponse, &response); err != nil {
 		return err
 	}
 
@@ -260,7 +258,7 @@ func TestMutatePodSpecFromRequestWithInvalidResourceType(t *testing.T) {
 	}
 
 	response := protocol.ValidationResponse{}
-	if err := easyjson.Unmarshal(rawResponse, &response); err != nil {
+	if err := json.Unmarshal(rawResponse, &response); err != nil {
 		t.Fatalf("Error: %v", err)
 	}
 
