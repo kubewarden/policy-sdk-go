@@ -71,6 +71,12 @@ The majority of policies target a specific type of Kubernetes resource, like
 Pod, Ingress, Service and similar. Because of that, another possible approach
 is to unmarshal the incoming object into a native Go type.
 
+TinyGo doesn't yet support the full Go Standard Library, plus it has limited
+support of Go reflection.
+Because of that, it is not possible to import the official Kubernetes Go library
+from upstream (e.g.: `k8s.io/api/core/v1`).
+Importing these official Kubernetes types will result in a compilation failure.
+
 Moreover, Kubewarden provides TinyGo friendly Go types for all the Kubernetes
 types inside of the [`github.com/kubewarden/k8s-objects`](https://github.com/kubewarden/k8s-objects)
 package.
