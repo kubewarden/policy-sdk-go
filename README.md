@@ -65,7 +65,7 @@ This _"jq-like"_ approach can be pretty handy when the policy has to look
 deep inside of a Kubernetes object. This is especially helpful when dealing with
 inner objects that are optional.
 
-### Use native Go types
+## Use native Go types
 
 The majority of policies target a specific type of Kubernetes resource, like
 Pod, Ingress, Service and similar. Because of that, another possible approach
@@ -80,6 +80,13 @@ Importing these official Kubernetes types will result in a compilation failure.
 Moreover, Kubewarden provides TinyGo friendly Go types for all the Kubernetes
 types inside of the [`github.com/kubewarden/k8s-objects`](https://github.com/kubewarden/k8s-objects)
 package.
+
+Using this SDK requires **TinyGo 0.28.1 or later.**
+
+> **Warning**
+> Using an older version of TinyGo will result in runtime errors due to the limited support for Go reflection.
+
+### Example 
 
 This snippet shows how to implement a `validation` function that uses the
 "native Go types" approach:
