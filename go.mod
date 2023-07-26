@@ -9,6 +9,6 @@ require (
 
 require github.com/go-openapi/strfmt v0.21.3 // indirect
 
-require github.com/kubewarden/k8s-objects v1.24.0-kw8
+require github.com/kubewarden/k8s-objects v1.27.0-kw2
 
 replace github.com/go-openapi/strfmt => github.com/kubewarden/strfmt v0.1.3
