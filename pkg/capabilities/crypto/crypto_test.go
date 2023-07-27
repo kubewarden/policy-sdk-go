@@ -3,10 +3,11 @@ package crypto
 import (
 	"testing"
 
+	"encoding/json"
+
 	"github.com/golang/mock/gomock"
 	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
-	"github.com/mailru/easyjson"
 )
 
 func TestV1IsCertificateTrusted(t *testing.T) {
@@ -30,7 +31,7 @@ func TestV1IsCertificateTrusted(t *testing.T) {
 		Trusted: true,
 		Reason:  "",
 	}
-	verificationPayload, err := easyjson.Marshal(verificationResponse)
+	verificationPayload, err := json.Marshal(verificationResponse)
 	if err != nil {
 		t.Fatalf("cannot serialize response object: %v", err)
 	}

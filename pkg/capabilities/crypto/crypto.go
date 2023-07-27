@@ -5,8 +5,7 @@ import (
 
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 
-	"github.com/mailru/easyjson"
-	jwriter "github.com/mailru/easyjson/jwriter"
+	"encoding/json"
 )
 
 type CryptoHost struct {
@@ -21,12 +20,14 @@ const (
 	Pem
 )
 
-func (e CertificateEncoding) MarshalEasyJSON(w *jwriter.Writer) {
+func (e CertificateEncoding) MarshalJSON() ([]byte, error) {
 	if e == Der {
-		w.String("Der")
+		return json.Marshal("Der")
 	} else if e == Pem {
-		w.String("Pem")
+		return json.Marshal("Pem")
 	}
+
+	return nil, fmt.Errorf("invalid certificate encoding")
 }
 
 // Verify_cert verifies cert's trust against the passed cert_chain, and
@@ -44,7 +45,7 @@ func VerifyCert(h *cap.Host, cert Certificate, certChain []Certificate, notAfter
 		NotAfter:  notAfter,
 	}
 
-	payload, err := easyjson.Marshal(requestObj)
+	payload, err := json.Marshal(requestObj)
 	if err != nil {
 		return false, fmt.Errorf("cannot serialize request object: %w", err)
 	}
@@ -56,7 +57,7 @@ func VerifyCert(h *cap.Host, cert Certificate, certChain []Certificate, notAfter
 	}
 
 	responseObj := CertificateVerificationResponse{}
-	if err := easyjson.Unmarshal(responsePayload, &responseObj); err != nil {
+	if err := json.Unmarshal(responsePayload, &responseObj); err != nil {
 		return false, fmt.Errorf("cannot unmarshall response object: %w", err)
 	}
 

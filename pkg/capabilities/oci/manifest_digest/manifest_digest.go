@@ -5,8 +5,6 @@ import (
 	"fmt"
 
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
-
-	"github.com/mailru/easyjson"
 )
 
 // GetOCIManifestDigest computes the digest of the OCI object referenced by image
@@ -26,7 +24,7 @@ func GetOCIManifestDigest(h *cap.Host, image string) (string, error) {
 	}
 
 	response := OciManifestResponse{}
-	if err := easyjson.Unmarshal(responsePayload, &response); err != nil {
+	if err := json.Unmarshal(responsePayload, &response); err != nil {
 		return "", fmt.Errorf("cannot unmarshall response: %w", err)
 	}
 
