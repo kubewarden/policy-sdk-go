@@ -34,7 +34,7 @@ func ListResources(h *cap.Host, req ListAllResourcesRequest) ([]byte, error) {
 	}
 
 	// perform callback
-	responsePayload, err := h.Client.HostCall("kubewarden", "kubernetes", "list_all_resources", payload)
+	responsePayload, err := h.Client.HostCall("kubewarden", "kubernetes", "list_resources_all", payload)
 	if err != nil {
 		return []byte{}, err
 	}

@@ -46,7 +46,7 @@ func TestKubernetesListResources(t *testing.T) {
 
 	m.
 		EXPECT().
-		HostCall("kubewarden", "kubernetes", "list_all_resources", []byte(expectedInputPayload)).
+		HostCall("kubewarden", "kubernetes", "list_resources_all", []byte(expectedInputPayload)).
 		Return([]byte{}, nil).
 		Times(1)
 
