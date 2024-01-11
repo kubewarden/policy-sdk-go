@@ -71,7 +71,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 
 	for description, testCase := range map[string]mutatePodSpecFromRequestTestCase{
 		"WithDeployment": {
-			kind: "apps.v1.Deployment",
+			kind: "Deployment",
 			object: appsv1.Deployment{
 				Spec: &appsv1.DeploymentSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -85,7 +85,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithDeployment,
 		},
 		"WithReplicaset": {
-			kind: "apps.v1.ReplicaSet",
+			kind: "ReplicaSet",
 			object: appsv1.ReplicaSet{
 				Spec: &appsv1.ReplicaSetSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -99,7 +99,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithReplicaset,
 		},
 		"WithStatefulset": {
-			kind: "apps.v1.StatefulSet",
+			kind: "StatefulSet",
 			object: appsv1.StatefulSet{
 				Spec: &appsv1.StatefulSetSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -113,7 +113,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithStatefulset,
 		},
 		"WithDaemonset": {
-			kind: "apps.v1.DaemonSet",
+			kind: "DaemonSet",
 			object: appsv1.DaemonSet{
 				Spec: &appsv1.DaemonSetSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -127,7 +127,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithDaemonset,
 		},
 		"WithReplicationcontroller": {
-			kind: "v1.ReplicationController",
+			kind: "ReplicationController",
 			object: corev1.ReplicationController{
 				Spec: &corev1.ReplicationControllerSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -141,7 +141,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithReplicationcontroller,
 		},
 		"WithCronjob": {
-			kind: "batch.v1.CronJob",
+			kind: "CronJob",
 			object: batchv1.CronJob{
 				Spec: &batchv1.CronJobSpec{
 					JobTemplate: &batchv1.JobTemplateSpec{
@@ -159,7 +159,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithCronjob,
 		},
 		"WithJob": {
-			kind: "batch.v1.Job",
+			kind: "Job",
 			object: batchv1.Job{
 				Spec: &batchv1.JobSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -173,7 +173,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithJob,
 		},
 		"WithPod": {
-			kind: "v1.Pod",
+			kind: "Pod",
 			object: corev1.Pod{
 				Spec: &corev1.PodSpec{
 					AutomountServiceAccountToken: false,
