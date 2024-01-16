@@ -24,12 +24,15 @@ func TestKubernetesListResourcesByNamespace(t *testing.T) {
 		Client: m,
 	}
 
+	labelSelector := "app=nginx"
+	fieldSelector := "status.phase=Running"
+
 	inputRequest := ListResourcesByNamespaceRequest{
 		APIVersion:    "v1",
 		Kind:          "Pod",
 		Namespace:     "default",
-		LabelSelector: "app=nginx",
-		FieldSelector: "status.phase=Running",
+		LabelSelector: &labelSelector,
+		FieldSelector: &fieldSelector,
 	}
 
 	_, err := ListResourcesByNamespace(host, inputRequest)
@@ -54,11 +57,14 @@ func TestKubernetesListResources(t *testing.T) {
 		Client: m,
 	}
 
+	labelSelector := "app=nginx"
+	fieldSelector := "status.phase=Running"
+
 	inputRequest := ListAllResourcesRequest{
 		APIVersion:    "v1",
 		Kind:          "Pod",
-		LabelSelector: "app=nginx",
-		FieldSelector: "status.phase=Running",
+		LabelSelector: &labelSelector,
+		FieldSelector: &fieldSelector,
 	}
 
 	_, err := ListResources(host, inputRequest)

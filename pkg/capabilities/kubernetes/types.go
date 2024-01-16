@@ -10,10 +10,10 @@ type ListResourcesByNamespaceRequest struct {
 	Namespace string `json:"namespace"`
 	// A selector to restrict the list of returned objects by their labels.
 	// Defaults to everything if omitted
-	LabelSelector string `json:"label_selector"`
+	LabelSelector *string `json:"label_selector,omitempty"`
 	// A selector to restrict the list of returned objects by their fields.
 	// Defaults to everything if omitted
-	FieldSelector string `json:"field_selector"`
+	FieldSelector *string `json:"field_selector,omitempty"`
 }
 
 // Set of parameters used by the `list_all_resources` function
@@ -24,10 +24,10 @@ type ListAllResourcesRequest struct {
 	Kind string `json:"kind"`
 	// A selector to restrict the list of returned objects by their labels.
 	// Defaults to everything if omitted
-	LabelSelector string `json:"label_selector"`
+	LabelSelector *string `json:"label_selector,omitempty"`
 	// A selector to restrict the list of returned objects by their fields.
 	// Defaults to everything if omitted
-	FieldSelector string `json:"field_selector"`
+	FieldSelector *string `json:"field_selector,omitempty"`
 }
 
 // Set of parameters used by the `get_resource` function
