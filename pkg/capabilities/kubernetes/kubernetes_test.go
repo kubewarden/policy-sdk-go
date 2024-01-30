@@ -88,11 +88,11 @@ func TestKubernetesGetResource(t *testing.T) {
 	host := &cap.Host{
 		Client: m,
 	}
-
+	namespace := "default"
 	inputRequest := GetResourceRequest{
 		APIVersion:   "v1",
 		Kind:         "Pod",
-		Namespace:    "default",
+		Namespace:    &namespace,
 		Name:         "nginx",
 		DisableCache: false,
 	}
