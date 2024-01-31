@@ -38,7 +38,7 @@ type GetResourceRequest struct {
 	// The name of the resource
 	Name string `json:"name"`
 	// Namespace scoping the search
-	Namespace string `json:"namespace"`
+	Namespace *string `json:"namespace,omitempty"`
 	// Disable caching of results obtained from Kubernetes API Server
 	// By default query results are cached for 5 seconds, that might cause
 	// stale data to be returned.
