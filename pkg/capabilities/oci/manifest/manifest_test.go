@@ -131,23 +131,17 @@ func TestV1OciManifest(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
+			var manifest interface{}
 			switch test.manifest.(type) {
 			case specs.Manifest:
-				if res.IndexManifest() != nil {
-					t.Fatal("response should not be an index manifest")
-				}
-				if diff := cmp.Diff(*res.ImageManifest(), test.manifest); diff != "" {
-					t.Fatalf("unexpected manifest:\n%s", diff)
-				}
+				manifest = *res.ImageManifest()
 			case specs.Index:
-				if res.ImageManifest() != nil {
-					t.Fatalf("response should not be an image manifest:\n%v", res.ImageManifest())
-				}
-				if diff := cmp.Diff(*res.IndexManifest(), test.manifest); diff != "" {
-					t.Fatalf("unexpected manifest:\n%s", diff)
-				}
+				manifest = *res.IndexManifest()
 			default:
 				t.Fatal("unexpected manifest")
+			}
+			if diff := cmp.Diff(manifest, test.manifest); diff != "" {
+				t.Fatalf("unexpected manifest:\n%s", diff)
 			}
 		})
 	}

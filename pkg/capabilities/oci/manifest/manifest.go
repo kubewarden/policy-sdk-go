@@ -5,9 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/kubewarden/policy-sdk-go/constants"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
-	specs "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 // GetOCIManifest fetches the OCI manifest for the given image URI.
@@ -30,25 +28,9 @@ func GetOCIManifest(h *cap.Host, image string) (*OciImageManifestResponse, error
 		return nil, err
 	}
 
-	imageManifest := specs.Manifest{}
-	if err := json.Unmarshal(responsePayload, &imageManifest); err == nil {
-		if imageManifest.MediaType == specs.MediaTypeImageManifest || imageManifest.MediaType == constants.ImageManifestMediaType {
-			response := OciImageManifestResponse{
-				image: &imageManifest,
-			}
-			return &response, nil
-		} else {
-			indexManifest := specs.Index{}
-			if err := json.Unmarshal(responsePayload, &indexManifest); err == nil {
-				if indexManifest.MediaType == specs.MediaTypeImageIndex || indexManifest.MediaType == constants.ImageManifestListMediaType {
-					response := OciImageManifestResponse{
-						index: &indexManifest,
-					}
-					return &response, nil
-				}
-				return nil, fmt.Errorf("not a valid media type: %s", indexManifest.MediaType)
-			}
-		}
+	response := OciImageManifestResponse{}
+	if err := json.Unmarshal(responsePayload, &response); err != nil {
+		return nil, errors.Join(fmt.Errorf("failed to parse response from the host"), err)
 	}
-	return nil, errors.New("cannot decode response")
+	return &response, nil
 }
