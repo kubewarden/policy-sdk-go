@@ -15,13 +15,17 @@ import (
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
-func buildHostMock(t *testing.T, expectedPayload []byte, returnPayload []byte) *cap.Host {
+func buildHostMock(t *testing.T, imageURI string, returnPayload []byte) (*cap.Host, error) {
 	ctrl := gomock.NewController(t)
 	m := mock_capabilities.NewMockWapcClient(ctrl)
+	expectedPayload, err := json.Marshal(imageURI)
+	if err != nil {
+		return nil, err
+	}
 	m.EXPECT().HostCall("kubewarden", "oci", "v1/oci_manifest", expectedPayload).Return(returnPayload, nil).Times(1)
 	return &cap.Host{
 		Client: m,
-	}
+	}, nil
 }
 
 func buildManifest(mediaType string) interface{} {
@@ -116,10 +120,13 @@ func TestV1OciManifest(t *testing.T) {
 			if err != nil {
 				t.Fatalf("cannot serialize response object: %v", err)
 			}
-			expectedPayload := `"myimage:latest"`
-			host := buildHostMock(t, []byte(expectedPayload), manifestPayload)
+			imageURI := "myimage:latest"
+			host, err := buildHostMock(t, imageURI, manifestPayload)
+			if err != nil {
+				t.Fatalf("cannot build host mock: %q", err)
+			}
 
-			res, err := GetOCIManifest(host, "myimage:latest")
+			res, err := GetOCIManifest(host, imageURI)
 
 			if test.failsBecauseUnknownMediaType {
 				if err == nil || !strings.Contains(err.Error(), "not a valid media type") {
