@@ -52,7 +52,7 @@ func TestV1IsCertificateTrusted(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !res {
+	if !res.Trusted {
 		t.Fatalf("expected trusted image, got untrusted")
 	}
 }
