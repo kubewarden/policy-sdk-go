@@ -3,35 +3,36 @@ package manifest
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/kubewarden/policy-sdk-go/constants"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 type OciImageManifestResponse struct {
-	image *specs.Manifest
-	index *specs.Index
+	Image *specs.Manifest
+	Index *specs.Index
 }
 
 func (r OciImageManifestResponse) ImageManifest() *specs.Manifest {
-	return r.image
+	return r.Image
 }
 
 func (r OciImageManifestResponse) IndexManifest() *specs.Index {
-	return r.index
+	return r.Index
 }
 
 func (r *OciImageManifestResponse) UnmarshalJSON(b []byte) error {
 	imageManifest := specs.Manifest{}
 	if err := json.Unmarshal(b, &imageManifest); err == nil {
 		if isImageMediaType(imageManifest.MediaType) {
-			r.image = &imageManifest
+			r.Image = &imageManifest
 			return nil
 		}
 	}
 	indexManifest := specs.Index{}
 	if err := json.Unmarshal(b, &indexManifest); err == nil {
 		if isImageIndexMediaType(indexManifest.MediaType) {
-			r.index = &indexManifest
+			r.Index = &indexManifest
 			return nil
 		}
 		return fmt.Errorf("not a valid media type: %s", indexManifest.MediaType)
