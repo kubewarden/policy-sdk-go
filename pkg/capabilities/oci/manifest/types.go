@@ -8,30 +8,30 @@ import (
 )
 
 type OciImageManifestResponse struct {
-	image *specs.Manifest
-	index *specs.Index
+	Image *specs.Manifest `json:"image"`
+	Index *specs.Index    `json:"index"`
 }
 
 func (r OciImageManifestResponse) ImageManifest() *specs.Manifest {
-	return r.image
+	return r.Image
 }
 
 func (r OciImageManifestResponse) IndexManifest() *specs.Index {
-	return r.index
+	return r.Index
 }
 
 func (r *OciImageManifestResponse) UnmarshalJSON(b []byte) error {
 	imageManifest := specs.Manifest{}
 	if err := json.Unmarshal(b, &imageManifest); err == nil {
 		if isImageMediaType(imageManifest.MediaType) {
-			r.image = &imageManifest
+			r.Image = &imageManifest
 			return nil
 		}
 	}
 	indexManifest := specs.Index{}
 	if err := json.Unmarshal(b, &indexManifest); err == nil {
 		if isImageIndexMediaType(indexManifest.MediaType) {
-			r.index = &indexManifest
+			r.Index = &indexManifest
 			return nil
 		}
 		return fmt.Errorf("not a valid media type: %s", indexManifest.MediaType)
