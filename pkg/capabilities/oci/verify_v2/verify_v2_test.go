@@ -1,9 +1,8 @@
 package verify_v2
 
 import (
-	"testing"
-
 	"encoding/json"
+	"testing"
 
 	"github.com/golang/mock/gomock"
 	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
@@ -23,7 +22,7 @@ func TestV2Verify(t *testing.T) {
 
 	for description, testCase := range map[string]v2VerifyTestCase{
 		"PubKeysImage": {
-			request: sigstorePubKeysVerify{
+			request: SigstorePubKeysVerify{
 				Image:       "myimage:latest",
 				PubKeys:     []string{"pubkey1", "pubkey2"},
 				Annotations: nil,
@@ -32,7 +31,7 @@ func TestV2Verify(t *testing.T) {
 			checkIsTrustedFunc: CheckPubKeysImageTrusted,
 		},
 		"KeylessExactMatch": {
-			request: sigstoreKeylessVerifyExact{
+			request: SigstoreKeylessVerifyExact{
 				Image: "myimage:latest",
 				Keyless: []oci.KeylessInfo{
 					{Issuer: "https://github.com/login/oauth", Subject: "mail@example.com"},
@@ -43,7 +42,7 @@ func TestV2Verify(t *testing.T) {
 			checkIsTrustedFunc: CheckKeylessExactMatchTrusted,
 		},
 		"KeylessPrefixMatch": {
-			request: sigstoreKeylessPrefixVerify{
+			request: SigstoreKeylessPrefixVerify{
 				Image: "myimage:latest",
 				KeylessPrefix: []KeylessPrefixInfo{
 					{Issuer: "https://github.com/login/oauth", UrlPrefix: "https://example.com"},
@@ -54,7 +53,7 @@ func TestV2Verify(t *testing.T) {
 			checkIsTrustedFunc: CheckKeylessPrefixMatchTrusted,
 		},
 		"KeylessGithubActions": {
-			request: sigstoreGithubActionsVerify{
+			request: SigstoreGithubActionsVerify{
 				Image:       "myimage:latest",
 				Owner:       "myorg",
 				Repo:        "myrepo",
@@ -64,7 +63,7 @@ func TestV2Verify(t *testing.T) {
 			checkIsTrustedFunc: CheckKeylessGithubActionsTrusted,
 		},
 		"Certificate": {
-			request: sigstoreCertificateVerify{
+			request: SigstoreCertificateVerify{
 				Image:              "myimage:latest",
 				Certificate:        []rune("certificate0"),
 				CertificateChain:   [][]rune{[]rune("certificate1"), []rune("certificate2")},
@@ -107,7 +106,7 @@ func TestV2Verify(t *testing.T) {
 }
 
 func CheckPubKeysImageTrusted(host *cap.Host, request interface{}) (bool, error) {
-	requestPubKeys := request.(sigstorePubKeysVerify)
+	requestPubKeys := request.(SigstorePubKeysVerify)
 	res, err := VerifyPubKeysImage(host, requestPubKeys.Image, requestPubKeys.PubKeys, requestPubKeys.Annotations)
 	if err != nil {
 		return false, err
@@ -116,7 +115,7 @@ func CheckPubKeysImageTrusted(host *cap.Host, request interface{}) (bool, error)
 }
 
 func CheckKeylessExactMatchTrusted(host *cap.Host, request interface{}) (bool, error) {
-	requestKeylessExactMatch := request.(sigstoreKeylessVerifyExact)
+	requestKeylessExactMatch := request.(SigstoreKeylessVerifyExact)
 	res, err := VerifyKeylessExactMatch(host, requestKeylessExactMatch.Image, requestKeylessExactMatch.Keyless, requestKeylessExactMatch.Annotations)
 	if err != nil {
 		return false, err
@@ -125,7 +124,7 @@ func CheckKeylessExactMatchTrusted(host *cap.Host, request interface{}) (bool, e
 }
 
 func CheckKeylessPrefixMatchTrusted(host *cap.Host, request interface{}) (bool, error) {
-	requestKeylessPrefixMatch := request.(sigstoreKeylessPrefixVerify)
+	requestKeylessPrefixMatch := request.(SigstoreKeylessPrefixVerify)
 	res, err := VerifyKeylessPrefixMatch(host, requestKeylessPrefixMatch.Image, requestKeylessPrefixMatch.KeylessPrefix, requestKeylessPrefixMatch.Annotations)
 	if err != nil {
 		return false, err
@@ -134,7 +133,7 @@ func CheckKeylessPrefixMatchTrusted(host *cap.Host, request interface{}) (bool, 
 }
 
 func CheckKeylessGithubActionsTrusted(host *cap.Host, request interface{}) (bool, error) {
-	requestKeylessGithubActions := request.(sigstoreGithubActionsVerify)
+	requestKeylessGithubActions := request.(SigstoreGithubActionsVerify)
 	res, err := VerifyKeylessGithubActions(host, requestKeylessGithubActions.Image, requestKeylessGithubActions.Owner, requestKeylessGithubActions.Repo, requestKeylessGithubActions.Annotations)
 	if err != nil {
 		return false, err
@@ -143,7 +142,7 @@ func CheckKeylessGithubActionsTrusted(host *cap.Host, request interface{}) (bool
 }
 
 func CheckCertificateTrusted(host *cap.Host, request interface{}) (bool, error) {
-	requestCertificate := request.(sigstoreCertificateVerify)
+	requestCertificate := request.(SigstoreCertificateVerify)
 
 	res, err := VerifyCertificate(host, requestCertificate.Image, requestCertificate.Certificate, requestCertificate.CertificateChain, requestCertificate.RequireRekorBundle, requestCertificate.Annotations)
 	if err != nil {
