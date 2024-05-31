@@ -13,9 +13,9 @@ type KeylessPrefixInfo struct {
 	UrlPrefix string `json:"url_prefix"`
 }
 
-// sigstorePubKeysVerify represents the WaPC JSON contract, used for marshalling
+// SigstorePubKeysVerify represents the WaPC JSON contract, used for marshalling
 // and unmarshalling payloads to wapc host calls
-type sigstorePubKeysVerify struct {
+type SigstorePubKeysVerify struct {
 	Type SigstorePubKeyVerifyType `json:"type"`
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`
@@ -26,9 +26,9 @@ type sigstorePubKeysVerify struct {
 	Annotations map[string]string `json:"annotations"`
 }
 
-// sigstoreKeylessVerifyExact represents the WaPC JSON contract, used for marshalling
+// SigstoreKeylessVerifyExact represents the WaPC JSON contract, used for marshalling
 // and unmarshalling payloads to wapc host calls
-type sigstoreKeylessVerifyExact struct {
+type SigstoreKeylessVerifyExact struct {
 	Type SigstoreKeylessVerifyType `json:"type"`
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`
@@ -41,7 +41,7 @@ type sigstoreKeylessVerifyExact struct {
 
 // sigstoreKeylessVerify represents the WaPC JSON contract, used for marshalling
 // and unmarshalling payloads to wapc host calls
-type sigstoreKeylessPrefixVerify struct {
+type SigstoreKeylessPrefixVerify struct {
 	Type SigstoreKeylessPrefixVerifyType `json:"type"`
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`
@@ -52,7 +52,7 @@ type sigstoreKeylessPrefixVerify struct {
 	Annotations map[string]string `json:"annotations"`
 }
 
-type sigstoreGithubActionsVerify struct {
+type SigstoreGithubActionsVerify struct {
 	Type SigstoreGithubActionsVerifyType `json:"type"`
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`
@@ -65,7 +65,7 @@ type sigstoreGithubActionsVerify struct {
 	Annotations map[string]string `json:"annotations"`
 }
 
-type sigstoreCertificateVerify struct {
+type SigstoreCertificateVerify struct {
 	Type SigstoreCertificateVerifyType `json:"type"`
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`

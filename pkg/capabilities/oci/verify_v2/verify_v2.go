@@ -43,7 +43,7 @@ func (e SigstoreCertificateVerifyType) MarshalJSON() ([]byte, error) {
 // * pubKeys: list of PEM encoded keys that must have been used to sign the OCI object
 // * annotations: annotations that must have been provided by all signers when they signed the OCI artifact
 func VerifyPubKeysImage(h *cap.Host, image string, pubKeys []string, annotations map[string]string) (oci.VerificationResponse, error) {
-	requestObj := sigstorePubKeysVerify{
+	requestObj := SigstorePubKeysVerify{
 		Image:       image,
 		PubKeys:     pubKeys,
 		Annotations: annotations,
@@ -58,7 +58,7 @@ func VerifyPubKeysImage(h *cap.Host, image string, pubKeys []string, annotations
 // * keyless: list of KeylessInfo pairs, containing Issuer and Subject info from OIDC providers
 // * annotations: annotations that must have been provided by all signers when they signed the OCI artifact
 func VerifyKeylessExactMatch(h *cap.Host, image string, keyless []oci.KeylessInfo, annotations map[string]string) (oci.VerificationResponse, error) {
-	requestObj := sigstoreKeylessVerifyExact{
+	requestObj := SigstoreKeylessVerifyExact{
 		Image:       image,
 		Keyless:     keyless,
 		Annotations: annotations,
@@ -76,7 +76,7 @@ func VerifyKeylessExactMatch(h *cap.Host, image string, keyless []oci.KeylessInf
 // * `keyless`  -  list of issuers and subjects
 // * `annotations` - annotations that must have been provided by all signers when they signed the OCI artifact
 func VerifyKeylessPrefixMatch(h *cap.Host, image string, keylessPrefix []KeylessPrefixInfo, annotations map[string]string) (oci.VerificationResponse, error) {
-	requestObj := sigstoreKeylessPrefixVerify{
+	requestObj := SigstoreKeylessPrefixVerify{
 		Image:         image,
 		KeylessPrefix: keylessPrefix,
 		Annotations:   annotations,
@@ -93,7 +93,7 @@ func VerifyKeylessPrefixMatch(h *cap.Host, image string, keylessPrefix []Keyless
 // * `repo` - Optional. repo of the GH Action workflow that signed the artifact. E.g: example-repo. Optional.
 // * `annotations` - annotations that must have been provided by all signers when they signed the OCI artifact
 func VerifyKeylessGithubActions(h *cap.Host, image string, owner string, repo string, annotations map[string]string) (oci.VerificationResponse, error) {
-	requestObj := sigstoreGithubActionsVerify{
+	requestObj := SigstoreGithubActionsVerify{
 		Image:       image,
 		Owner:       owner,
 		Repo:        repo,
@@ -117,7 +117,7 @@ func VerifyKeylessGithubActions(h *cap.Host, image string, owner string, repo st
 //     verification process.
 //   - `annotations` - annotations that must have been provided by all signers when they signed the OCI artifact
 func VerifyCertificate(h *cap.Host, image string, certificate []rune, certificateChain [][]rune, requireRekorBundle bool, annotations map[string]string) (oci.VerificationResponse, error) {
-	requestObj := sigstoreCertificateVerify{
+	requestObj := SigstoreCertificateVerify{
 		Image:              image,
 		Certificate:        certificate,
 		CertificateChain:   certificateChain,
