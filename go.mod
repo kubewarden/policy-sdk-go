@@ -7,15 +7,15 @@ require github.com/wapc/wapc-guest-tinygo v0.3.3
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-openapi/strfmt v0.21.3 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
+	github.com/google/go-cmp v0.6.0
 	github.com/kubewarden/k8s-objects v1.29.0-kw1
+	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.1.0
 	github.com/stretchr/testify v1.9.0
 )
