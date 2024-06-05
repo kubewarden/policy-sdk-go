@@ -4,14 +4,13 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/golang/mock/gomock"
-	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
 
 func TestV1DnsLookupHost(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := mock_capabilities.NewMockWapcClient(ctrl)
+	mockWapcClient := &mocks.MockWapcClient{}
 
 	lookupResponse := LookupHostResponse{
 		Ips: []string{"127.0.0.1"},
@@ -23,14 +22,14 @@ func TestV1DnsLookupHost(t *testing.T) {
 
 	expectedPayload := `"localhost"`
 
-	m.
+	mockWapcClient.
 		EXPECT().
 		HostCall("kubewarden", "net", "v1/dns_lookup_host", []byte(expectedPayload)).
 		Return(lookupPayload, nil).
 		Times(1)
 
 	host := &cap.Host{
-		Client: m,
+		Client: mockWapcClient,
 	}
 
 	res, err := LookupHost(host, "localhost")

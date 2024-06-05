@@ -4,14 +4,13 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/golang/mock/gomock"
-	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
 
 func TestV1ManifestDigest(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := mock_capabilities.NewMockWapcClient(ctrl)
+	mockWapcClient := &mocks.MockWapcClient{}
 
 	digestResponse := OciManifestResponse{
 		Digest: "myhash",
@@ -23,14 +22,14 @@ func TestV1ManifestDigest(t *testing.T) {
 
 	expectedPayload := `"myimage:latest"`
 
-	m.
+	mockWapcClient.
 		EXPECT().
 		HostCall("kubewarden", "oci", "v1/manifest_digest", []byte(expectedPayload)).
 		Return(digestPayload, nil).
 		Times(1)
 
 	host := &cap.Host{
-		Client: m,
+		Client: mockWapcClient,
 	}
 
 	res, err := GetOCIManifestDigest(host, "myimage:latest")
