@@ -3,25 +3,24 @@ package kubernetes
 import (
 	"testing"
 
-	"github.com/golang/mock/gomock"
-	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
 
 func TestKubernetesListResourcesByNamespace(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := mock_capabilities.NewMockWapcClient(ctrl)
+	mockWapcClient := &mocks.MockWapcClient{}
 
 	expectedInputPayload := `{"api_version":"v1","kind":"Pod","namespace":"default","label_selector":"app=nginx","field_selector":"status.phase=Running"}`
 
-	m.
+	mockWapcClient.
 		EXPECT().
 		HostCall("kubewarden", "kubernetes", "list_resources_by_namespace", []byte(expectedInputPayload)).
 		Return([]byte{}, nil).
 		Times(1)
 
 	host := &cap.Host{
-		Client: m,
+		Client: mockWapcClient,
 	}
 
 	labelSelector := "app=nginx"
@@ -42,19 +41,18 @@ func TestKubernetesListResourcesByNamespace(t *testing.T) {
 }
 
 func TestKubernetesListResources(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := mock_capabilities.NewMockWapcClient(ctrl)
+	mockWapcClient := &mocks.MockWapcClient{}
 
 	expectedInputPayload := `{"api_version":"v1","kind":"Pod","label_selector":"app=nginx","field_selector":"status.phase=Running"}`
 
-	m.
+	mockWapcClient.
 		EXPECT().
 		HostCall("kubewarden", "kubernetes", "list_resources_all", []byte(expectedInputPayload)).
 		Return([]byte{}, nil).
 		Times(1)
 
 	host := &cap.Host{
-		Client: m,
+		Client: mockWapcClient,
 	}
 
 	labelSelector := "app=nginx"
@@ -74,19 +72,18 @@ func TestKubernetesListResources(t *testing.T) {
 }
 
 func TestKubernetesGetResource(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := mock_capabilities.NewMockWapcClient(ctrl)
+	mockWapcClient := &mocks.MockWapcClient{}
 
 	expectedInputPayload := `{"api_version":"v1","kind":"Pod","name":"nginx","namespace":"default","disable_cache":false}`
 
-	m.
+	mockWapcClient.
 		EXPECT().
 		HostCall("kubewarden", "kubernetes", "get_resource", []byte(expectedInputPayload)).
 		Return([]byte{}, nil).
 		Times(1)
 
 	host := &cap.Host{
-		Client: m,
+		Client: mockWapcClient,
 	}
 	namespace := "default"
 	inputRequest := GetResourceRequest{

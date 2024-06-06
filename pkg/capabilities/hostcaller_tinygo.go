@@ -10,16 +10,15 @@ import (
 	wapc "github.com/wapc/wapc-guest-tinygo"
 )
 
-type realWapcClient struct {
-}
+type wapcClient struct{}
 
-func (c *realWapcClient) HostCall(binding, namespace, operation string, payload []byte) (response []byte, err error) {
+func (c *wapcClient) HostCall(binding, namespace, operation string, payload []byte) (response []byte, err error) {
 	return wapc.HostCall(binding, namespace, operation, payload)
 }
 
 // NewHost creates a Host that has a real waPC client.
 func NewHost() Host {
 	return Host{
-		Client: &realWapcClient{},
+		Client: &wapcClient{},
 	}
 }

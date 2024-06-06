@@ -1,18 +1,16 @@
 package crypto
 
 import (
+	"encoding/json"
 	"testing"
 
-	"encoding/json"
-
-	"github.com/golang/mock/gomock"
-	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
 
 func TestV1IsCertificateTrusted(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := mock_capabilities.NewMockWapcClient(ctrl)
+	mockWapcClient := &mocks.MockWapcClient{}
 
 	cert := Certificate{
 		Encoding: Pem,
@@ -38,14 +36,14 @@ func TestV1IsCertificateTrusted(t *testing.T) {
 
 	expectedPayload := `{"cert":{"encoding":"Pem","data":[99,101,114,116,105,102,105,99,97,116,101,48]},"cert_chain":[{"encoding":"Pem","data":[99,101,114,116,105,102,105,99,97,116,101,49]},{"encoding":"Pem","data":[99,101,114,116,105,102,105,99,97,116,101,50]}],"not_after":"2021-10-01T00:00:00Z"}`
 
-	m.
+	mockWapcClient.
 		EXPECT().
 		HostCall("kubewarden", "crypto", "v1/is_certificate_trusted", []byte(expectedPayload)).
 		Return(verificationPayload, nil).
 		Times(1)
 
 	host := &cap.Host{
-		Client: m,
+		Client: mockWapcClient,
 	}
 
 	res, err := VerifyCert(host, cert, chain, not_after)

@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/golang/mock/gomock"
-	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 	oci "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci"
 )
 
@@ -17,8 +16,7 @@ type v2VerifyTestCase struct {
 }
 
 func TestV2Verify(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := mock_capabilities.NewMockWapcClient(ctrl)
+	mockWapcClient := &mocks.MockWapcClient{}
 
 	for description, testCase := range map[string]v2VerifyTestCase{
 		"PubKeysImage": {
@@ -84,14 +82,14 @@ func TestV2Verify(t *testing.T) {
 				t.Fatalf("cannot serialize response object: %v", err)
 			}
 
-			m.
+			mockWapcClient.
 				EXPECT().
 				HostCall("kubewarden", "oci", oci.V2.String(), []byte(testCase.expectedPayload)).
 				Return(verificationPayload, nil).
 				Times(1)
 
 			host := &cap.Host{
-				Client: m,
+				Client: mockWapcClient,
 			}
 
 			res, err := testCase.checkIsTrustedFunc(host, testCase.request)

@@ -6,25 +6,25 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/golang/mock/gomock"
-	"github.com/google/go-cmp/cmp"
 	"github.com/kubewarden/policy-sdk-go/constants"
-	mock_capabilities "github.com/kubewarden/policy-sdk-go/mock/capabilities"
+
 	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	digest "github.com/opencontainers/go-digest"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
 
-func buildHostMock(t *testing.T, imageURI string, returnPayload []byte) (*cap.Host, error) {
-	ctrl := gomock.NewController(t)
-	m := mock_capabilities.NewMockWapcClient(ctrl)
+func buildHostMock(imageURI string, returnPayload []byte) (*cap.Host, error) {
+	mockWapcClient := &mocks.MockWapcClient{}
 	expectedPayload, err := json.Marshal(imageURI)
 	if err != nil {
 		return nil, err
 	}
-	m.EXPECT().HostCall("kubewarden", "oci", "v1/oci_manifest", expectedPayload).Return(returnPayload, nil).Times(1)
+	mockWapcClient.EXPECT().HostCall("kubewarden", "oci", "v1/oci_manifest", expectedPayload).Return(returnPayload, nil).Times(1)
 	return &cap.Host{
-		Client: m,
+		Client: mockWapcClient,
 	}, nil
 }
 
@@ -50,17 +50,18 @@ func buildManifest(mediaType string) interface{} {
 func buildIndexManifest(mediaType string) interface{} {
 	return specs.Index{
 		MediaType: mediaType,
-		Manifests: []specs.Descriptor{{
-			MediaType:   specs.MediaTypeDescriptor,
-			Digest:      digest.FromString("mydummydigest"),
-			Size:        1024,
-			URLs:        []string{"ghcr.io/kubewarden/policy-server:latest"},
-			Annotations: map[string]string{"annotation": "value"},
-			Platform: &specs.Platform{
-				Architecture: "amd64",
-				OS:           "linux",
+		Manifests: []specs.Descriptor{
+			{
+				MediaType:   specs.MediaTypeDescriptor,
+				Digest:      digest.FromString("mydummydigest"),
+				Size:        1024,
+				URLs:        []string{"ghcr.io/kubewarden/policy-server:latest"},
+				Annotations: map[string]string{"annotation": "value"},
+				Platform: &specs.Platform{
+					Architecture: "amd64",
+					OS:           "linux",
+				},
 			},
-		},
 		},
 		// Annotations contains arbitrary metadata for the image index.
 		Annotations: map[string]string{"annonation": "annotationValue"},
@@ -68,7 +69,6 @@ func buildIndexManifest(mediaType string) interface{} {
 }
 
 func TestV1OciManifest(t *testing.T) {
-
 	tests := []struct {
 		manifest                     interface{}
 		failsBecauseUnknownMediaType bool
@@ -121,7 +121,7 @@ func TestV1OciManifest(t *testing.T) {
 				t.Fatalf("cannot serialize response object: %v", err)
 			}
 			imageURI := "myimage:latest"
-			host, err := buildHostMock(t, imageURI, manifestPayload)
+			host, err := buildHostMock(imageURI, manifestPayload)
 			if err != nil {
 				t.Fatalf("cannot build host mock: %q", err)
 			}
