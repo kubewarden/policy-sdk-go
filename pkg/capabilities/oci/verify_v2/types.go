@@ -59,7 +59,7 @@ type SigstoreGithubActionsVerify struct {
 	// owner of the repository. E.g: octocat
 	Owner string `json:"owner"`
 	// Optional - Repo of the GH Action workflow that signed the artifact. E.g: example-repo
-	Repo string `json:"repo"`
+	Repo string `json:"repo,omitempty"`
 	// Annotations that must have been provided by all signers when they signed
 	// the OCI artifact. Optional
 	Annotations map[string]string `json:"annotations"`
