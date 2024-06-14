@@ -50,7 +50,7 @@ func TestV2Verify(t *testing.T) {
 			expectedPayload:    `{"type":"SigstoreKeylessPrefixVerify","image":"myimage:latest","keyless_prefix":[{"issuer":"https://github.com/login/oauth","url_prefix":"https://example.com"}],"annotations":null}`,
 			checkIsTrustedFunc: CheckKeylessPrefixMatchTrusted,
 		},
-		"KeylessGithubActions": {
+		"KeylessGithubActionsWithOrgAndRepo": {
 			request: SigstoreGithubActionsVerify{
 				Image:       "myimage:latest",
 				Owner:       "myorg",
@@ -58,6 +58,15 @@ func TestV2Verify(t *testing.T) {
 				Annotations: nil,
 			},
 			expectedPayload:    `{"type":"SigstoreGithubActionsVerify","image":"myimage:latest","owner":"myorg","repo":"myrepo","annotations":null}`,
+			checkIsTrustedFunc: CheckKeylessGithubActionsTrusted,
+		},
+		"KeylessGithubActionsWithOrgNoRepo": {
+			request: SigstoreGithubActionsVerify{
+				Image:       "myimage:latest",
+				Owner:       "myorg",
+				Annotations: nil,
+			},
+			expectedPayload:    `{"type":"SigstoreGithubActionsVerify","image":"myimage:latest","owner":"myorg","annotations":null}`,
 			checkIsTrustedFunc: CheckKeylessGithubActionsTrusted,
 		},
 		"Certificate": {
