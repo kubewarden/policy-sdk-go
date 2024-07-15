@@ -16,6 +16,23 @@ run:
 # This file contains only configs which differ from defaults.
 # All possible options can be found here https://github.com/golangci/golangci-lint/blob/master/.golangci.reference.yml
 linters-settings:
+  stylecheck:
+    # Disable ST1003 because we have package names with underscores.
+    checks: ["all", "-ST1003"] 
+
+  revive:
+    rules:
+      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#var-naming
+      - name: var-naming
+        severity: warning
+        disabled: false
+        exclude: [""]
+        arguments:
+          - [] # AllowList
+          - [] # DenyList
+          # Disable package name checks because we have package names with underscores.
+          - [{upperCaseConst: true, skipPackageNameChecks: true}]
+
   cyclop:
     # The maximal code complexity to report.
     # Default: 10
@@ -248,12 +265,10 @@ linters:
     - gocyclo # computes and checks the cyclomatic complexity of functions
     - godot # checks if comments end in a period
     - goimports # in addition to fixing imports, goimports also formats your code in the same style as gofmt
-    - gomoddirectives # manages the use of 'replace', 'retract', and 'excludes' directives in go.mod
     - gomodguard # allow and block lists linter for direct Go module dependencies. This is different from depguard where there are different block types for example version constraints and module recommendations
     - goprintffuncname # checks that printf-like functions are named with f at the end
     - gosec # inspects source code for security problems
     - intrange # finds places where for loops could make use of an integer range
-    - lll # reports long lines
     - loggercheck # checks key value pairs for common logger libraries (kitlog,klog,logr,zap)
     - makezero # finds slice declarations with non-zero initial length
     - mirror # reports wrong mirror patterns of bytes/strings usage
@@ -281,7 +296,6 @@ linters:
     - tenv # detects using os.Setenv instead of t.Setenv since Go1.17
     - testableexamples # checks if examples are testable (have an expected output)
     - testifylint # checks usage of github.com/stretchr/testify
-    - testpackage # makes you use a separate _test package
     - tparallel # detects inappropriate usage of t.Parallel() method in your Go test codes
     - unconvert # removes unnecessary type conversions
     - unparam # reports unused function parameters
@@ -327,6 +341,24 @@ linters:
     #- tagliatelle # checks the struct tags
     #- thelper # detects golang test helpers without t.Helper() call and checks the consistency of test helpers
     #- wsl # [too strict and mostly code is not more readable] whitespace linter forces you to use empty lines
+    
+
+    ############################################################################
+    # Kubewarden linter customization
+    # The following linters are disabled because they does not make sense for
+    # the Kubewarden 
+    ############################################################################
+
+    # We disable the testpackage linter because we have tests which is not
+    # black boxed and that will not cause issues for us for now.
+    # - testpackage # makes you use a separate _test package
+    
+    # We use replace directives in go.mod to replace some dependencies to use
+    # our forked or stripped versions.
+    # - gomoddirectives # manages the use of 'replace', 'retract', and 'excludes' directives in go.mod
+    
+    # We have a bunch of places where the function argument list are long.
+    # - lll
 
 
 issues:
@@ -349,3 +381,5 @@ issues:
         - gosec
         - noctx
         - wrapcheck
+        - errcheck # it's ok to not check errors in tests
+        - gocognit # some tests are complex
