@@ -10,11 +10,11 @@ type KeylessPrefixInfo struct {
 	// Valid prefix of the Subject field in the signature used to authenticate
 	// against the OIDC provider. It forms a valid URL on its own, and will get
 	// sanitized by appending `/` to protect against typosquatting
-	UrlPrefix string `json:"url_prefix"`
+	UrlPrefix string `json:"url_prefix"` //nolint:revive // We cannot change the name of this field without breaking the compatibility
 }
 
 // SigstorePubKeysVerify represents the WaPC JSON contract, used for marshalling
-// and unmarshalling payloads to wapc host calls
+// and unmarshalling payloads to wapc host calls.
 type SigstorePubKeysVerify struct {
 	Type SigstorePubKeyVerifyType `json:"type"`
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
@@ -27,7 +27,7 @@ type SigstorePubKeysVerify struct {
 }
 
 // SigstoreKeylessVerifyExact represents the WaPC JSON contract, used for marshalling
-// and unmarshalling payloads to wapc host calls
+// and unmarshalling payloads to wapc host calls.
 type SigstoreKeylessVerifyExact struct {
 	Type SigstoreKeylessVerifyType `json:"type"`
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
@@ -40,7 +40,7 @@ type SigstoreKeylessVerifyExact struct {
 }
 
 // sigstoreKeylessVerify represents the WaPC JSON contract, used for marshalling
-// and unmarshalling payloads to wapc host calls
+// and unmarshalling payloads to wapc host calls.
 type SigstoreKeylessPrefixVerify struct {
 	Type SigstoreKeylessPrefixVerifyType `json:"type"`
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)

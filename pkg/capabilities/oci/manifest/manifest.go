@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 )
 
 // GetOCIManifest fetches the OCI manifest for the given image URI.
@@ -14,8 +14,8 @@ import (
 // https://github.com/opencontainers/image-spec/blob/main/manifest.md
 // https://github.com/opencontainers/image-spec/blob/main/image-index.md
 // Arguments:
-// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
-func GetOCIManifest(h *cap.Host, image string) (*OciImageManifestResponse, error) {
+// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`).
+func GetOCIManifest(h *capabilities.Host, image string) (*OciImageManifestResponse, error) {
 	// build request payload, e.g: `"ghcr.io/kubewarden/policies/pod-privileged:v0.1.10"`
 	payload, err := json.Marshal(image)
 	if err != nil {
@@ -29,8 +29,8 @@ func GetOCIManifest(h *cap.Host, image string) (*OciImageManifestResponse, error
 	}
 
 	response := OciImageManifestResponse{}
-	if err := json.Unmarshal(responsePayload, &response); err != nil {
-		return nil, errors.Join(fmt.Errorf("failed to parse response from the host"), err)
+	if err = json.Unmarshal(responsePayload, &response); err != nil {
+		return nil, errors.Join(errors.New("failed to parse response from the host"), err)
 	}
 	return &response, nil
 }

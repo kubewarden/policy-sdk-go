@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 )
 
-// LookupHost looks up the addresses for a given hostname via DNS
-func LookupHost(h *cap.Host, host string) ([]string, error) {
+// LookupHost looks up the addresses for a given hostname via DNS.
+func LookupHost(h *capabilities.Host, host string) ([]string, error) {
 	// build request, e.g: `"localhost"`
 	payload, err := json.Marshal(host)
 	if err != nil {
@@ -22,7 +22,7 @@ func LookupHost(h *cap.Host, host string) ([]string, error) {
 	}
 
 	response := LookupHostResponse{}
-	if err := json.Unmarshal(responsePayload, &response); err != nil {
+	if err = json.Unmarshal(responsePayload, &response); err != nil {
 		return []string{}, fmt.Errorf("cannot unmarshall response: %w", err)
 	}
 

@@ -2,7 +2,7 @@ package sdk
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"testing"
 
 	appsv1 "github.com/kubewarden/k8s-objects/api/apps/v1"
@@ -49,11 +49,11 @@ func CheckIfAutomountServiceAccountTokenIsTrue(rawResponse []byte, mutatedObject
 	}
 
 	if !response.Accepted {
-		return fmt.Errorf("Response not accepted")
+		return errors.New("Response not accepted")
 	}
 
 	if response.MutatedObject == nil {
-		return fmt.Errorf("Request not mutated")
+		return errors.New("Request not mutated")
 	}
 
 	return nil
@@ -198,7 +198,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 				t.Fatalf("Error: %v", err)
 			}
 
-			if err := CheckIfAutomountServiceAccountTokenIsTrue(rawResponse, testCase.mutatedObject); err != nil {
+			if err = CheckIfAutomountServiceAccountTokenIsTrue(rawResponse, testCase.mutatedObject); err != nil {
 				t.Fatalf("Error: %v", err)
 			}
 
@@ -258,7 +258,7 @@ func TestMutatePodSpecFromRequestWithInvalidResourceType(t *testing.T) {
 	}
 
 	response := protocol.ValidationResponse{}
-	if err := json.Unmarshal(rawResponse, &response); err != nil {
+	if err = json.Unmarshal(rawResponse, &response); err != nil {
 		t.Fatalf("Error: %v", err)
 	}
 

@@ -1,10 +1,24 @@
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 BIN_DIR := $(abspath $(ROOT_DIR)/bin)
 
-
 GOLANGCI_LINT_VER := v1.59.1
 GOLANGCI_LINT_BIN := golangci-lint
 GOLANGCI_LINT := $(BIN_DIR)/$(GOLANGCI_LINT_BIN)
+
+# Run go fmt against code
+fmt:
+	go fmt ./...
+
+# Run go vet against code
+vet:
+	go vet ./...
+
+deps:
+	go get github.com/golangci/golangci-lint/cmd/golangci-lint
+	go install github.com/vektra/mockery/v2@v2.43.2
+
+generate-mocks:
+	mockery
 
 golangci-lint: $(GOLANGCI_LINT) ## Install a local copy of golang ci-lint.
 $(GOLANGCI_LINT): ## Install golangci-lint.
@@ -23,17 +37,3 @@ lint-fix: $(GOLANGCI_LINT)
 test: fmt vet
 	go test ./... -coverprofile cover.out
 
-# Run go fmt against code
-fmt:
-	go fmt ./...
-
-# Run go vet against code
-vet:
-	go vet ./...
-
-deps:
-	go get github.com/golangci/golangci-lint/cmd/golangci-lint
-	go install github.com/vektra/mockery/v2@v2.43.2
-
-generate-mocks:
-	mockery

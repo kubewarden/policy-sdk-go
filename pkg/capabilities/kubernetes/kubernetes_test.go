@@ -3,7 +3,7 @@ package kubernetes
 import (
 	"testing"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
@@ -19,7 +19,7 @@ func TestKubernetesListResourcesByNamespace(t *testing.T) {
 		Return([]byte{}, nil).
 		Times(1)
 
-	host := &cap.Host{
+	host := &capabilities.Host{
 		Client: mockWapcClient,
 	}
 
@@ -51,7 +51,7 @@ func TestKubernetesListResources(t *testing.T) {
 		Return([]byte{}, nil).
 		Times(1)
 
-	host := &cap.Host{
+	host := &capabilities.Host{
 		Client: mockWapcClient,
 	}
 
@@ -82,7 +82,7 @@ func TestKubernetesGetResource(t *testing.T) {
 		Return([]byte{}, nil).
 		Times(1)
 
-	host := &cap.Host{
+	host := &capabilities.Host{
 		Client: mockWapcClient,
 	}
 	namespace := "default"

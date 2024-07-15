@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 	oci "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci"
 )
@@ -12,7 +12,7 @@ import (
 type v2VerifyTestCase struct {
 	request            interface{}
 	expectedPayload    string
-	checkIsTrustedFunc func(host *cap.Host, request interface{}) (bool, error)
+	checkIsTrustedFunc func(host *capabilities.Host, request interface{}) (bool, error)
 }
 
 func TestV2Verify(t *testing.T) {
@@ -97,7 +97,7 @@ func TestV2Verify(t *testing.T) {
 				Return(verificationPayload, nil).
 				Times(1)
 
-			host := &cap.Host{
+			host := &capabilities.Host{
 				Client: mockWapcClient,
 			}
 
@@ -112,7 +112,7 @@ func TestV2Verify(t *testing.T) {
 	}
 }
 
-func CheckPubKeysImageTrusted(host *cap.Host, request interface{}) (bool, error) {
+func CheckPubKeysImageTrusted(host *capabilities.Host, request interface{}) (bool, error) {
 	requestPubKeys := request.(SigstorePubKeysVerify)
 	res, err := VerifyPubKeysImage(host, requestPubKeys.Image, requestPubKeys.PubKeys, requestPubKeys.Annotations)
 	if err != nil {
@@ -121,7 +121,7 @@ func CheckPubKeysImageTrusted(host *cap.Host, request interface{}) (bool, error)
 	return res.IsTrusted, nil
 }
 
-func CheckKeylessExactMatchTrusted(host *cap.Host, request interface{}) (bool, error) {
+func CheckKeylessExactMatchTrusted(host *capabilities.Host, request interface{}) (bool, error) {
 	requestKeylessExactMatch := request.(SigstoreKeylessVerifyExact)
 	res, err := VerifyKeylessExactMatch(host, requestKeylessExactMatch.Image, requestKeylessExactMatch.Keyless, requestKeylessExactMatch.Annotations)
 	if err != nil {
@@ -130,7 +130,7 @@ func CheckKeylessExactMatchTrusted(host *cap.Host, request interface{}) (bool, e
 	return res.IsTrusted, nil
 }
 
-func CheckKeylessPrefixMatchTrusted(host *cap.Host, request interface{}) (bool, error) {
+func CheckKeylessPrefixMatchTrusted(host *capabilities.Host, request interface{}) (bool, error) {
 	requestKeylessPrefixMatch := request.(SigstoreKeylessPrefixVerify)
 	res, err := VerifyKeylessPrefixMatch(host, requestKeylessPrefixMatch.Image, requestKeylessPrefixMatch.KeylessPrefix, requestKeylessPrefixMatch.Annotations)
 	if err != nil {
@@ -139,7 +139,7 @@ func CheckKeylessPrefixMatchTrusted(host *cap.Host, request interface{}) (bool, 
 	return res.IsTrusted, nil
 }
 
-func CheckKeylessGithubActionsTrusted(host *cap.Host, request interface{}) (bool, error) {
+func CheckKeylessGithubActionsTrusted(host *capabilities.Host, request interface{}) (bool, error) {
 	requestKeylessGithubActions := request.(SigstoreGithubActionsVerify)
 	res, err := VerifyKeylessGithubActions(host, requestKeylessGithubActions.Image, requestKeylessGithubActions.Owner, requestKeylessGithubActions.Repo, requestKeylessGithubActions.Annotations)
 	if err != nil {
@@ -148,7 +148,7 @@ func CheckKeylessGithubActionsTrusted(host *cap.Host, request interface{}) (bool
 	return res.IsTrusted, nil
 }
 
-func CheckCertificateTrusted(host *cap.Host, request interface{}) (bool, error) {
+func CheckCertificateTrusted(host *capabilities.Host, request interface{}) (bool, error) {
 	requestCertificate := request.(SigstoreCertificateVerify)
 
 	res, err := VerifyCertificate(host, requestCertificate.Image, requestCertificate.Certificate, requestCertificate.CertificateChain, requestCertificate.RequireRekorBundle, requestCertificate.Annotations)

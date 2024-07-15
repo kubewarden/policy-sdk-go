@@ -1,6 +1,6 @@
 package crypto
 
-// A x509 certificate
+// A x509 certificate.
 type Certificate struct {
 	// Which encoding is used by the certificate
 	Encoding CertificateEncoding `json:"encoding"`

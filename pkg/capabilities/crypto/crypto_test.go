@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
@@ -23,7 +23,7 @@ func TestV1IsCertificateTrusted(t *testing.T) {
 		Encoding: Pem,
 		Data:     []rune("certificate2"),
 	}}
-	not_after := "2021-10-01T00:00:00Z"
+	notAfter := "2021-10-01T00:00:00Z"
 
 	verificationResponse := CertificateVerificationResponse{
 		Trusted: true,
@@ -42,11 +42,11 @@ func TestV1IsCertificateTrusted(t *testing.T) {
 		Return(verificationPayload, nil).
 		Times(1)
 
-	host := &cap.Host{
+	host := &capabilities.Host{
 		Client: mockWapcClient,
 	}
 
-	res, err := VerifyCert(host, cert, chain, not_after)
+	res, err := VerifyCert(host, cert, chain, notAfter)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
