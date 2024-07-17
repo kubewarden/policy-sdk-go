@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	oci "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci"
 
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
@@ -12,7 +12,7 @@ import (
 
 type v1VerifyTestCase struct {
 	request            interface{}
-	checkIsTrustedFunc func(host *cap.Host, request interface{}) (bool, error)
+	checkIsTrustedFunc func(host *capabilities.Host, request interface{}) (bool, error)
 }
 
 func TestV1Verify(t *testing.T) {
@@ -63,7 +63,7 @@ func TestV1Verify(t *testing.T) {
 				Return(verificationPayload, nil).
 				Times(1)
 
-			host := &cap.Host{
+			host := &capabilities.Host{
 				Client: mockWapcClient,
 			}
 
@@ -78,7 +78,7 @@ func TestV1Verify(t *testing.T) {
 	}
 }
 
-func CheckPubKeysTrustedV1(host *cap.Host, request interface{}) (bool, error) {
+func CheckPubKeysTrustedV1(host *capabilities.Host, request interface{}) (bool, error) {
 	requestPubKeys := request.(sigstorePubKeysVerifyRequest)
 	res, err := VerifyPubKeys(host, requestPubKeys.SigstorePubKeysVerify.Image, requestPubKeys.SigstorePubKeysVerify.PubKeys, requestPubKeys.SigstorePubKeysVerify.Annotations)
 	if err != nil {
@@ -87,7 +87,7 @@ func CheckPubKeysTrustedV1(host *cap.Host, request interface{}) (bool, error) {
 	return res.IsTrusted, nil
 }
 
-func CheckKeylessTrustedV1(host *cap.Host, request interface{}) (bool, error) {
+func CheckKeylessTrustedV1(host *capabilities.Host, request interface{}) (bool, error) {
 	requestKeyless := request.(sigstoreKeylessVerifyRequest)
 	res, err := VerifyKeyless(host, requestKeyless.SigstoreKeylessVerify.Image, requestKeyless.SigstoreKeylessVerify.Keyless, requestKeyless.SigstoreKeylessVerify.Annotations)
 	if err != nil {

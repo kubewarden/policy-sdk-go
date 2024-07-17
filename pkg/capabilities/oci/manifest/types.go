@@ -2,7 +2,9 @@ package manifest
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+
 	"github.com/kubewarden/policy-sdk-go/constants"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 )
@@ -36,7 +38,7 @@ func (r *OciImageManifestResponse) UnmarshalJSON(b []byte) error {
 		}
 		return fmt.Errorf("not a valid media type: %s", indexManifest.MediaType)
 	}
-	return fmt.Errorf("cannot decode response")
+	return errors.New("cannot decode response")
 }
 
 func isImageIndexMediaType(mediaType string) bool {

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 )
 
 type HostOCIVerifyVersion int64
@@ -24,7 +24,7 @@ func (s HostOCIVerifyVersion) String() string {
 	return "unknown"
 }
 
-func Verify(h *cap.Host, requestObj interface{}, operation HostOCIVerifyVersion) (VerificationResponse, error) {
+func Verify(h *capabilities.Host, requestObj interface{}, operation HostOCIVerifyVersion) (VerificationResponse, error) {
 	// failsafe return response
 	vr := VerificationResponse{
 		IsTrusted: false,
@@ -43,7 +43,7 @@ func Verify(h *cap.Host, requestObj interface{}, operation HostOCIVerifyVersion)
 	}
 
 	responseObj := VerificationResponse{}
-	if err := json.Unmarshal(responsePayload, &responseObj); err != nil {
+	if err = json.Unmarshal(responsePayload, &responseObj); err != nil {
 		return vr, fmt.Errorf("cannot unmarshall response object: %w", err)
 	}
 

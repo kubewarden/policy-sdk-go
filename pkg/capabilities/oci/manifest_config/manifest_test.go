@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	digest "github.com/opencontainers/go-digest"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 
@@ -14,14 +14,14 @@ import (
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
 
-func buildHostMock(imageURI string, returnPayload []byte) (*cap.Host, error) {
+func buildHostMock(imageURI string, returnPayload []byte) (*capabilities.Host, error) {
 	mockWapcClient := &mocks.MockWapcClient{}
 	expectedPayload, err := json.Marshal(imageURI)
 	if err != nil {
 		return nil, err
 	}
 	mockWapcClient.EXPECT().HostCall("kubewarden", "oci", "v1/oci_manifest_config", expectedPayload).Return(returnPayload, nil).Times(1)
-	return &cap.Host{
+	return &capabilities.Host{
 		Client: mockWapcClient,
 	}, nil
 }
@@ -94,7 +94,7 @@ func TestOciManifestAndConfig(t *testing.T) {
 		t.Fatalf("cannot serialize response object: %v", err)
 	}
 	response := OciImageManifestAndConfigResponse{}
-	if err := json.Unmarshal(manifestPayload, &response); err != nil {
+	if err = json.Unmarshal(manifestPayload, &response); err != nil {
 		t.Fatalf("failed to parse response from the host")
 	}
 

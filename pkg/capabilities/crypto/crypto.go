@@ -2,16 +2,17 @@ package crypto
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 )
 
 type CryptoHost struct {
-	cap.Host
+	capabilities.Host
 }
 
-// The encoding of the certificate
+// The encoding of the certificate.
 type CertificateEncoding int
 
 const (
@@ -26,7 +27,7 @@ func (e CertificateEncoding) MarshalJSON() ([]byte, error) {
 		return json.Marshal("Pem")
 	}
 
-	return nil, fmt.Errorf("invalid certificate encoding")
+	return nil, errors.New("invalid certificate encoding")
 }
 
 // Verify_cert verifies cert's trust against the passed cert_chain, and
@@ -37,7 +38,7 @@ func (e CertificateEncoding) MarshalJSON() ([]byte, error) {
 //     (intermediates first, root last). If empty, certificate is assumed trusted.
 //   - not_after: string in RFC 3339 time format, to check expiration against.
 //     If None, certificate is assumed never expired.
-func VerifyCert(h *cap.Host, cert Certificate, certChain []Certificate, notAfter string) (*CertificateVerificationResponse, error) {
+func VerifyCert(h *capabilities.Host, cert Certificate, certChain []Certificate, notAfter string) (*CertificateVerificationResponse, error) {
 	requestObj := CertificateVerificationRequest{
 		Cert:      cert,
 		CertChain: certChain,
@@ -56,7 +57,7 @@ func VerifyCert(h *cap.Host, cert Certificate, certChain []Certificate, notAfter
 	}
 
 	responseObj := CertificateVerificationResponse{}
-	if err := json.Unmarshal(responsePayload, &responseObj); err != nil {
+	if err = json.Unmarshal(responsePayload, &responseObj); err != nil {
 		return &CertificateVerificationResponse{}, fmt.Errorf("cannot unmarshall response object: %w", err)
 	}
 

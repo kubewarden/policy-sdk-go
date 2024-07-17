@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 )
 
 // GetOCIManifestDigest computes the digest of the OCI object referenced by image
 // Arguments:
-// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
-func GetOCIManifestDigest(h *cap.Host, image string) (string, error) {
+// * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`).
+func GetOCIManifestDigest(h *capabilities.Host, image string) (string, error) {
 	// build request payload, e.g: `"ghcr.io/kubewarden/policies/pod-privileged:v0.1.10"`
 	payload, err := json.Marshal(image)
 	if err != nil {
@@ -24,7 +24,7 @@ func GetOCIManifestDigest(h *cap.Host, image string) (string, error) {
 	}
 
 	response := OciManifestResponse{}
-	if err := json.Unmarshal(responsePayload, &response); err != nil {
+	if err = json.Unmarshal(responsePayload, &response); err != nil {
 		return "", fmt.Errorf("cannot unmarshall response: %w", err)
 	}
 

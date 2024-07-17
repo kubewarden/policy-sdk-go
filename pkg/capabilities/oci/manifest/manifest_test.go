@@ -8,7 +8,7 @@ import (
 
 	"github.com/kubewarden/policy-sdk-go/constants"
 
-	cap "github.com/kubewarden/policy-sdk-go/pkg/capabilities"
+	"github.com/kubewarden/policy-sdk-go/pkg/capabilities"
 	digest "github.com/opencontainers/go-digest"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 
@@ -16,14 +16,14 @@ import (
 	"github.com/kubewarden/policy-sdk-go/pkg/capabilities/mocks"
 )
 
-func buildHostMock(imageURI string, returnPayload []byte) (*cap.Host, error) {
+func buildHostMock(imageURI string, returnPayload []byte) (*capabilities.Host, error) {
 	mockWapcClient := &mocks.MockWapcClient{}
 	expectedPayload, err := json.Marshal(imageURI)
 	if err != nil {
 		return nil, err
 	}
 	mockWapcClient.EXPECT().HostCall("kubewarden", "oci", "v1/oci_manifest", expectedPayload).Return(returnPayload, nil).Times(1)
-	return &cap.Host{
+	return &capabilities.Host{
 		Client: mockWapcClient,
 	}, nil
 }

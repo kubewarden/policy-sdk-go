@@ -13,24 +13,24 @@ import (
 	"github.com/kubewarden/policy-sdk-go/protocol"
 )
 
-// Message is the optional string used to build validation responses
+// Message is the optional string used to build validation responses.
 type Message string
 
-// Code is the optional error code associated with validation responses
+// Code is the optional error code associated with validation responses.
 type Code uint16
 
 const (
 	// NoMessage can be used when building a response that doesn't have any
-	// message to be shown to the user
+	// message to be shown to the user.
 	NoMessage Message = ""
 
 	// NoCode can be used when building a response that doesn't have any
-	// error code to be shown to the user
+	// error code to be shown to the user.
 	NoCode Code = 0
 )
 
 // AcceptRequest can be used inside of the `validate` function to accept the
-// incoming request
+// incoming request.
 func AcceptRequest() ([]byte, error) {
 	response := protocol.ValidationResponse{
 		Accepted: true,
@@ -42,7 +42,7 @@ func AcceptRequest() ([]byte, error) {
 // RejectRequest can be used inside of the `validate` function to reject the
 // incoming request
 // * `message`: optional message to show to the user
-// * `code`: optional error code to show to the user
+// * `code`: optional error code to show to the user.
 func RejectRequest(message Message, code Code) ([]byte, error) {
 	response := protocol.ValidationResponse{
 		Accepted: false,
@@ -60,7 +60,7 @@ func RejectRequest(message Message, code Code) ([]byte, error) {
 }
 
 // Accept the request and mutate the final object to match the
-// one provided via the `newObject` param
+// one provided via the `newObject` param.
 func MutateRequest(newObject interface{}) ([]byte, error) {
 	response := protocol.ValidationResponse{
 		Accepted:      true,
@@ -73,7 +73,9 @@ func MutateRequest(newObject interface{}) ([]byte, error) {
 // Update the pod spec from the resource defined in the original object and
 // create an acceptance response.
 // * `validation_request` - the original admission request
-// * `pod_spec` - new PodSpec to be set in the response
+// * `pod_spec` - new PodSpec to be set in the response.
+//
+//nolint:funlen // Splitting this function would not make it more readable.
 func MutatePodSpecFromRequest(validationRequest protocol.ValidationRequest, podSepc corev1.PodSpec) ([]byte, error) {
 	switch validationRequest.Request.Kind.Kind {
 	case "Deployment":
@@ -133,12 +135,13 @@ func MutatePodSpecFromRequest(validationRequest protocol.ValidationRequest, podS
 		pod.Spec = &podSepc
 		return MutateRequest(pod)
 	default:
-		return RejectRequest("Object should be one of these kinds: Deployment, ReplicaSet, StatefulSet, DaemonSet, ReplicationController, Job, CronJob, Pod", NoCode)
+		return RejectRequest("Object should be one of these kinds: Deployment, "+
+			"ReplicaSet, StatefulSet, DaemonSet, ReplicationController, Job, CronJob, Pod", NoCode)
 	}
 }
 
 // AcceptSettings can be used inside of the `validate_settings` function to
-// mark the user provided settings as valid
+// mark the user provided settings as valid.
 func AcceptSettings() ([]byte, error) {
 	response := protocol.SettingsValidationResponse{
 		Valid: true,
@@ -148,7 +151,7 @@ func AcceptSettings() ([]byte, error) {
 
 // RejectSettings can be used inside of the `validate_settings` function to
 // mark the user provided settings as invalid
-// * `message`: optional message to show to the user
+// * `message`: optional message to show to the user.
 func RejectSettings(message Message) ([]byte, error) {
 	response := protocol.SettingsValidationResponse{
 		Valid: false,
@@ -168,7 +171,7 @@ func RejectSettings(message Message) ([]byte, error) {
 // DaemonSet, ReplicationController, Job, CronJob, Pod It returns an error if
 // the object is not one of those. If it is a supported object it returns the
 // PodSpec if present, otherwise returns an empty PodSpec.
-// * `object`: the request to validate
+// * `object`: the request to validate.
 func ExtractPodSpecFromObject(object protocol.ValidationRequest) (corev1.PodSpec, error) {
 	switch object.Request.Kind.Kind {
 	case "Deployment":
@@ -220,6 +223,7 @@ func ExtractPodSpecFromObject(object protocol.ValidationRequest) (corev1.PodSpec
 		}
 		return *pod.Spec, nil
 	default:
-		return corev1.PodSpec{}, errors.New("object should be one of these kinds: Deployment, ReplicaSet, StatefulSet, DaemonSet, ReplicationController, Job, CronJob, Pod")
+		return corev1.PodSpec{}, errors.New("object should be one of these kinds: " +
+			"Deployment, ReplicaSet, StatefulSet, DaemonSet, ReplicationController, Job, CronJob, Pod")
 	}
 }

@@ -3,7 +3,7 @@ package verify_v1
 import oci "github.com/kubewarden/policy-sdk-go/pkg/capabilities/oci"
 
 // sigstorePubKeysVerify represents the WaPC JSON contract, used for marshalling
-// and unmarshalling payloads to wapc host calls
+// and unmarshalling payloads to wapc host calls.
 type sigstorePubKeysVerify struct {
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`
@@ -19,7 +19,7 @@ type sigstorePubKeysVerifyRequest struct {
 }
 
 // sigstoreKeylessVerify represents the WaPC JSON contract, used for marshalling
-// and unmarshalling payloads to wapc host calls
+// and unmarshalling payloads to wapc host calls.
 type sigstoreKeylessVerify struct {
 	// String pointing to the object (e.g.: `registry.testing.lan/busybox:1.0.0`)
 	Image string `json:"image"`

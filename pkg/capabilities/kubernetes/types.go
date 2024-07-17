@@ -1,6 +1,6 @@
 package kubernetes
 
-// Set of parameters used by the `list_resources_by_namespace` function
+// Set of parameters used by the `list_resources_by_namespace` function.
 type ListResourcesByNamespaceRequest struct {
 	// apiVersion of the resource (v1 for core group, groupName/groupVersions for other).
 	APIVersion string `json:"api_version"`
@@ -16,7 +16,7 @@ type ListResourcesByNamespaceRequest struct {
 	FieldSelector *string `json:"field_selector,omitempty"`
 }
 
-// Set of parameters used by the `list_all_resources` function
+// Set of parameters used by the `list_all_resources` function.
 type ListAllResourcesRequest struct {
 	// apiVersion of the resource (v1 for core group, groupName/groupVersions for other).
 	APIVersion string `json:"api_version"`
@@ -30,7 +30,7 @@ type ListAllResourcesRequest struct {
 	FieldSelector *string `json:"field_selector,omitempty"`
 }
 
-// Set of parameters used by the `get_resource` function
+// Set of parameters used by the `get_resource` function.
 type GetResourceRequest struct {
 	APIVersion string `json:"api_version"`
 	// Singular PascalCase name of the resource
