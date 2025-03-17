@@ -1,7 +1,7 @@
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 BIN_DIR := $(abspath $(ROOT_DIR)/bin)
 
-GOLANGCI_LINT_VER := v1.59.1
+GOLANGCI_LINT_VER := v1.64.7
 GOLANGCI_LINT_BIN := golangci-lint
 GOLANGCI_LINT := $(BIN_DIR)/$(GOLANGCI_LINT_BIN)
 
