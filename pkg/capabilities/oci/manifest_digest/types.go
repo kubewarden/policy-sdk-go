@@ -1,5 +1,7 @@
 package manifest_digest
 
+// OciManifestResponse represents the response from the OCI registry
+//
 // We don't need to expose that to consumers of the library
 // This is a glorified wrapper needed to unmarshal a string
 // inside of TinyGo. As of release 0.29.0, unmarshal a simple

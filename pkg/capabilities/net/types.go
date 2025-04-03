@@ -1,5 +1,7 @@
 package net
 
+// LookupHostResponse represents the response from the lookup host capability.
+//
 // We don't need to expose that to consumers of the library
 // This is a glorified wrapper needed to unmarshal a list
 // of string inside of TinyGo. As of release 0.29.0, unmarshal a simple

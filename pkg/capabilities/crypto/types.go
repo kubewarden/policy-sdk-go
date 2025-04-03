@@ -1,6 +1,6 @@
 package crypto
 
-// A x509 certificate.
+// Certificate represents a x509 certificate.
 type Certificate struct {
 	// Which encoding is used by the certificate
 	Encoding CertificateEncoding `json:"encoding"`
@@ -21,6 +21,7 @@ type CertificateVerificationRequest struct {
 	NotAfter string `json:"not_after"`
 }
 
+// CertificateVerificationResponse holds the result of a certificate verification.
 type CertificateVerificationResponse struct {
 	Trusted bool `json:"trusted"`
 	// empty when trusted is true

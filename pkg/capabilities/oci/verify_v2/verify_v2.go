@@ -37,7 +37,7 @@ func (e SigstoreCertificateVerifyType) MarshalJSON() ([]byte, error) {
 	return json.Marshal("SigstoreCertificateVerify")
 }
 
-// VerifyPubKeysImageV2 verifies sigstore signatures of an image using public keys
+// VerifyPubKeysImage verifies sigstore signatures of an image using public keys
 // Arguments
 // * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
 // * pubKeys: list of PEM encoded keys that must have been used to sign the OCI object
@@ -52,7 +52,7 @@ func VerifyPubKeysImage(h *capabilities.Host, image string, pubKeys []string, an
 	return oci.Verify(h, requestObj, oci.V2)
 }
 
-// VerifyKeylessExactMatchV2 verifies sigstore signatures of an image using keyless signing
+// VerifyKeylessExactMatch verifies sigstore signatures of an image using keyless signing
 // Arguments
 // * image: image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
 // * keyless: list of KeylessInfo pairs, containing Issuer and Subject info from OIDC providers
@@ -67,7 +67,7 @@ func VerifyKeylessExactMatch(h *capabilities.Host, image string, keyless []oci.K
 	return oci.Verify(h, requestObj, oci.V2)
 }
 
-// verify sigstore signatures of an image using keyless. Here, the provided
+// VerifyKeylessPrefixMatch verifies sigstore signatures of an image using keyless. Here, the provided
 // subject string is treated as a URL prefix, and sanitized to a valid URL on
 // itself by appending `/` to prevent typosquatting. Then, the provided subject
 // will satisfy the signature only if it is a prefix of the signature subject.
@@ -85,7 +85,8 @@ func VerifyKeylessPrefixMatch(h *capabilities.Host, image string, keylessPrefix 
 	return oci.Verify(h, requestObj, oci.V2)
 }
 
-// verify sigstore signatures of an image using keyless signatures made via
+// VerifyKeylessGithubActions verifies sigstore signatures of an image using keyless signatures made via
+//
 // Github Actions.
 // # Arguments
 // * `image` -  image to be verified
@@ -103,7 +104,8 @@ func VerifyKeylessGithubActions(h *capabilities.Host, image string, owner string
 	return oci.Verify(h, requestObj, oci.V2)
 }
 
-// verify sigstore signatures of an image using a user provided certificate
+// VerifyCertificate verifies sigstore signatures of an image using a user provided certificate
+//
 // # Arguments
 //   - `image` -  image to be verified
 //   - `certificate` - PEM encoded certificate used to verify the signature

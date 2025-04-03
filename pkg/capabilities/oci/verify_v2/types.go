@@ -39,7 +39,7 @@ type SigstoreKeylessVerifyExact struct {
 	Annotations map[string]string `json:"annotations"`
 }
 
-// sigstoreKeylessVerify represents the WaPC JSON contract, used for marshalling
+// SigstoreKeylessPrefixVerify represents the WaPC JSON contract, used for marshalling
 // and unmarshalling payloads to wapc host calls.
 type SigstoreKeylessPrefixVerify struct {
 	Type SigstoreKeylessPrefixVerifyType `json:"type"`

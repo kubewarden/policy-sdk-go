@@ -59,7 +59,7 @@ func RejectRequest(message Message, code Code) ([]byte, error) {
 	return json.Marshal(response)
 }
 
-// Accept the request and mutate the final object to match the
+// MutateRequest accepts the request and mutate the final object to match the
 // one provided via the `newObject` param.
 func MutateRequest(newObject interface{}) ([]byte, error) {
 	response := protocol.ValidationResponse{
@@ -70,7 +70,7 @@ func MutateRequest(newObject interface{}) ([]byte, error) {
 	return json.Marshal(response)
 }
 
-// Update the pod spec from the resource defined in the original object and
+// MutatePodSpecFromRequest updates the pod spec from the resource defined in the original object and
 // create an acceptance response.
 // * `validation_request` - the original admission request
 // * `pod_spec` - new PodSpec to be set in the response.
@@ -164,10 +164,11 @@ func RejectSettings(message Message) ([]byte, error) {
 	return json.Marshal(response)
 }
 
-// Extract PodSpec from high level objects. This method can be used to evaluate
-// high level objects instead of just Pods. For example, it can be used to
-// reject Deployments or StatefulSets that violate a policy instead of the Pods
-// created by them. Objects supported are: Deployment, ReplicaSet, StatefulSet,
+// ExtractPodSpecFromObject extracts the PodSpec from high level objects.
+// This method can be used to evaluate high level objects instead of just Pods.
+// For example, it can be used to reject Deployments or StatefulSets
+// that violate a policy instead of the Pods created by them.
+// Objects supported are: Deployment, ReplicaSet, StatefulSet,
 // DaemonSet, ReplicationController, Job, CronJob, Pod It returns an error if
 // the object is not one of those. If it is a supported object it returns the
 // PodSpec if present, otherwise returns an empty PodSpec.
