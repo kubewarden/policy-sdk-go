@@ -14,11 +14,11 @@ type OciImageManifestResponse struct {
 	Index *specs.Index    `json:"index"`
 }
 
-func (r OciImageManifestResponse) ImageManifest() *specs.Manifest {
+func (r *OciImageManifestResponse) ImageManifest() *specs.Manifest {
 	return r.Image
 }
 
-func (r OciImageManifestResponse) IndexManifest() *specs.Index {
+func (r *OciImageManifestResponse) IndexManifest() *specs.Index {
 	return r.Index
 }
 

@@ -12,7 +12,7 @@ type CryptoHost struct {
 	capabilities.Host
 }
 
-// The encoding of the certificate.
+// CertificateEncoding represents the encoding of the certificate.
 type CertificateEncoding int
 
 const (
@@ -21,16 +21,17 @@ const (
 )
 
 func (e CertificateEncoding) MarshalJSON() ([]byte, error) {
-	if e == Der {
+	switch e {
+	case Der:
 		return json.Marshal("Der")
-	} else if e == Pem {
+	case Pem:
 		return json.Marshal("Pem")
 	}
 
 	return nil, errors.New("invalid certificate encoding")
 }
 
-// Verify_cert verifies cert's trust against the passed cert_chain, and
+// VerifyCert verifies cert's trust against the passed cert_chain, and
 // expiration and validation time of the certificate.
 // Accepts 3 arguments:
 //   - cert: PEM/DER-encoded certificate to verify.

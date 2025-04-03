@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-// Structure defining the response given when validating a request.
+// ValidationResponse represents the response given when validating a request.
 type ValidationResponse struct {
 	Accepted bool `json:"accepted"`
 	// Optional - ignored if accepted
@@ -15,14 +15,14 @@ type ValidationResponse struct {
 	MutatedObject interface{} `json:"mutated_object,omitempty"`
 }
 
-// The response sent by a policy when validating its settings.
+// SettingsValidationResponse repreents the response sent by a policy when validating its settings.
 type SettingsValidationResponse struct {
 	Valid bool `json:"valid"`
 	// Optional - ignored if valid
 	Message *string `json:"message,omitempty"`
 }
 
-// The object received by the validate() function of Kubewarden policies.
+// ValidationRequest represents the object received by the validate() function of Kubewarden policies.
 type ValidationRequest struct {
 	// The request to be evaluated
 	Request KubernetesAdmissionRequest `json:"request"`
@@ -35,9 +35,7 @@ type ValidationRequest struct {
 	Settings json.RawMessage `json:"settings"`
 }
 
-// Kubernetes'
-// [AdmissionReview](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
-// request.
+// KubernetesAdmissionRequest represents Kubernetes' [AdmissionReview](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/) request.
 type KubernetesAdmissionRequest struct {
 	// UID is an identifier for the individual request/response. It allows
 	// us to distinguish instances of requests which are otherwise
