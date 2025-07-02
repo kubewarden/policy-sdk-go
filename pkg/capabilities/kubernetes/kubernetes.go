@@ -57,3 +57,24 @@ func GetResource(h *capabilities.Host, req GetResourceRequest) ([]byte, error) {
 
 	return responsePayload, nil
 }
+
+// CanI checks if the user has permissions to perform an action on resources.
+func CanI(h *capabilities.Host, req SubjectAccessReviewRequest) (SubjectAccessReviewStatus, error) {
+	payload, err := json.Marshal(req)
+	if err != nil {
+		return SubjectAccessReviewStatus{}, fmt.Errorf("cannot serialize request object: %w", err)
+	}
+
+	// perform callback
+	responsePayload, err := h.Client.HostCall("kubewarden", "kubernetes", "can_i", payload)
+	if err != nil {
+		return SubjectAccessReviewStatus{}, err
+	}
+
+	responseObj := SubjectAccessReviewStatus{}
+	if err = json.Unmarshal(responsePayload, &responseObj); err != nil {
+		return SubjectAccessReviewStatus{}, fmt.Errorf("cannot unmarshall response object: %w", err)
+	}
+
+	return responseObj, nil
+}
