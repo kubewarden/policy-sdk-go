@@ -99,3 +99,39 @@ func TestKubernetesGetResource(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 }
+
+func TestKubernetesCanI(t *testing.T) {
+	mockWapcClient := &mocks.MockWapcClient{}
+
+	expectedInputPayload := `{"apiVersion":"authorization.k8s.io/v1","kind":"SubjectAccessReview","spec":{"resourceAttributes":{"namespace":"default","verb":"get","group":"","resource":"pods"},"user":"jane.doe@example.com","groups":["developers"]},"disable_cache":false}`
+	expectedResponse := []byte(`{"allowed":true,"denied":false,"reason":"User is authorized","evaluationError":""}`)
+	mockWapcClient.
+		EXPECT().
+		HostCall("kubewarden", "kubernetes", "can_i", []byte(expectedInputPayload)).
+		Return(expectedResponse, nil).
+		Times(1)
+
+	host := &capabilities.Host{
+		Client: mockWapcClient,
+	}
+	inputRequest := SubjectAccessReviewRequest{
+		APIVersion: "authorization.k8s.io/v1",
+		Kind:       "SubjectAccessReview",
+		Spec: SubjectAccessReviewSpec{
+			ResourceAttributes: ResourceAttributes{
+				Namespace: "default",
+				Verb:      "get",
+				Group:     "",
+				Resource:  "pods",
+			},
+			User:   "jane.doe@example.com",
+			Groups: []string{"developers"},
+		},
+		DisableCache: false,
+	}
+
+	_, err := CanI(host, inputRequest)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
