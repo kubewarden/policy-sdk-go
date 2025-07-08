@@ -88,7 +88,7 @@ type ResourceAttributes struct {
 	// is no distinction between no namespace and all namespaces "" (empty)
 	Namespace string `json:"namespace"`
 	// Verb is a kubernetes resource API verb, like: get, list, watch, create,
-	// update, delete, proxy. “*” means all.
+	// update, patch, delete, deletecollection, proxy. “*” means all.
 	Verb string `json:"verb"`
 	// Group is the API Group of the Resource. “*” means all.
 	Group string `json:"group"`
