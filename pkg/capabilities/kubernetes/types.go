@@ -50,8 +50,10 @@ type GetResourceRequest struct {
 // SubjectAccessReviewRequest represents an  authorization.k9s.io/v1
 // SubjectAccessReview, used by the `can_i` function.
 type SubjectAccessReviewRequest struct {
+	// APIVersion defines the versioned schema of the representation of the
+	// object
 	APIVersion string `json:"apiVersion"`
-	// Singular PascalCase name of the resource
+	// Kind is the Singular PascalCase name of the resource
 	Kind string `json:"kind"`
 	// Spec of the SubjectAccessReview
 	Spec SubjectAccessReviewSpec `json:"spec"`
@@ -65,17 +67,33 @@ type SubjectAccessReviewRequest struct {
 
 // SubjectAccessReviewSpec represents the spec field for a SubjectAccessReview.
 type SubjectAccessReviewSpec struct {
+	// ResourceAttributes includes the authorization attributes available for
+	// resource requests to the Authorizer interface
 	ResourceAttributes ResourceAttributes `json:"resourceAttributes"`
-	User               string             `json:"user"`
-	Groups             []string           `json:"groups"`
+	// User is the user you’re testing for. If you specify "User" but not
+	// "Groups", then is it interpreted as "What if User were not a member of any
+	// groups.
+	// The user specified must match the user being validated by the policy. For
+	// example, to validate a service account named my-user in the default
+	// namespace, the user field in the spec should be set to
+	// system:serviceaccount:default:my-user.
+	User string `json:"user"`
+	// Groups is the groups you’re testing for.
+	Groups []string `json:"groups"`
 }
 
 // ResourceAttributes describes information for a resource request.
 type ResourceAttributes struct {
+	// Namespace is the namespace of the action being requested. Currently, there
+	// is no distinction between no namespace and all namespaces "" (empty)
 	Namespace string `json:"namespace"`
-	Verb      string `json:"verb"`
-	Group     string `json:"group"`
-	Resource  string `json:"resource"`
+	// Verb is a kubernetes resource API verb, like: get, list, watch, create,
+	// update, patch, delete, deletecollection, proxy. “*” means all.
+	Verb string `json:"verb"`
+	// Group is the API Group of the Resource. “*” means all.
+	Group string `json:"group"`
+	// Resource is one of the existing resource types. “*” means all.
+	Resource string `json:"resource"`
 }
 
 // SubjectAccessReviewStatus holds the result of the `can_i` function.
