@@ -47,16 +47,12 @@ type GetResourceRequest struct {
 	DisableCache bool `json:"disable_cache"`
 }
 
-// SubjectAccessReviewRequest represents an  authorization.k9s.io/v1
-// SubjectAccessReview, used by the `can_i` function.
-type SubjectAccessReviewRequest struct {
-	// APIVersion defines the versioned schema of the representation of the
-	// object
-	APIVersion string `json:"apiVersion"`
-	// Kind is the Singular PascalCase name of the resource
-	Kind string `json:"kind"`
-	// Spec of the SubjectAccessReview
-	Spec SubjectAccessReviewSpec `json:"spec"`
+// CanIRequest represents a set of parameters used by the `can_i` function.
+type CanIRequest struct {
+	// SubjectAccessReview struct holds the values used to build the
+	// authorization.k9s.io/v1 SubjectAccessReviewStatus sent to the Kubernetes API
+	// to verify is a user or group is allowed to perform some operation
+	SubjectAccessReview SubjectAccessReview `json:"subject_access_review"`
 	// Disable caching of results obtained from Kubernetes API Server
 	// By default query results are cached for 5 seconds, that might cause
 	// stale data to be returned.
@@ -65,8 +61,9 @@ type SubjectAccessReviewRequest struct {
 	DisableCache bool `json:"disable_cache"`
 }
 
-// SubjectAccessReviewSpec represents the spec field for a SubjectAccessReview.
-type SubjectAccessReviewSpec struct {
+type SubjectAccessReview struct {
+	// Groups is the groups you’re testing for.
+	Groups []string `json:"groups"`
 	// ResourceAttributes includes the authorization attributes available for
 	// resource requests to the Authorizer interface
 	ResourceAttributes ResourceAttributes `json:"resourceAttributes"`
@@ -78,8 +75,6 @@ type SubjectAccessReviewSpec struct {
 	// namespace, the user field in the spec should be set to
 	// system:serviceaccount:default:my-user.
 	User string `json:"user"`
-	// Groups is the groups you’re testing for.
-	Groups []string `json:"groups"`
 }
 
 // ResourceAttributes describes information for a resource request.

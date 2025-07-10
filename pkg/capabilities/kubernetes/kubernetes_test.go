@@ -103,7 +103,7 @@ func TestKubernetesGetResource(t *testing.T) {
 func TestKubernetesCanI(t *testing.T) {
 	mockWapcClient := &mocks.MockWapcClient{}
 
-	expectedInputPayload := `{"apiVersion":"authorization.k8s.io/v1","kind":"SubjectAccessReview","spec":{"resourceAttributes":{"namespace":"default","verb":"get","group":"","resource":"pods"},"user":"jane.doe@example.com","groups":["developers"]},"disable_cache":false}`
+	expectedInputPayload := `{"subject_access_review":{"groups":["developers"],"resourceAttributes":{"namespace":"default","verb":"get","group":"","resource":"pods"},"user":"jane.doe@example.com"},"disable_cache":false}`
 	expectedResponse := []byte(`{"allowed":true,"denied":false,"reason":"User is authorized","evaluationError":""}`)
 	mockWapcClient.
 		EXPECT().
@@ -114,18 +114,16 @@ func TestKubernetesCanI(t *testing.T) {
 	host := &capabilities.Host{
 		Client: mockWapcClient,
 	}
-	inputRequest := SubjectAccessReviewRequest{
-		APIVersion: "authorization.k8s.io/v1",
-		Kind:       "SubjectAccessReview",
-		Spec: SubjectAccessReviewSpec{
+	inputRequest := CanIRequest{
+		SubjectAccessReview: SubjectAccessReview{
+			Groups: []string{"developers"},
 			ResourceAttributes: ResourceAttributes{
 				Namespace: "default",
 				Verb:      "get",
 				Group:     "",
 				Resource:  "pods",
 			},
-			User:   "jane.doe@example.com",
-			Groups: []string{"developers"},
+			User: "jane.doe@example.com",
 		},
 		DisableCache: false,
 	}
