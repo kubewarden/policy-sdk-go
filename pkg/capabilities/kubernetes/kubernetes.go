@@ -59,7 +59,7 @@ func GetResource(h *capabilities.Host, req GetResourceRequest) ([]byte, error) {
 }
 
 // CanI checks if the user has permissions to perform an action on resources.
-func CanI(h *capabilities.Host, req SubjectAccessReviewRequest) (SubjectAccessReviewStatus, error) {
+func CanI(h *capabilities.Host, req CanIRequest) (SubjectAccessReviewStatus, error) {
 	payload, err := json.Marshal(req)
 	if err != nil {
 		return SubjectAccessReviewStatus{}, fmt.Errorf("cannot serialize request object: %w", err)
