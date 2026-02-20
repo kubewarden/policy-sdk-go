@@ -14,6 +14,26 @@ type ListResourcesByNamespaceRequest struct {
 	// A selector to restrict the list of returned objects by their fields.
 	// Defaults to everything if omitted
 	FieldSelector *string `json:"field_selector,omitempty"`
+	// A list of fields to include in the response.
+	//
+	// If strictly defined, the host will prune the Kubernetes resource to contain *only*
+	// the specified fields, reducing memory usage and serialization overhead.
+	//
+	// # Behavior
+	// - **Dot Notation:** Use `.` to traverse nested objects (e.g., `metadata.name`).
+	// - **Implicit Arrays:** Paths automatically traverse through arrays. A path like
+	//   `spec.containers.image` will include the `image` field for *every* item in the
+	//   `spec.containers` list.
+	// - **Allow-List:** Fields not specified in the mask are discarded. If the list is
+	//   empty or `nil`, the full resource is returned.
+	//
+	// # Example
+	//   []string{
+	//     "metadata.name",
+	//     "metadata.namespace",
+	//     "spec.containers.image",
+	//   }
+	FieldMasks []string `json:"field_masks,omitempty"`
 }
 
 // ListAllResourcesRequest represents a set of parameters used by the `list_all_resources` function.
@@ -28,6 +48,26 @@ type ListAllResourcesRequest struct {
 	// A selector to restrict the list of returned objects by their fields.
 	// Defaults to everything if omitted
 	FieldSelector *string `json:"field_selector,omitempty"`
+	// A list of fields to include in the response.
+	//
+	// If strictly defined, the host will prune the Kubernetes resource to contain *only*
+	// the specified fields, reducing memory usage and serialization overhead.
+	//
+	// # Behavior
+	// - **Dot Notation:** Use `.` to traverse nested objects (e.g., `metadata.name`).
+	// - **Implicit Arrays:** Paths automatically traverse through arrays. A path like
+	//   `spec.containers.image` will include the `image` field for *every* item in the
+	//   `spec.containers` list.
+	// - **Allow-List:** Fields not specified in the mask are discarded. If the list is
+	//   empty or `nil`, the full resource is returned.
+	//
+	// # Example
+	//   []string{
+	//     "metadata.name",
+	//     "metadata.namespace",
+	//     "spec.containers.image",
+	//   }
+	FieldMasks []string `json:"field_masks,omitempty"`
 }
 
 // GetResourceRequest represents a set of parameters used by the `get_resource` function.
@@ -45,6 +85,26 @@ type GetResourceRequest struct {
 	// However, making too many requests against the Kubernetes API Server
 	// might cause issues to the cluster
 	DisableCache bool `json:"disable_cache"`
+	// A list of fields to include in the response.
+	//
+	// If strictly defined, the host will prune the Kubernetes resource to contain *only*
+	// the specified fields, reducing memory usage and serialization overhead.
+	//
+	// # Behavior
+	// - **Dot Notation:** Use `.` to traverse nested objects (e.g., `metadata.name`).
+	// - **Implicit Arrays:** Paths automatically traverse through arrays. A path like
+	//   `spec.containers.image` will include the `image` field for *every* item in the
+	//   `spec.containers` list.
+	// - **Allow-List:** Fields not specified in the mask are discarded. If the list is
+	//   empty or `nil`, the full resource is returned.
+	//
+	// # Example
+	//   []string{
+	//     "metadata.name",
+	//     "metadata.namespace",
+	//     "spec.containers.image",
+	//   }
+	FieldMasks []string `json:"field_masks,omitempty"`
 }
 
 // CanIRequest represents a set of parameters used by the `can_i` function.
