@@ -5,7 +5,7 @@ package sdk
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 
 	appsv1 "github.com/kubewarden/k8s-objects/api/apps/v1"
 	batchv1 "github.com/kubewarden/k8s-objects/api/batch/v1"
@@ -27,16 +27,15 @@ const (
 	// NoCode can be used when building a response that doesn't have any
 	// error code to be shown to the user.
 	NoCode Code = 0
-
-	kindDeployment            = "Deployment"
-	kindReplicaSet            = "ReplicaSet"
-	kindStatefulSet           = "StatefulSet"
-	kindDaemonSet             = "DaemonSet"
-	kindReplicationController = "ReplicationController"
-	kindCronJob               = "CronJob"
-	kindJob                   = "Job"
-	kindPod                   = "Pod"
 )
+
+const supportedPodSpecObjects = "apps/v1 Deployment, " +
+	"apps/v1 ReplicaSet, apps/v1 StatefulSet, apps/v1 DaemonSet, v1 ReplicationController, " +
+	"batch/v1 Job, batch/v1 CronJob, v1 Pod"
+
+const supportedPodSpecObjectsMessage = "Object should be one of these group/version/kinds: " + supportedPodSpecObjects
+
+const supportedPodSpecObjectsError = "object should be one of these group/version/kinds: " + supportedPodSpecObjects
 
 // AcceptRequest can be used inside of the `validate` function to accept the
 // incoming request.
@@ -79,6 +78,10 @@ func MutateRequest(newObject any) ([]byte, error) {
 	return json.Marshal(response)
 }
 
+func isV1GroupKind(gvk protocol.GroupVersionKind, group, kind string) bool {
+	return gvk.Group == group && gvk.Version == "v1" && gvk.Kind == kind
+}
+
 // MutatePodSpecFromRequest updates the pod spec from the resource defined in the original object and
 // create an acceptance response.
 // * `validation_request` - the original admission request
@@ -86,57 +89,58 @@ func MutateRequest(newObject any) ([]byte, error) {
 //
 //nolint:funlen // Splitting this function would not make it more readable.
 func MutatePodSpecFromRequest(validationRequest protocol.ValidationRequest, podSepc corev1.PodSpec) ([]byte, error) {
-	switch validationRequest.Request.Kind.Kind {
-	case kindDeployment:
+	gvk := validationRequest.Request.Kind
+	switch {
+	case isV1GroupKind(gvk, appsv1.GroupName, "Deployment"):
 		deployment := appsv1.Deployment{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &deployment); err != nil {
 			return nil, err
 		}
 		deployment.Spec.Template.Spec = &podSepc
 		return MutateRequest(deployment)
-	case kindReplicaSet:
+	case isV1GroupKind(gvk, appsv1.GroupName, "ReplicaSet"):
 		replicaset := appsv1.ReplicaSet{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &replicaset); err != nil {
 			return nil, err
 		}
 		replicaset.Spec.Template.Spec = &podSepc
 		return MutateRequest(replicaset)
-	case kindStatefulSet:
+	case isV1GroupKind(gvk, appsv1.GroupName, "StatefulSet"):
 		statefulset := appsv1.StatefulSet{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &statefulset); err != nil {
 			return nil, err
 		}
 		statefulset.Spec.Template.Spec = &podSepc
 		return MutateRequest(statefulset)
-	case kindDaemonSet:
+	case isV1GroupKind(gvk, appsv1.GroupName, "DaemonSet"):
 		daemonset := appsv1.DaemonSet{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &daemonset); err != nil {
 			return nil, err
 		}
 		daemonset.Spec.Template.Spec = &podSepc
 		return MutateRequest(daemonset)
-	case kindReplicationController:
+	case isV1GroupKind(gvk, corev1.GroupName, "ReplicationController"):
 		replicationController := corev1.ReplicationController{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &replicationController); err != nil {
 			return nil, err
 		}
 		replicationController.Spec.Template.Spec = &podSepc
 		return MutateRequest(replicationController)
-	case kindCronJob:
+	case isV1GroupKind(gvk, batchv1.GroupName, "CronJob"):
 		cronjob := batchv1.CronJob{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &cronjob); err != nil {
 			return nil, err
 		}
 		cronjob.Spec.JobTemplate.Spec.Template.Spec = &podSepc
 		return MutateRequest(cronjob)
-	case kindJob:
+	case isV1GroupKind(gvk, batchv1.GroupName, "Job"):
 		job := batchv1.Job{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &job); err != nil {
 			return nil, err
 		}
 		job.Spec.Template.Spec = &podSepc
 		return MutateRequest(job)
-	case kindPod:
+	case isV1GroupKind(gvk, corev1.GroupName, "Pod"):
 		pod := corev1.Pod{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &pod); err != nil {
 			return nil, err
@@ -144,8 +148,7 @@ func MutatePodSpecFromRequest(validationRequest protocol.ValidationRequest, podS
 		pod.Spec = &podSepc
 		return MutateRequest(pod)
 	default:
-		return RejectRequest("Object should be one of these kinds: Deployment, "+
-			"ReplicaSet, StatefulSet, DaemonSet, ReplicationController, Job, CronJob, Pod", NoCode)
+		return RejectRequest(supportedPodSpecObjectsMessage, NoCode)
 	}
 }
 
@@ -183,58 +186,57 @@ func RejectSettings(message Message) ([]byte, error) {
 // PodSpec if present, otherwise returns an empty PodSpec.
 // * `object`: the request to validate.
 func ExtractPodSpecFromObject(object protocol.ValidationRequest) (corev1.PodSpec, error) {
-	switch object.Request.Kind.Kind {
-	case kindDeployment:
+	gvk := object.Request.Kind
+	switch {
+	case isV1GroupKind(gvk, appsv1.GroupName, "Deployment"):
 		deployment := appsv1.Deployment{}
 		if err := json.Unmarshal(object.Request.Object, &deployment); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *deployment.Spec.Template.Spec, nil
-	case kindReplicaSet:
+	case isV1GroupKind(gvk, appsv1.GroupName, "ReplicaSet"):
 		replicaset := appsv1.ReplicaSet{}
 		if err := json.Unmarshal(object.Request.Object, &replicaset); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *replicaset.Spec.Template.Spec, nil
-	case kindStatefulSet:
+	case isV1GroupKind(gvk, appsv1.GroupName, "StatefulSet"):
 		statefulset := appsv1.StatefulSet{}
 		if err := json.Unmarshal(object.Request.Object, &statefulset); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *statefulset.Spec.Template.Spec, nil
-	case kindDaemonSet:
+	case isV1GroupKind(gvk, appsv1.GroupName, "DaemonSet"):
 		daemonset := appsv1.DaemonSet{}
 		if err := json.Unmarshal(object.Request.Object, &daemonset); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *daemonset.Spec.Template.Spec, nil
-	case kindReplicationController:
+	case isV1GroupKind(gvk, corev1.GroupName, "ReplicationController"):
 		replicationController := corev1.ReplicationController{}
 		if err := json.Unmarshal(object.Request.Object, &replicationController); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *replicationController.Spec.Template.Spec, nil
-	case kindCronJob:
+	case isV1GroupKind(gvk, batchv1.GroupName, "CronJob"):
 		cronjob := batchv1.CronJob{}
 		if err := json.Unmarshal(object.Request.Object, &cronjob); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *cronjob.Spec.JobTemplate.Spec.Template.Spec, nil
-	case kindJob:
+	case isV1GroupKind(gvk, batchv1.GroupName, "Job"):
 		job := batchv1.Job{}
 		if err := json.Unmarshal(object.Request.Object, &job); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *job.Spec.Template.Spec, nil
-	case kindPod:
+	case isV1GroupKind(gvk, corev1.GroupName, "Pod"):
 		pod := corev1.Pod{}
 		if err := json.Unmarshal(object.Request.Object, &pod); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *pod.Spec, nil
 	default:
-		return corev1.PodSpec{}, fmt.Errorf("object should be one of these kinds: %s, %s, %s, %s, %s, %s, %s, %s",
-			kindDeployment, kindReplicaSet, kindStatefulSet, kindDaemonSet,
-			kindReplicationController, kindJob, kindCronJob, kindPod)
+		return corev1.PodSpec{}, errors.New(supportedPodSpecObjectsError)
 	}
 }
