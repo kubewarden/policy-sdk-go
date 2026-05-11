@@ -1,11 +1,11 @@
-// This package provides helper functions and structs for writing
+// Package sdk provides helper functions and structs for writing
 // https://kubewarden.io policies using the Go programming
 // language.
 package sdk
 
 import (
 	"encoding/json"
-	"errors"
+	"fmt"
 
 	appsv1 "github.com/kubewarden/k8s-objects/api/apps/v1"
 	batchv1 "github.com/kubewarden/k8s-objects/api/batch/v1"
@@ -27,6 +27,15 @@ const (
 	// NoCode can be used when building a response that doesn't have any
 	// error code to be shown to the user.
 	NoCode Code = 0
+
+	kindDeployment            = "Deployment"
+	kindReplicaSet            = "ReplicaSet"
+	kindStatefulSet           = "StatefulSet"
+	kindDaemonSet             = "DaemonSet"
+	kindReplicationController = "ReplicationController"
+	kindCronJob               = "CronJob"
+	kindJob                   = "Job"
+	kindPod                   = "Pod"
 )
 
 // AcceptRequest can be used inside of the `validate` function to accept the
@@ -61,7 +70,7 @@ func RejectRequest(message Message, code Code) ([]byte, error) {
 
 // MutateRequest accepts the request and mutate the final object to match the
 // one provided via the `newObject` param.
-func MutateRequest(newObject interface{}) ([]byte, error) {
+func MutateRequest(newObject any) ([]byte, error) {
 	response := protocol.ValidationResponse{
 		Accepted:      true,
 		MutatedObject: newObject,
@@ -78,56 +87,56 @@ func MutateRequest(newObject interface{}) ([]byte, error) {
 //nolint:funlen // Splitting this function would not make it more readable.
 func MutatePodSpecFromRequest(validationRequest protocol.ValidationRequest, podSepc corev1.PodSpec) ([]byte, error) {
 	switch validationRequest.Request.Kind.Kind {
-	case "Deployment":
+	case kindDeployment:
 		deployment := appsv1.Deployment{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &deployment); err != nil {
 			return nil, err
 		}
 		deployment.Spec.Template.Spec = &podSepc
 		return MutateRequest(deployment)
-	case "ReplicaSet":
+	case kindReplicaSet:
 		replicaset := appsv1.ReplicaSet{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &replicaset); err != nil {
 			return nil, err
 		}
 		replicaset.Spec.Template.Spec = &podSepc
 		return MutateRequest(replicaset)
-	case "StatefulSet":
+	case kindStatefulSet:
 		statefulset := appsv1.StatefulSet{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &statefulset); err != nil {
 			return nil, err
 		}
 		statefulset.Spec.Template.Spec = &podSepc
 		return MutateRequest(statefulset)
-	case "DaemonSet":
+	case kindDaemonSet:
 		daemonset := appsv1.DaemonSet{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &daemonset); err != nil {
 			return nil, err
 		}
 		daemonset.Spec.Template.Spec = &podSepc
 		return MutateRequest(daemonset)
-	case "ReplicationController":
+	case kindReplicationController:
 		replicationController := corev1.ReplicationController{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &replicationController); err != nil {
 			return nil, err
 		}
 		replicationController.Spec.Template.Spec = &podSepc
 		return MutateRequest(replicationController)
-	case "CronJob":
+	case kindCronJob:
 		cronjob := batchv1.CronJob{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &cronjob); err != nil {
 			return nil, err
 		}
 		cronjob.Spec.JobTemplate.Spec.Template.Spec = &podSepc
 		return MutateRequest(cronjob)
-	case "Job":
+	case kindJob:
 		job := batchv1.Job{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &job); err != nil {
 			return nil, err
 		}
 		job.Spec.Template.Spec = &podSepc
 		return MutateRequest(job)
-	case "Pod":
+	case kindPod:
 		pod := corev1.Pod{}
 		if err := json.Unmarshal(validationRequest.Request.Object, &pod); err != nil {
 			return nil, err
@@ -175,56 +184,57 @@ func RejectSettings(message Message) ([]byte, error) {
 // * `object`: the request to validate.
 func ExtractPodSpecFromObject(object protocol.ValidationRequest) (corev1.PodSpec, error) {
 	switch object.Request.Kind.Kind {
-	case "Deployment":
+	case kindDeployment:
 		deployment := appsv1.Deployment{}
 		if err := json.Unmarshal(object.Request.Object, &deployment); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *deployment.Spec.Template.Spec, nil
-	case "ReplicaSet":
+	case kindReplicaSet:
 		replicaset := appsv1.ReplicaSet{}
 		if err := json.Unmarshal(object.Request.Object, &replicaset); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *replicaset.Spec.Template.Spec, nil
-	case "StatefulSet":
+	case kindStatefulSet:
 		statefulset := appsv1.StatefulSet{}
 		if err := json.Unmarshal(object.Request.Object, &statefulset); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *statefulset.Spec.Template.Spec, nil
-	case "DaemonSet":
+	case kindDaemonSet:
 		daemonset := appsv1.DaemonSet{}
 		if err := json.Unmarshal(object.Request.Object, &daemonset); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *daemonset.Spec.Template.Spec, nil
-	case "ReplicationController":
+	case kindReplicationController:
 		replicationController := corev1.ReplicationController{}
 		if err := json.Unmarshal(object.Request.Object, &replicationController); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *replicationController.Spec.Template.Spec, nil
-	case "CronJob":
+	case kindCronJob:
 		cronjob := batchv1.CronJob{}
 		if err := json.Unmarshal(object.Request.Object, &cronjob); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *cronjob.Spec.JobTemplate.Spec.Template.Spec, nil
-	case "Job":
+	case kindJob:
 		job := batchv1.Job{}
 		if err := json.Unmarshal(object.Request.Object, &job); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *job.Spec.Template.Spec, nil
-	case "Pod":
+	case kindPod:
 		pod := corev1.Pod{}
 		if err := json.Unmarshal(object.Request.Object, &pod); err != nil {
 			return corev1.PodSpec{}, err
 		}
 		return *pod.Spec, nil
 	default:
-		return corev1.PodSpec{}, errors.New("object should be one of these kinds: " +
-			"Deployment, ReplicaSet, StatefulSet, DaemonSet, ReplicationController, Job, CronJob, Pod")
+		return corev1.PodSpec{}, fmt.Errorf("object should be one of these kinds: %s, %s, %s, %s, %s, %s, %s, %s",
+			kindDeployment, kindReplicaSet, kindStatefulSet, kindDaemonSet,
+			kindReplicationController, kindJob, kindCronJob, kindPod)
 	}
 }
