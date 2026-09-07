@@ -64,7 +64,6 @@ func buildManifestAndConfigResponse() interface{} {
 			StopSignal:   "SIGTERM",
 			ExposedPorts: map[string]struct{}{"80/tcp": {}},
 			Volumes:      map[string]struct{}{"/tmp": {}},
-			ArgsEscaped:  true,
 		},
 		RootFS: specs.RootFS{
 			Type:    "layers",
