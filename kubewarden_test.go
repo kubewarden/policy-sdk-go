@@ -12,13 +12,19 @@ import (
 )
 
 type mutatePodSpecFromRequestTestCase struct {
-	kind              string
+	gvk               protocol.GroupVersionKind
 	object            interface{}
 	mutatedObject     interface{}
 	mutationCheckFunc func(t interface{}) bool
 }
 
-func createValidationRequest(object interface{}, kind string) (protocol.ValidationRequest, error) {
+type podSpecMissingTestCase struct {
+	kind   string
+	gvk    protocol.GroupVersionKind
+	object interface{}
+}
+
+func createValidationRequest(object interface{}, gvk protocol.GroupVersionKind) (protocol.ValidationRequest, error) {
 	value, err := json.Marshal(&object)
 
 	if err != nil {
@@ -28,14 +34,138 @@ func createValidationRequest(object interface{}, kind string) (protocol.Validati
 	validationRequest := protocol.ValidationRequest{
 		Settings: json.RawMessage{},
 		Request: protocol.KubernetesAdmissionRequest{
-			Kind: protocol.GroupVersionKind{
-				Kind: kind,
-			},
+			Kind:   gvk,
 			Object: value,
 		},
 	}
 
 	return validationRequest, nil
+}
+
+func podSpecMissingTestCases() map[string]podSpecMissingTestCase {
+	return map[string]podSpecMissingTestCase{
+		"DeploymentWithMissingSpec": {
+			kind: "Deployment",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "Deployment",
+			},
+			object: appsv1.Deployment{},
+		},
+		"DeploymentWithMissingTemplate": {
+			kind: "Deployment",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "Deployment",
+			},
+			object: appsv1.Deployment{
+				Spec: &appsv1.DeploymentSpec{},
+			},
+		},
+		"ReplicaSetWithMissingTemplate": {
+			kind: "ReplicaSet",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "ReplicaSet",
+			},
+			object: appsv1.ReplicaSet{
+				Spec: &appsv1.ReplicaSetSpec{},
+			},
+		},
+		"StatefulSetWithMissingTemplate": {
+			kind: "StatefulSet",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "StatefulSet",
+			},
+			object: appsv1.StatefulSet{
+				Spec: &appsv1.StatefulSetSpec{},
+			},
+		},
+		"DaemonSetWithMissingTemplate": {
+			kind: "DaemonSet",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "DaemonSet",
+			},
+			object: appsv1.DaemonSet{
+				Spec: &appsv1.DaemonSetSpec{},
+			},
+		},
+		"ReplicationControllerWithMissingTemplate": {
+			kind: "ReplicationController",
+			gvk: protocol.GroupVersionKind{
+				Group:   corev1.GroupName,
+				Version: "v1",
+				Kind:    "ReplicationController",
+			},
+			object: corev1.ReplicationController{
+				Spec: &corev1.ReplicationControllerSpec{},
+			},
+		},
+		"CronJobWithMissingSpec": {
+			kind: "CronJob",
+			gvk: protocol.GroupVersionKind{
+				Group:   batchv1.GroupName,
+				Version: "v1",
+				Kind:    "CronJob",
+			},
+			object: batchv1.CronJob{},
+		},
+		"CronJobWithMissingJobTemplateSpec": {
+			kind: "CronJob",
+			gvk: protocol.GroupVersionKind{
+				Group:   batchv1.GroupName,
+				Version: "v1",
+				Kind:    "CronJob",
+			},
+			object: batchv1.CronJob{
+				Spec: &batchv1.CronJobSpec{
+					JobTemplate: &batchv1.JobTemplateSpec{},
+				},
+			},
+		},
+		"CronJobWithMissingPodTemplate": {
+			kind: "CronJob",
+			gvk: protocol.GroupVersionKind{
+				Group:   batchv1.GroupName,
+				Version: "v1",
+				Kind:    "CronJob",
+			},
+			object: batchv1.CronJob{
+				Spec: &batchv1.CronJobSpec{
+					JobTemplate: &batchv1.JobTemplateSpec{
+						Spec: &batchv1.JobSpec{},
+					},
+				},
+			},
+		},
+		"JobWithMissingTemplate": {
+			kind: "Job",
+			gvk: protocol.GroupVersionKind{
+				Group:   batchv1.GroupName,
+				Version: "v1",
+				Kind:    "Job",
+			},
+			object: batchv1.Job{
+				Spec: &batchv1.JobSpec{},
+			},
+		},
+		"PodWithMissingSpec": {
+			kind: "Pod",
+			gvk: protocol.GroupVersionKind{
+				Group:   corev1.GroupName,
+				Version: "v1",
+				Kind:    "Pod",
+			},
+			object: corev1.Pod{},
+		},
+	}
 }
 
 // Build a ValidationResponse object. Returns an error if the validation
@@ -71,7 +201,11 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 
 	for description, testCase := range map[string]mutatePodSpecFromRequestTestCase{
 		"WithDeployment": {
-			kind: "Deployment",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "Deployment",
+			},
 			object: appsv1.Deployment{
 				Spec: &appsv1.DeploymentSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -85,7 +219,11 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithDeployment,
 		},
 		"WithReplicaset": {
-			kind: "ReplicaSet",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "ReplicaSet",
+			},
 			object: appsv1.ReplicaSet{
 				Spec: &appsv1.ReplicaSetSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -99,7 +237,11 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithReplicaset,
 		},
 		"WithStatefulset": {
-			kind: "StatefulSet",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "StatefulSet",
+			},
 			object: appsv1.StatefulSet{
 				Spec: &appsv1.StatefulSetSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -113,7 +255,11 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithStatefulset,
 		},
 		"WithDaemonset": {
-			kind: "DaemonSet",
+			gvk: protocol.GroupVersionKind{
+				Group:   appsv1.GroupName,
+				Version: "v1",
+				Kind:    "DaemonSet",
+			},
 			object: appsv1.DaemonSet{
 				Spec: &appsv1.DaemonSetSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -127,7 +273,11 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithDaemonset,
 		},
 		"WithReplicationcontroller": {
-			kind: "ReplicationController",
+			gvk: protocol.GroupVersionKind{
+				Group:   corev1.GroupName,
+				Version: "v1",
+				Kind:    "ReplicationController",
+			},
 			object: corev1.ReplicationController{
 				Spec: &corev1.ReplicationControllerSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -141,7 +291,11 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithReplicationcontroller,
 		},
 		"WithCronjob": {
-			kind: "CronJob",
+			gvk: protocol.GroupVersionKind{
+				Group:   batchv1.GroupName,
+				Version: "v1",
+				Kind:    "CronJob",
+			},
 			object: batchv1.CronJob{
 				Spec: &batchv1.CronJobSpec{
 					JobTemplate: &batchv1.JobTemplateSpec{
@@ -159,7 +313,11 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithCronjob,
 		},
 		"WithJob": {
-			kind: "Job",
+			gvk: protocol.GroupVersionKind{
+				Group:   batchv1.GroupName,
+				Version: "v1",
+				Kind:    "Job",
+			},
 			object: batchv1.Job{
 				Spec: &batchv1.JobSpec{
 					Template: &corev1.PodTemplateSpec{
@@ -173,7 +331,11 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 			mutationCheckFunc: CheckPodSpecMutatedFromRequestWithJob,
 		},
 		"WithPod": {
-			kind: "Pod",
+			gvk: protocol.GroupVersionKind{
+				Group:   corev1.GroupName,
+				Version: "v1",
+				Kind:    "Pod",
+			},
 			object: corev1.Pod{
 				Spec: &corev1.PodSpec{
 					AutomountServiceAccountToken: false,
@@ -184,7 +346,7 @@ func TestMutatePodSpecFromRequest(t *testing.T) {
 		},
 	} {
 		t.Run(description, func(t *testing.T) {
-			validationRequest, err := createValidationRequest(testCase.object, testCase.kind)
+			validationRequest, err := createValidationRequest(testCase.object, testCase.gvk)
 			if err != nil {
 				t.Fatalf("Error: %v", err)
 			}
@@ -240,10 +402,36 @@ func CheckPodSpecMutatedFromRequestWithJob(object interface{}) bool {
 func CheckPodSpecMutatedFromRequestWithPod(object interface{}) bool {
 	return object.(*corev1.Pod).Spec.AutomountServiceAccountToken == true
 }
+
+func TestMutatePodSpecFromRequestReturnsErrorWhenPodSpecMissing(t *testing.T) {
+	newPodSpec := corev1.PodSpec{
+		AutomountServiceAccountToken: true,
+	}
+
+	for description, testCase := range podSpecMissingTestCases() {
+		t.Run(description, func(t *testing.T) {
+			validationRequest, err := createValidationRequest(testCase.object, testCase.gvk)
+			if err != nil {
+				t.Fatalf("Error: %v", err)
+			}
+
+			_, err = MutatePodSpecFromRequest(validationRequest, newPodSpec)
+			if err == nil {
+				t.Fatalf("Expected error")
+			}
+
+			expectedError := missingPodSpecError(testCase.kind).Error()
+			if err.Error() != expectedError {
+				t.Fatalf("Expected %q, got %q", expectedError, err.Error())
+			}
+		})
+	}
+}
+
 func TestMutatePodSpecFromRequestWithInvalidResourceType(t *testing.T) {
 	pod := &corev1.Pod{}
 
-	validationRequest, err := createValidationRequest(pod, "InvalidType")
+	validationRequest, err := createValidationRequest(pod, protocol.GroupVersionKind{Kind: "InvalidType"})
 	if err != nil {
 		t.Fatalf("Error: %v", err)
 	}
@@ -267,8 +455,131 @@ func TestMutatePodSpecFromRequestWithInvalidResourceType(t *testing.T) {
 	}
 
 	errorMessage := response.Message
-	expectedErrorMessage := "Object should be one of these kinds: Deployment, ReplicaSet, StatefulSet, DaemonSet, ReplicationController, Job, CronJob, Pod"
-	if *errorMessage != expectedErrorMessage {
+	if *errorMessage != supportedPodSpecObjectsMessage {
 		t.Fatalf("Different error occurred")
+	}
+}
+
+func TestMutatePodSpecFromRequestRejectsMismatchedGroupVersionKind(t *testing.T) {
+	deployment := appsv1.Deployment{
+		Spec: &appsv1.DeploymentSpec{
+			Template: &corev1.PodTemplateSpec{
+				Spec: &corev1.PodSpec{
+					AutomountServiceAccountToken: false,
+				},
+			},
+		},
+	}
+
+	validationRequest, err := createValidationRequest(deployment, protocol.GroupVersionKind{
+		Group:   "argocd.io",
+		Version: "v1",
+		Kind:    "Deployment",
+	})
+	if err != nil {
+		t.Fatalf("Error: %v", err)
+	}
+
+	newPodSpec := corev1.PodSpec{
+		AutomountServiceAccountToken: true,
+	}
+
+	rawResponse, err := MutatePodSpecFromRequest(validationRequest, newPodSpec)
+	if err != nil {
+		t.Fatalf("Error: %v", err)
+	}
+
+	response := protocol.ValidationResponse{}
+	if err = json.Unmarshal(rawResponse, &response); err != nil {
+		t.Fatalf("Error: %v", err)
+	}
+
+	if response.Accepted {
+		t.Fatalf("Response accepted")
+	}
+
+	if response.Message == nil || *response.Message != supportedPodSpecObjectsMessage {
+		t.Fatalf("Different error occurred")
+	}
+}
+
+func TestExtractPodSpecFromObject(t *testing.T) {
+	deployment := appsv1.Deployment{
+		Spec: &appsv1.DeploymentSpec{
+			Template: &corev1.PodTemplateSpec{
+				Spec: &corev1.PodSpec{
+					AutomountServiceAccountToken: true,
+				},
+			},
+		},
+	}
+
+	validationRequest, err := createValidationRequest(deployment, protocol.GroupVersionKind{
+		Group:   appsv1.GroupName,
+		Version: "v1",
+		Kind:    "Deployment",
+	})
+	if err != nil {
+		t.Fatalf("Error: %v", err)
+	}
+
+	podSpec, err := ExtractPodSpecFromObject(validationRequest)
+	if err != nil {
+		t.Fatalf("Error: %v", err)
+	}
+
+	if !podSpec.AutomountServiceAccountToken {
+		t.Fatalf("PodSpec not extracted")
+	}
+}
+
+func TestExtractPodSpecFromObjectRejectsMismatchedGroupVersionKind(t *testing.T) {
+	deployment := appsv1.Deployment{
+		Spec: &appsv1.DeploymentSpec{
+			Template: &corev1.PodTemplateSpec{
+				Spec: &corev1.PodSpec{
+					AutomountServiceAccountToken: true,
+				},
+			},
+		},
+	}
+
+	validationRequest, err := createValidationRequest(deployment, protocol.GroupVersionKind{
+		Group:   "argocd.io",
+		Version: "v1",
+		Kind:    "Deployment",
+	})
+	if err != nil {
+		t.Fatalf("Error: %v", err)
+	}
+
+	_, err = ExtractPodSpecFromObject(validationRequest)
+	if err == nil {
+		t.Fatalf("Expected error")
+	}
+
+	if err.Error() != supportedPodSpecObjectsErrorMessage {
+		t.Fatalf("Different error occurred")
+	}
+}
+
+func TestExtractPodSpecFromObjectReturnsErrorWhenPodSpecMissing(t *testing.T) {
+	for description, testCase := range podSpecMissingTestCases() {
+		t.Run(description, func(t *testing.T) {
+			validationRequest, err := createValidationRequest(testCase.object, testCase.gvk)
+			if err != nil {
+				t.Fatalf("Error: %v", err)
+			}
+
+			_, err = ExtractPodSpecFromObject(validationRequest)
+			if err == nil {
+				t.Fatalf("Expected error")
+			}
+
+			expectedError := missingPodSpecError(testCase.kind).Error()
+			if err.Error() != expectedError {
+				t.Fatalf("Expected %q, got %q", expectedError, err.Error())
+			}
+		})
 	}
 }
